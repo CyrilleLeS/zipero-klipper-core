@@ -1,0 +1,21 @@
+{
+  "name": "@zipero/klipper-core",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Cœur d'analyse Klipper de Zipero : parseurs purs (config, maillage, log, G-code), sans DOM, exécutables en Node et en Web Worker.",
+  "license": "GPL-3.0-only",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --coverage"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "5.0.1",
+    "@zipero/config": "workspace:*",
+    "vitest": "5.0.1"
+  }
+}
