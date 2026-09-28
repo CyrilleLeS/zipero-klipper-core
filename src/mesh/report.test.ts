@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
 import { describe, expect, it } from "vitest";
-import { printProbedMatrix } from "./klipper-format.fixture";
+import { printMesh, printProbedMatrix } from "./klipper-format.fixture";
 import { analyzeBedMesh, type BedMeshReport, gradeFlatness } from "./report";
 
 const report = (text: string): BedMeshReport => {
@@ -155,5 +155,28 @@ describe("analyzeBedMesh — [bed_mesh] invalide", () => {
       "bedMesh.rangeModerate",
       "bedMesh.irregular",
     ]);
+  });
+});
+
+describe("analyzeBedMesh — surface interpolée", () => {
+  it("recalcule la surface d'un profil avec ses propres réglages", () => {
+    const bowl = grid((u, v) => 0.1 * (u * u + v * v));
+    const [mesh] = report(printerCfg("185, 225", profileBlock(bowl))).meshes;
+    expect(mesh?.interpolated).toMatchObject({ algorithm: "lagrange", source: "computed" });
+    expect([mesh?.interpolated?.grid.cols, mesh?.interpolated?.grid.rows]).toEqual([13, 13]);
+  });
+
+  it("reprend la grille imprimée par Klipper dans une sortie console", () => {
+    const text = `${printProbedMatrix(grid(() => 0))}\n${printMesh({
+      mesh: Array.from({ length: 13 }, () => Array.from({ length: 13 }, () => 0)),
+      algorithm: "bicubic",
+    })}`;
+    const [mesh] = report(text).meshes;
+    expect(mesh?.interpolated).toMatchObject({ algorithm: "bicubic", source: "klipper" });
+  });
+
+  it("calcule la surface par défaut d'une sortie console sans grille interpolée", () => {
+    const [mesh] = report(printProbedMatrix(grid(() => 0))).meshes;
+    expect(mesh?.interpolated?.source).toBe("computed");
   });
 });

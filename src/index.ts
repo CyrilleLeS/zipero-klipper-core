@@ -10,6 +10,15 @@ export {
   type ReportedMeshInfo,
 } from "./mesh/console";
 export {
+  DEFAULT_INTERPOLATION,
+  effectiveAlgorithm,
+  type Interpolation,
+  type InterpolationCode,
+  type InterpolationParams,
+  interpolateMesh,
+  type MeshAlgorithm,
+} from "./mesh/interpolate";
+export {
   computeMeshMetrics,
   type GridPoint,
   type MeshMetrics,

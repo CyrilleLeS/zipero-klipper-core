@@ -3,6 +3,12 @@ import { parseConfig } from "../config/ini";
 import { extractPrinterMechanics, type PrinterMechanics } from "../printers/extract";
 import { failure, type Issue, type ParseResult, success } from "../result";
 import { parseBedMeshOutput } from "./console";
+import {
+  DEFAULT_INTERPOLATION,
+  type InterpolationParams,
+  interpolateMesh,
+  type MeshAlgorithm,
+} from "./interpolate";
 import { computeMeshMetrics, type MeshMetrics } from "./metrics";
 import { checkProbeArea, type ProbeArea, type ProbeAreaCode } from "./probe-area";
 import { parseMeshProfiles } from "./profiles";
@@ -55,6 +61,16 @@ export interface MeshAnalysis {
   readonly metrics: MeshMetrics;
   readonly shape: ShapeClassification;
   readonly grade: FlatnessGrade;
+  /**
+   * Surface interpolée utilisée par Klipper (EP-05.05) : celle imprimée par la console si
+   * présente, sinon recalculée (réglages du profil, ou réglages par défaut de Klipper).
+   * Absente si Klipper refuserait ces réglages.
+   */
+  readonly interpolated?: {
+    readonly grid: MeshGrid;
+    readonly algorithm: MeshAlgorithm;
+    readonly source: "klipper" | "computed";
+  };
 }
 
 export interface BedMeshReport {
@@ -87,9 +103,27 @@ const round3 = (value: number) => Math.round(value * 1000) / 1000;
 function analyzeMesh(
   grid: MeshGrid,
   line: number,
-  extra: { name?: string; geometry?: MeshGeometry },
+  extra: {
+    name?: string;
+    geometry?: MeshGeometry;
+    interpolation?: InterpolationParams;
+    printed?: { grid: MeshGrid; algorithm?: string };
+  },
 ): MeshAnalysis {
   const metrics = computeMeshMetrics(grid, extra.geometry);
+  const printedAlgorithm = extra.printed?.algorithm?.trim().toLowerCase();
+  const computed = interpolateMesh(grid, extra.interpolation ?? DEFAULT_INTERPOLATION);
+  const interpolated = extra.printed
+    ? {
+        grid: extra.printed.grid,
+        algorithm: (printedAlgorithm === "bicubic" || printedAlgorithm === "direct"
+          ? printedAlgorithm
+          : "lagrange") as MeshAlgorithm,
+        source: "klipper" as const,
+      }
+    : computed.ok
+      ? { grid: computed.grid, algorithm: computed.algorithm, source: "computed" as const }
+      : undefined;
   return {
     ...(extra.name !== undefined ? { name: extra.name } : {}),
     line,
@@ -98,6 +132,7 @@ function analyzeMesh(
     metrics,
     shape: classifyMeshShape(grid),
     grade: gradeFlatness(metrics.range),
+    ...(interpolated ? { interpolated } : {}),
   };
 }
 
@@ -188,6 +223,12 @@ export function analyzeBedMesh(text: string): ParseResult<BedMeshReport, string>
           analyzeMesh(profile.probed, profile.line, {
             name: profile.name,
             geometry: profile.params,
+            interpolation: {
+              xPps: profile.params.xPps,
+              yPps: profile.params.yPps,
+              algorithm: profile.params.algorithm,
+              tension: profile.params.tension,
+            },
           }),
         )
       : [];
@@ -210,7 +251,18 @@ export function analyzeBedMesh(text: string): ParseResult<BedMeshReport, string>
 
   const parsed = parseBedMeshOutput(text);
   if (!parsed.ok) return failure(parsed.error, parsed.warnings);
-  const meshes = parsed.value.map((mesh) => analyzeMesh(mesh.probed, mesh.line, {}));
+  const meshes = parsed.value.map((mesh) =>
+    analyzeMesh(mesh.probed, mesh.line, {
+      ...(mesh.interpolated
+        ? {
+            printed: {
+              grid: mesh.interpolated,
+              ...(mesh.reported?.algorithm ? { algorithm: mesh.reported.algorithm } : {}),
+            },
+          }
+        : {}),
+    }),
+  );
   return success(
     { input: "console", meshes, diagnostics: sortDiagnostics(meshes.flatMap(diagnoseMesh)) },
     parsed.warnings,
