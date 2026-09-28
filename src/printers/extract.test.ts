@@ -38,6 +38,15 @@ position_max: 250`;
     });
   });
 
+  it("reconnaît les sondes par la buse (cellule de force, capteurs Creality) sans décalage", () => {
+    expect(mechanics("[prtouch_v2]\npr_version: 1\nz_offset: 0")).toEqual({
+      probe: { type: "prtouch_v2", xOffset: 0, yOffset: 0 },
+    });
+    expect(mechanics("[load_cell_probe]\nsensor_type: hx711")).toEqual({
+      probe: { type: "load_cell_probe", xOffset: 0, yOffset: 0 },
+    });
+  });
+
   it("lit les vis de screws_tilt_adjust (prioritaires) avec leur nom et le filetage", () => {
     const cfg = `[bed_screws]
 screw1: 1, 1
@@ -74,7 +83,12 @@ screw_thread: CW-M4`;
       probeCount: [5, 5],
     });
     expect(mechanics("[bed_mesh]\nprobe_count: 7, 3").mesh).toEqual({ probeCount: [7, 3] });
-    expect(mechanics("[bed_mesh]\nmesh_radius: 100").mesh).toEqual({});
+  });
+
+  it("lit les réglages d'un plateau rond", () => {
+    expect(
+      mechanics("[bed_mesh]\nmesh_radius: 100\nmesh_origin: 0, 10\nround_probe_count: 7").mesh,
+    ).toEqual({ radius: 100, origin: [0, 10], roundProbeCount: 7 });
   });
 
   it("ignore une course incomplète", () => {

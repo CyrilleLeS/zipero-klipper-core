@@ -14,7 +14,22 @@ export {
   type MeshMetrics,
   type PlaneFit,
 } from "./mesh/metrics";
+export {
+  type Bounds,
+  checkProbeArea,
+  type ProbeArea,
+  type ProbeAreaCode,
+  type ProbePoint,
+} from "./mesh/probe-area";
 export { type MeshProfile, type MeshProfileCode, parseMeshProfiles } from "./mesh/profiles";
+export {
+  classifyMeshShape,
+  DEFAULT_FLAT_TOLERANCE,
+  type MeshShape,
+  type ShapeClassification,
+  type ShapeComponents,
+  type ShapeOptions,
+} from "./mesh/shape";
 export type { MeshGeometry, MeshGrid, MeshProfileParams } from "./mesh/types";
 export { toGrid } from "./mesh/types";
 export {

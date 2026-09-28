@@ -23,15 +23,22 @@ const RECTILINEAR = new Set([
   "limited_corexz",
 ]);
 
-/** Sections de sonde reconnues (le nom de base identifie le type). */
+/**
+ * Sections de sonde reconnues (le nom de base identifie le type). `load_cell_probe` : Klipper
+ * (x_offset/y_offset via ProbeOffsetsHelper). `prtouch_v2`/`prtouch` : capteurs de pression du fork
+ * Creality (K1, K1C…), la buse elle-même sonde : décalage nul faute d'option.
+ */
 const PROBE_SECTIONS = [
   "probe",
   "bltouch",
   "smart_effector",
   "probe_eddy_current",
+  "load_cell_probe",
   "beacon",
   "cartographer",
   "scanner",
+  "prtouch_v2",
+  "prtouch",
 ] as const;
 
 export interface Travel {
@@ -67,6 +74,10 @@ export interface MeshSettings {
   readonly min?: readonly [number, number];
   readonly max?: readonly [number, number];
   readonly probeCount?: readonly [number, number];
+  /** Plateau rond : `mesh_radius`, `mesh_origin`, `round_probe_count`. */
+  readonly radius?: number;
+  readonly origin?: readonly [number, number];
+  readonly roundProbeCount?: number;
 }
 
 export interface PrinterMechanics {
@@ -159,10 +170,16 @@ function readMesh(sections: readonly ConfigSection[]): MeshSettings | undefined 
   // probe_count accepte « 5 » (même valeur sur X et Y) ou « 5, 3 ».
   const single = toNumber(count);
   const probeCount = single !== undefined ? ([single, single] as const) : toPair(count);
+  const radius = toNumber(s.options.get("mesh_radius")?.value);
+  const origin = toPair(s.options.get("mesh_origin")?.value);
+  const roundProbeCount = toNumber(s.options.get("round_probe_count")?.value);
   return {
     ...(min ? { min } : {}),
     ...(max ? { max } : {}),
     ...(probeCount ? { probeCount } : {}),
+    ...(radius !== undefined ? { radius } : {}),
+    ...(origin ? { origin } : {}),
+    ...(roundProbeCount !== undefined ? { roundProbeCount } : {}),
   };
 }
 

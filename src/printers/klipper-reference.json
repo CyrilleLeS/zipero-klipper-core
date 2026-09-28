@@ -2358,7 +2358,10 @@
         "xOffset": 0,
         "yOffset": 0
       },
-      "mesh": {}
+      "mesh": {
+        "radius": 50,
+        "roundProbeCount": 5
+      }
     },
     "source": {
       "repository": "Klipper3d/klipper",
@@ -3422,7 +3425,14 @@
         "xOffset": 0,
         "yOffset": 0
       },
-      "mesh": {}
+      "mesh": {
+        "radius": 65,
+        "origin": [
+          0,
+          0
+        ],
+        "roundProbeCount": 7
+      }
     },
     "source": {
       "repository": "Klipper3d/klipper",
