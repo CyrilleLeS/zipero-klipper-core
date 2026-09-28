@@ -4,6 +4,9 @@ import { interpolateMesh } from "./mesh/interpolate";
 import { analyzeBedMesh, type BedMeshReport } from "./mesh/report";
 import { parseProbeAccuracy } from "./probe/accuracy";
 
+// Le paquet autonome (dépôt public) n'a ni types Node ni types DOM.
+declare const performance: { now(): number };
+
 /**
  * Entrées hostiles ou absurdes (EP-16.02) : l'analyse doit se terminer vite, sans exception ni
  * explosion mémoire. Avant les limites de `limits.ts`, un `mesh_pps` démesuré épuisait 4 Go de
