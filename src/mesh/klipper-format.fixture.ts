@@ -36,7 +36,7 @@ export function printMesh(options: {
     msg += `Search Height: ${Math.trunc(options.searchHeight)}\n`;
   msg += "Mesh Offsets: X=0.0000, Y=0.0000\n";
   msg += `Mesh Average: ${average.toFixed(2)}\n`;
-  msg += `Mesh Range: min=${Math.min(...flat).toFixed(4)} max=${Math.max(...flat).toFixed(4)}\n`;
+  msg += `Mesh Range: min=${flat.reduce((a, b) => Math.min(a, b)).toFixed(4)} max=${flat.reduce((a, b) => Math.max(a, b)).toFixed(4)}\n`;
   msg += `Interpolation Algorithm: ${options.algorithm ?? "lagrange"}\n`;
   msg += "Measured points:\n";
   for (let y = mesh.length - 1; y >= 0; y--) {

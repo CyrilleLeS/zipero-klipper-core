@@ -77,8 +77,9 @@ export function computeMeshMetrics(grid: MeshGrid, geometry?: MeshGeometry): Mes
   const residuals = points.map(
     ({ row, col, z }) => z - (mean + perStepX * (col - cx) + perStepY * (row - cy)),
   );
-  const residualMin = Math.min(...residuals);
-  const residualMax = Math.max(...residuals);
+  // Pas de Math.min(...tableau) : au-delà de ~100 000 éléments, la pile d'appels déborde.
+  const residualMin = residuals.reduce((a, b) => Math.min(a, b), Number.POSITIVE_INFINITY);
+  const residualMax = residuals.reduce((a, b) => Math.max(a, b), Number.NEGATIVE_INFINITY);
   const residualSquares = residuals.reduce((sum, r) => sum + r ** 2, 0);
 
   const stepX = geometry && cols > 1 ? (geometry.maxX - geometry.minX) / (cols - 1) : null;

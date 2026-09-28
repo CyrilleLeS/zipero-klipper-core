@@ -49,6 +49,16 @@ describe("computeMeshMetrics — valeurs connues", () => {
     expect(withoutGeometry.plane.residualRange).toBeCloseTo(0.03, 12);
   });
 
+  it("supporte un maillage très dense (400×400) sans débordement de pile", () => {
+    const size = 400;
+    const values = Array.from({ length: size }, (_, r) =>
+      Array.from({ length: size }, (_, c) => (r + c) / 1000),
+    );
+    const metrics = computeMeshMetrics(grid(values), { minX: 0, maxX: 399, minY: 0, maxY: 399 });
+    expect(metrics.count).toBe(160_000);
+    expect(metrics.plane.residualRange).toBeLessThan(1e-9);
+  });
+
   it("gère un axe à un seul point", () => {
     const line = computeMeshMetrics(grid([[0.1, 0.2, 0.3]]), {
       minX: 0,
