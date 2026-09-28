@@ -13,6 +13,24 @@ describe("cleanConsoleLine", () => {
     ["echo: busy", "busy"],
     ["  0.012500  -0.025000  ", "0.012500  -0.025000"],
     ["12:03 BED_MESH_OUTPUT", "BED_MESH_OUTPUT"],
+    // Formats relevés dans de vrais collages (tickets GitHub publics) :
+    ["> Recv: // 0.002500 -0.002500 -0.065000", "0.002500 -0.002500 -0.065000"],
+    ["> > // probe accuracy results: maximum 1", "probe accuracy results: maximum 1"],
+    [">>> Recv: // Mesh X,Y: 7,7", "Mesh X,Y: 7,7"],
+    ["[2020-04-16 09:01:24,376] DEBUG: // -9.709671 -9.709671", "-9.709671 -9.709671"],
+    ["2020-04-16 09:01:24,376 - Recv: // Mesh X,Y: 5,5", "Mesh X,Y: 5,5"],
+    [
+      "0:00:13.539: // probe accuracy: at X:0.891 Y:1.134 Z:10.000",
+      "probe accuracy: at X:0.891 Y:1.134 Z:10.000",
+    ],
+    [
+      "1/12/2021, 12:54:08 PM | probe at 275.000,250.000 is z=0.347500",
+      "probe at 275.000,250.000 is z=0.347500",
+    ],
+    [
+      "`probe accuracy results: maximum 0.046484, minimum -0.431641`",
+      "probe accuracy results: maximum 0.046484, minimum -0.431641",
+    ],
   ])("« %s » → « %s »", (input, expected) => {
     expect(cleanConsoleLine(input)).toBe(expected);
   });

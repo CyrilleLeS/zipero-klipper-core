@@ -98,6 +98,31 @@ describe("parseProbeAccuracy", () => {
     });
   });
 
+  it("remet dans l'ordre une console affichée du plus récent au plus ancien", () => {
+    const reversed = current.split("\n").reverse().join("\n");
+    const result = parseProbeAccuracy(reversed);
+    if (!result.ok) throw new Error("échec inattendu");
+    expect(result.warnings).toEqual([]);
+    expect(result.value).toHaveLength(1);
+    expect(result.value[0]).toMatchObject({
+      requestedSamples: 5,
+      samples: [1.915, 1.9175, 1.9125, 1.915, 1.9175],
+      statsSource: "klipper",
+    });
+  });
+
+  it("cas réel : résultat affiché avant l'en-tête, sans mesures intermédiaires", () => {
+    // Relevé dans un ticket public (capteur BDsensor) : une seule exécution, pas deux.
+    const pasted = [
+      "> probe accuracy results: maximum 0.990000, minimum 0.990000, range 0.000000, average 0.990000, median 0.990000, standard deviation 0.000000",
+      "> PROBE_ACCURACY at X:127.000 Y:105.000 Z:1.000 (samples=5 retract=2.000 speed=0.8 lift_speed=0.8)",
+    ].join("\n");
+    const result = parseProbeAccuracy(pasted);
+    if (!result.ok) throw new Error("échec inattendu");
+    expect(result.value).toHaveLength(1);
+    expect(result.value[0]).toMatchObject({ requestedSamples: 5, statsSource: "klipper" });
+  });
+
   it("sépare plusieurs exécutions successives", () => {
     const result = parseProbeAccuracy(`${current}\n${fromKlipperDocs}`);
     if (!result.ok) throw new Error("échec inattendu");

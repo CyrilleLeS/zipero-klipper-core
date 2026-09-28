@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 import { defined } from "../invariant";
 import { failure, type Issue, type ParseResult, success } from "../result";
-import { consoleLines } from "../text/console";
+import { type ConsoleLine, consoleLines } from "../text/console";
 
 /**
  * Lecture de la sortie de `PROBE_ACCURACY` (EP-05.16), fidèle à klippy/extras/probe.py (0.13) :
@@ -81,6 +81,23 @@ interface RunBuilder {
 }
 
 /**
+ * Remet dans l'ordre chronologique un collage affiché du plus récent au plus ancien (option de
+ * certaines consoles, constatée dans un ticket réel) : si la première ligne significative est le
+ * résultat et qu'une mesure ou un en-tête la suit, le texte est lu à l'envers.
+ */
+function chronological(lines: readonly ConsoleLine[]): readonly ConsoleLine[] {
+  const keyLines = lines.filter(
+    ({ content }) => HEADER.test(content) || SAMPLE.test(content) || RESULTS.test(content),
+  );
+  const [first, ...rest] = keyLines;
+  const reversed =
+    first !== undefined &&
+    RESULTS.test(first.content) &&
+    rest.some(({ content }) => HEADER.test(content) || SAMPLE.test(content));
+  return reversed ? [...lines].reverse() : lines;
+}
+
+/**
  * Tolérance du recoupement : Klipper calcule sur des valeurs non arrondies puis imprime 6
  * décimales ; les statistiques recalculées depuis les lignes imprimées peuvent différer de ~1 µm.
  */
@@ -98,7 +115,7 @@ export function parseProbeAccuracy(
   const builders: RunBuilder[] = [];
   let current: RunBuilder | undefined;
 
-  for (const { line, content } of consoleLines(source)) {
+  for (const { line, content } of chronological(consoleLines(source))) {
     const header = HEADER.exec(content);
     if (header) {
       current = {

@@ -11,15 +11,27 @@ export interface ConsoleLine extends SourceLine {
   readonly content: string;
 }
 
-// Horodatages usuels : 12:03, 12:03:45, 12:03:45.123, [12:03:45], 2026-09-28 12:03:45.
-const TIMESTAMP = /^\[?(?:\d{4}-\d{2}-\d{2}[ T])?\d{1,2}:\d{2}(?::\d{2}(?:[.,]\d+)?)?\]?\s*/;
+// Formats relevés dans de vrais collages (corpus, tickets GitHub publics) :
+// - citation Markdown (copie depuis un forum, un ticket, Discord) : « > », « > > », « >>> » ;
+// - code en ligne Markdown : « `…` » ;
+// - horodatages : 12:03, 12:03:45(.123), [12:03:45], 2026-09-28 12:03:45,
+//   journal OctoPrint « [2020-04-16 09:01:24,376] DEBUG: » ou « 2020-04-16 09:01:24,376 - »,
+//   temps relatif « 0:00:13.539: », console « 1/12/2021, 12:54:08 PM | ».
+const QUOTE = /^(?:>\s*)+/;
+const INLINE_CODE = /^`+|`+$/g;
+const TIMESTAMP =
+  /^\[?(?:\d{4}-\d{2}-\d{2}[ T]|\d{1,2}\/\d{1,2}\/\d{2,4},?\s+)?\d{1,2}:\d{2}(?::\d{2}(?:[.,]\d+)?)?(?:\s*[AP]M)?\]?:?\s*(?:[|-]\s+)?/i;
+const LOG_LEVEL = /^(?:DEBUG|INFO|WARNING|ERROR)\s*[:-]\s*/;
 const HOST_PREFIX = /^(?:Recv|Send|echo):\s*/i;
 const KLIPPER_INFO = /^\/\/\s?/;
 
 export function cleanConsoleLine(text: string): string {
   let content = text.trim();
-  // Les préfixes peuvent se combiner (« 12:03:45 Recv: // … ») : on les retire dans l'ordre.
+  // Les préfixes se combinent (« > 12:03:45 Recv: // … ») : on les retire dans l'ordre.
+  content = content.replace(QUOTE, "").trim();
+  content = content.replace(INLINE_CODE, "").trim();
   content = content.replace(TIMESTAMP, "");
+  content = content.replace(LOG_LEVEL, "");
   content = content.replace(HOST_PREFIX, "");
   content = content.replace(KLIPPER_INFO, "");
   return content.trim();
