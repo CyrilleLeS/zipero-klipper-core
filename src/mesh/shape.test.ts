@@ -147,8 +147,11 @@ describe("classifyMeshShape — propriétés", () => {
         const a = classifyMeshShape(sample(5, 5, evaluate(s)));
         const z = evaluate(s);
         const b = classifyMeshShape(sample(5, 5, (u, v) => z(u, v) + offset));
-        expect(b.shape).toBe(a.shape);
         expect(b.confidence).toBeCloseTo(a.confidence, 6);
+        // Égalité exacte (deux composantes égales, ou amplitude pile à la tolérance) : confiance
+        // nulle, et l'arrondi flottant du décalage peut départager dans un sens ou dans l'autre.
+        fc.pre(a.confidence > 1e-6);
+        expect(b.shape).toBe(a.shape);
       }),
     );
   });
