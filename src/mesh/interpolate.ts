@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
 import { defined } from "../invariant";
+import { ANALYSIS_LIMITS } from "../limits";
 import type { MeshGrid } from "./types";
 
 /**
@@ -24,6 +25,8 @@ export interface InterpolationParams {
 
 export type InterpolationCode =
   | "interpolate.unknown-algorithm"
+  | "interpolate.invalid-pps"
+  | "interpolate.too-large"
   | "interpolate.lagrange-too-many"
   | "interpolate.bicubic-invalid";
 
@@ -48,6 +51,9 @@ export function effectiveAlgorithm(
   const algorithm = params.algorithm.trim().toLowerCase();
   if (!["lagrange", "bicubic", "direct"].includes(algorithm))
     return "interpolate.unknown-algorithm";
+  // Klipper refuse mesh_pps négatif (minval=0) ; non entier : impossible à placer sur la grille.
+  const validPps = (pps: number) => Number.isInteger(pps) && pps >= 0;
+  if (!validPps(params.xPps) || !validPps(params.yPps)) return "interpolate.invalid-pps";
   const maxCount = Math.max(cols, rows);
   const minCount = Math.min(cols, rows);
   if (Math.max(params.xPps, params.yPps) === 0) return "direct";
@@ -78,6 +84,9 @@ export function interpolateMesh(grid: MeshGrid, params: InterpolationParams): In
   const yMult = params.yPps + 1;
   const xCount = (cols - 1) * params.xPps + cols;
   const yCount = (rows - 1) * params.yPps + rows;
+  if (xCount * yCount > ANALYSIS_LIMITS.maxInterpolatedPoints) {
+    return { ok: false, code: "interpolate.too-large" };
+  }
   // Coordonnées normalisées : seules les proportions comptent pour Lagrange (le résultat ne
   // dépend pas de l'échelle), et la spline travaille en indices.
   const xAt = (index: number) => index / (xCount - 1);

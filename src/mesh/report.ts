@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
+
 import { parseConfig } from "../config/ini";
+import { ANALYSIS_LIMITS } from "../limits";
 import { extractPrinterMechanics, type PrinterMechanics } from "../printers/extract";
 import {
   assessRepeatability,
@@ -46,6 +48,7 @@ export type Severity = "critical" | "warning" | "info";
 export const BED_MESH_DIAGNOSTIC_CODES = [
   "bedMesh.probeAreaOutOfRange",
   "bedMesh.meshConfigInvalid",
+  "bedMesh.probeCountTooHigh",
   "bedMesh.rangeLarge",
   "bedMesh.rangeModerate",
   "bedMesh.screwsAdjust",
@@ -338,6 +341,16 @@ const INVALID_MESH_CONFIG = new Set<ProbeAreaCode>([
 ]);
 
 function diagnoseProbeArea(result: ParseResult<ProbeArea, ProbeAreaCode>): Diagnostic[] {
+  if (!result.ok && result.error.code === "probeArea.countTooHigh") {
+    // Klipper l'accepterait, mais Zipero ne génère pas autant de points (EP-16.02).
+    return [
+      {
+        code: "bedMesh.probeCountTooHigh",
+        severity: "warning",
+        params: { max: ANALYSIS_LIMITS.maxProbePoints },
+      },
+    ];
+  }
   if (!result.ok) {
     return INVALID_MESH_CONFIG.has(result.error.code)
       ? [

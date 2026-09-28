@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-only
+import { ANALYSIS_LIMITS } from "../limits";
 import type { PrinterMechanics } from "../printers/extract";
 import { failure, type Issue, type ParseResult, success } from "../result";
 
@@ -28,6 +29,7 @@ export const PROBE_AREA_CODES = [
   "probeArea.tooClose",
   "probeArea.roundCountEven",
   "probeArea.countTooLow",
+  "probeArea.countTooHigh",
   "probeArea.outOfRange",
 ] as const;
 
@@ -80,6 +82,7 @@ function rectangularPoints(
   const [xCount, yCount] = count;
   // Klipper : probe_count lu avec minval=3.
   if (xCount < 3 || yCount < 3) return "probeArea.countTooLow";
+  if (xCount * yCount > ANALYSIS_LIMITS.maxProbePoints) return "probeArea.countTooHigh";
   if (max[0] <= min[0] || max[1] <= min[1]) return "probeArea.invalidMinMax";
   const xDist = floorTo((max[0] - min[0]) / (xCount - 1), 0.01);
   const yDist = floorTo((max[1] - min[1]) / (yCount - 1), 0.01);
@@ -102,6 +105,7 @@ function roundPoints(
 ): ProbePoint[] | ProbeAreaCode {
   if (count < 3) return "probeArea.countTooLow";
   if (count % 2 === 0) return "probeArea.roundCountEven";
+  if (count * count > ANALYSIS_LIMITS.maxProbePoints) return "probeArea.countTooHigh";
   const radius = floorTo(configuredRadius, 0.1);
   const dist = floorTo((2 * radius) / (count - 1), 0.01);
   if (dist < 1) return "probeArea.tooClose";

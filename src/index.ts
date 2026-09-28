@@ -2,6 +2,7 @@
 // API publique du cœur d'analyse. Les résultats portent des codes (traduits par l'interface).
 
 export { type ConfigOption, type ConfigSection, parseConfig } from "./config/ini";
+export { ANALYSIS_LIMITS } from "./limits";
 export {
   type ConsoleMesh,
   MESH_CONSOLE_CODES,
