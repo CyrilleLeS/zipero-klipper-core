@@ -12,6 +12,10 @@ import { computeMeshMetrics } from "../mesh/metrics";
 import { parseProbeAccuracy } from "../probe/accuracy";
 import { denseMeshConsole, largePrinterCfg, manyProbeSamples } from "./inputs.fixture";
 
+// Le paquet autonome n'embarque pas les types de Node ni du DOM (tsconfig `types: []`) :
+// on déclare la seule API utilisée, disponible dans Node et dans les navigateurs.
+declare const performance: { now(): number };
+
 function medianMs(run: () => unknown, passes = 5): number {
   const times: number[] = [];
   run(); // échauffement (compilation JIT)
