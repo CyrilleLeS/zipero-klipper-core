@@ -15,14 +15,18 @@ import { type MeshGrid, toGrid } from "./types";
  *   « Measured points: » = la grille INTERPOLÉE, imprimée de l'ARRIÈRE vers l'avant.
  */
 
-export type MeshConsoleCode =
-  | "mesh.none-found"
-  | "mesh.incomplete"
-  | "mesh.not-probed"
-  | "mesh.ragged-rows"
-  | "mesh.too-small"
-  | "mesh.multiple-found"
-  | "mesh.interpolated-mismatch";
+/** Tous les codes possibles (l'interface vérifie qu'ils sont tous traduits). */
+export const MESH_CONSOLE_CODES = [
+  "mesh.none-found",
+  "mesh.incomplete",
+  "mesh.not-probed",
+  "mesh.ragged-rows",
+  "mesh.too-small",
+  "mesh.multiple-found",
+  "mesh.interpolated-mismatch",
+] as const;
+
+export type MeshConsoleCode = (typeof MESH_CONSOLE_CODES)[number];
 
 /** Valeurs affichées par Klipper dans le bloc `print_mesh` (calculées sur la grille interpolée). */
 export interface ReportedMeshInfo {

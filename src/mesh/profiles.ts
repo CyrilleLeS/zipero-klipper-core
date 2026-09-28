@@ -9,12 +9,16 @@ import { type MeshGrid, type MeshProfileParams, toGrid } from "./types";
  * version de profil 1, options typées, `points` découpés par virgules et retours à la ligne.
  */
 
-export type MeshProfileCode =
-  | "profile.none-found"
-  | "profile.unsupported-version"
-  | "profile.missing-option"
-  | "profile.invalid-option"
-  | "profile.points-mismatch";
+/** Tous les codes possibles (l'interface vérifie qu'ils sont tous traduits). */
+export const MESH_PROFILE_CODES = [
+  "profile.none-found",
+  "profile.unsupported-version",
+  "profile.missing-option",
+  "profile.invalid-option",
+  "profile.points-mismatch",
+] as const;
+
+export type MeshProfileCode = (typeof MESH_PROFILE_CODES)[number];
 
 export interface MeshProfile {
   /** Nom du profil (`default`, `froid`…). */

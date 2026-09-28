@@ -4,6 +4,7 @@
 export { type ConfigOption, type ConfigSection, parseConfig } from "./config/ini";
 export {
   type ConsoleMesh,
+  MESH_CONSOLE_CODES,
   type MeshConsoleCode,
   parseBedMeshOutput,
   type ReportedMeshInfo,
@@ -17,11 +18,29 @@ export {
 export {
   type Bounds,
   checkProbeArea,
+  PROBE_AREA_CODES,
   type ProbeArea,
   type ProbeAreaCode,
   type ProbePoint,
 } from "./mesh/probe-area";
-export { type MeshProfile, type MeshProfileCode, parseMeshProfiles } from "./mesh/profiles";
+export {
+  MESH_PROFILE_CODES,
+  type MeshProfile,
+  type MeshProfileCode,
+  parseMeshProfiles,
+} from "./mesh/profiles";
+export {
+  analyzeBedMesh,
+  BED_MESH_DIAGNOSTIC_CODES,
+  type BedMeshDiagnosticCode,
+  type BedMeshReport,
+  type Diagnostic,
+  FLATNESS_THRESHOLDS,
+  type FlatnessGrade,
+  gradeFlatness,
+  type MeshAnalysis,
+  type Severity,
+} from "./mesh/report";
 export {
   classifyMeshShape,
   DEFAULT_FLAT_TOLERANCE,

@@ -19,15 +19,19 @@ import { failure, type Issue, type ParseResult, success } from "../result";
  * Hors du périmètre : le dépassement des déplacements de balayage (`scan_overshoot`).
  */
 
-export type ProbeAreaCode =
-  | "probeArea.noMesh"
-  | "probeArea.noTravel"
-  | "probeArea.noProbe"
-  | "probeArea.invalidMinMax"
-  | "probeArea.tooClose"
-  | "probeArea.roundCountEven"
-  | "probeArea.countTooLow"
-  | "probeArea.outOfRange";
+/** Tous les codes possibles (l'interface vérifie qu'ils sont tous traduits). */
+export const PROBE_AREA_CODES = [
+  "probeArea.noMesh",
+  "probeArea.noTravel",
+  "probeArea.noProbe",
+  "probeArea.invalidMinMax",
+  "probeArea.tooClose",
+  "probeArea.roundCountEven",
+  "probeArea.countTooLow",
+  "probeArea.outOfRange",
+] as const;
+
+export type ProbeAreaCode = (typeof PROBE_AREA_CODES)[number];
 
 export interface ProbePoint {
   readonly x: number;
