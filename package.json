@@ -24,9 +24,10 @@
     "README.md"
   ],
   "scripts": {
-    "typecheck": "tsc --noEmit",
+    "bench": "vitest bench --run",
     "test": "vitest run --coverage",
-    "bench": "vitest bench --run"
+    "test:perf": "vitest run --config vitest.perf.config.ts",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "5.0.1",

@@ -4,6 +4,8 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
   test: {
     include: ["src/**/*.test.ts"],
+    // Budgets de performance : à part (`pnpm test:perf`), sans instrumentation de couverture.
+    exclude: ["src/perf/**"],
     environment: "node",
     coverage: {
       provider: "v8",
