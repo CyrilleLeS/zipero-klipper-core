@@ -27,6 +27,10 @@ export interface ShapeComponents {
   readonly twist: number;
   /** Amplitude de ce que la surface quadratique n'explique pas (défauts locaux, bruit). */
   readonly residual: number;
+  /** Écart quadratique moyen de ces résidus (mm) : bruit réparti sur tout le plateau. */
+  readonly residualRms: number;
+  /** Plus grand résidu en valeur absolue (mm) : un point isolé ressort par rapport au RMS. */
+  readonly residualPeak: number;
 }
 
 export interface ShapeClassification {
@@ -147,6 +151,8 @@ export function classifyMeshShape(grid: MeshGrid, options: ShapeOptions = {}): S
     curvature: Math.max(...corners) - Math.min(...corners),
     twist: 2 * Math.abs(e),
     residual: residualMax - residualMin,
+    residualRms: Math.sqrt(ssRes / points.length),
+    residualPeak: Math.max(Math.abs(residualMin), Math.abs(residualMax)),
   };
 
   const bigCurvature = Math.max(Math.abs(d), Math.abs(f));

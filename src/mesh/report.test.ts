@@ -122,7 +122,7 @@ describe("analyzeBedMesh — printer.cfg", () => {
 
 describe("gradeFlatness", () => {
   it("applique les seuils 0,1 / 0,2 / 0,5 mm", () => {
-    expect([0.05, 0.1, 0.15, 0.2, 0.3, 0.5, 0.51].map(gradeFlatness)).toEqual([
+    expect([0.05, 0.1, 0.15, 0.2, 0.3, 0.5, 0.51].map((range) => gradeFlatness(range))).toEqual([
       "excellent",
       "excellent",
       "good",
@@ -178,5 +178,110 @@ describe("analyzeBedMesh — surface interpolée", () => {
   it("calcule la surface par défaut d'une sortie console sans grille interpolée", () => {
     const [mesh] = report(printProbedMatrix(grid(() => 0))).meshes;
     expect(mesh?.interpolated?.source).toBe("computed");
+  });
+});
+
+describe("gradeFlatness et seuils par imprimante", () => {
+  it("applique des seuils réglables", () => {
+    const strict = { excellent: 0.05, good: 0.1, fair: 0.2 };
+    expect(gradeFlatness(0.15, strict)).toBe("fair");
+    const value = report(
+      printProbedMatrix(
+        grid(() => 0).map((row, r) => row.map((_, c) => (r === 0 && c === 0 ? 0.15 : 0))),
+      ),
+    );
+    expect(value.meshes[0]?.grade).toBe("good");
+    const strictReport = analyzeBedMesh(
+      printProbedMatrix(
+        grid(() => 0).map((row, r) => row.map((_, c) => (r === 0 && c === 0 ? 0.15 : 0))),
+      ),
+      { flatness: strict },
+    );
+    expect(strictReport.ok && strictReport.value.meshes[0]?.grade).toBe("fair");
+  });
+});
+
+describe("analyzeBedMesh — assistant de vis", () => {
+  const withScrews = (section: string) =>
+    printerCfg("185, 225", profileBlock(grid((u) => 0.2 * u))).replace(
+      "[bed_mesh]",
+      `${section}\n[bed_mesh]`,
+    );
+
+  it("calcule les réglages depuis [screws_tilt_adjust] (sonde au-dessus de la vis)", () => {
+    const cfg = withScrews(
+      [
+        "[screws_tilt_adjust]",
+        "screw1: 74, 36",
+        "screw1_name: avant gauche",
+        "screw2: 234, 36",
+        "screw2_name: avant droite",
+        "screw3: 234, 196",
+        "screw4: 74, 196",
+        "screw_thread: CW-M4",
+      ].join("\n"),
+    );
+    const [mesh] = report(cfg).meshes;
+    expect(mesh?.screws).toMatchObject({
+      source: "screws_tilt_adjust",
+      thread: "CW-M4",
+      threadKnown: true,
+    });
+    // Sonde à −44 / −6 : lecture en (30, 30) et (190, 30), bords gauche et droit du maillage.
+    const [left, right] = mesh?.screws?.readings ?? [];
+    expect(left?.z).toBeCloseTo(-0.2, 6);
+    expect(right?.z).toBeCloseTo(0.2, 6);
+    // Droite plus haute de 0,4 mm : descendre la vis de droite, 0,4 / 0,7 tour, sens antihoraire.
+    expect(mesh?.screws?.adjustments[1]).toMatchObject({ direction: "CCW", label: "00:34" });
+    const diagnostics = report(cfg).diagnostics;
+    expect(diagnostics.find((d) => d.code === "bedMesh.screwsAdjust")?.params).toMatchObject({
+      count: 2,
+    });
+  });
+
+  it("[bed_screws] : lecture à l'aplomb de la vis, filetage supposé", () => {
+    const [mesh] = report(
+      withScrews(
+        ["[bed_screws]", "screw1: 30, 30", "screw2: 190, 30", "screw3: 190, 190"].join("\n"),
+      ),
+    ).meshes;
+    expect(mesh?.screws).toMatchObject({
+      source: "bed_screws",
+      thread: "CW-M3",
+      threadKnown: false,
+    });
+    expect(mesh?.screws?.readings[1]?.z).toBeCloseTo(0.2, 6);
+  });
+});
+
+describe("analyzeBedMesh — bruit et PROBE_ACCURACY", () => {
+  it("signale un bruit réparti (vérifier la sonde), pas un point isolé", () => {
+    // Damier ±0,06 mm sur 5 × 5 : bruit réparti que la forme n'explique pas.
+    const noisy = Array.from({ length: 5 }, (_, r) =>
+      Array.from({ length: 5 }, (_, c) => ((r + c) % 2 === 0 ? 0.06 : -0.06)),
+    );
+    const codes = report(printProbedMatrix(noisy)).diagnostics.map((d) => d.code);
+    expect(codes).toContain("bedMesh.noisy");
+    expect(analyzeBedMesh(printProbedMatrix(noisy), { noise: 0.2 }).ok).toBe(true);
+    const quiet = analyzeBedMesh(printProbedMatrix(noisy), { noise: 0.2 });
+    expect(quiet.ok && quiet.value.diagnostics.map((d) => d.code)).not.toContain("bedMesh.noisy");
+  });
+
+  it("reconnaît une sortie PROBE_ACCURACY et donne le verdict de répétabilité", () => {
+    const lines = [
+      "// PROBE_ACCURACY at X:117.500 Y:117.500 Z:10.000 (samples=10 retract=2.000 speed=5.0 lift_speed=5.0)",
+      ...Array.from(
+        { length: 10 },
+        (_, i) => `// probe at 117.500,117.500 is z=${(2.5 + (i % 2) * 0.005).toFixed(6)}`,
+      ),
+      "// probe accuracy results: maximum 2.505000, minimum 2.500000, range 0.005000, average 2.502500, median 2.502500, standard deviation 0.002500",
+    ];
+    const value = report(lines.join("\n"));
+    expect(value.input).toBe("probe-accuracy");
+    expect(value.probeAccuracy?.[0]?.assessment.verdict).toBe("good");
+    expect(value.diagnostics[0]).toMatchObject({
+      code: "bedMesh.probeGood",
+      params: { samples: 10, range: 0.005 },
+    });
   });
 });
