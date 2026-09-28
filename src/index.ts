@@ -18,6 +18,20 @@ export { type MeshProfile, type MeshProfileCode, parseMeshProfiles } from "./mes
 export type { MeshGeometry, MeshGrid, MeshProfileParams } from "./mesh/types";
 export { toGrid } from "./mesh/types";
 export {
+  extractPrinterMechanics,
+  type MeshSettings,
+  type PrinterMechanics,
+  type ProbeInfo,
+  type ScrewPoint,
+  type ScrewsInfo,
+  type Travel,
+} from "./printers/extract";
+export {
+  findReferencePrinter,
+  REFERENCE_PRINTERS,
+  type ReferencePrinter,
+} from "./printers/reference";
+export {
   assessRepeatability,
   computeProbeStats,
   DEFAULT_REPEATABILITY_THRESHOLDS,

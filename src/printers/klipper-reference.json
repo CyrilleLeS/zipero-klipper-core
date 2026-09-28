@@ -1,0 +1,3335 @@
+[
+  {
+    "id": "adimlab-2018",
+    "name": "ADIMLab (2018)",
+    "year": 2018,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": -5,
+        "maxX": 310,
+        "minY": 0,
+        "maxY": 310,
+        "maxZ": 400
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-adimlab-2018.cfg"
+    }
+  },
+  {
+    "id": "alfawise-u30-2018",
+    "name": "Alfawise U30",
+    "year": 2018,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 230,
+        "minY": 0,
+        "maxY": 222,
+        "maxZ": 250
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-alfawise-u30-2018.cfg"
+    }
+  },
+  {
+    "id": "anet-a4-2018",
+    "name": "Anet A4",
+    "year": 2018,
+    "mechanics": {
+      "kinematics": "delta"
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-anet-a4-2018.cfg"
+    }
+  },
+  {
+    "id": "anet-a8-2017",
+    "name": "Anet A8",
+    "year": 2017,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": -30,
+        "maxX": 220,
+        "minY": -8,
+        "maxY": 220,
+        "maxZ": 240
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-anet-a8-2017.cfg"
+    }
+  },
+  {
+    "id": "anet-a8-2019",
+    "name": "Anet A8 Plus",
+    "year": 2019,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": -30,
+        "maxX": 300,
+        "minY": -8,
+        "maxY": 300,
+        "maxZ": 350
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-anet-a8-2019.cfg"
+    }
+  },
+  {
+    "id": "anet-e10-2018",
+    "name": "Anet E10",
+    "year": 2018,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": -3,
+        "maxX": 220,
+        "minY": -22,
+        "maxY": 270,
+        "maxZ": 300
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-anet-e10-2018.cfg"
+    }
+  },
+  {
+    "id": "anet-e16-2019",
+    "name": "Anet E16",
+    "year": 2019,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": -3,
+        "maxX": 300,
+        "minY": -22,
+        "maxY": 300,
+        "maxZ": 400
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-anet-e16-2019.cfg"
+    }
+  },
+  {
+    "id": "anycubic-4max-2018",
+    "name": "Anycubic 4Max",
+    "year": 2018,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": -2,
+        "maxX": 205,
+        "minY": 0,
+        "maxY": 215,
+        "maxZ": 305
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-anycubic-4max-2018.cfg"
+    }
+  },
+  {
+    "id": "anycubic-4maxpro-2.0-2021",
+    "name": "Anycubic 4Max Pro 2.0",
+    "year": 2021,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": -8,
+        "maxX": 270,
+        "minY": -1,
+        "maxY": 215,
+        "maxZ": 195
+      },
+      "screws": {
+        "source": "bed_screws",
+        "points": [
+          {
+            "x": 5,
+            "y": 5
+          },
+          {
+            "x": 265,
+            "y": 210
+          },
+          {
+            "x": 5,
+            "y": 210
+          },
+          {
+            "x": 265,
+            "y": 5
+          }
+        ]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-anycubic-4maxpro-2.0-2021.cfg"
+    }
+  },
+  {
+    "id": "anycubic-i3-mega-2017",
+    "name": "Anycubic i3 Mega",
+    "year": 2017,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": -5,
+        "maxX": 210,
+        "minY": 0,
+        "maxY": 210,
+        "maxZ": 205
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-anycubic-i3-mega-2017.cfg"
+    }
+  },
+  {
+    "id": "anycubic-kobra-go-2022",
+    "name": "Anycubic Kobra Go",
+    "year": 2022,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": -13,
+        "maxX": 236,
+        "minY": -9,
+        "maxY": 230,
+        "maxZ": 255
+      },
+      "probe": {
+        "type": "probe",
+        "xOffset": -20.8,
+        "yOffset": 0
+      },
+      "mesh": {
+        "min": [5, 5],
+        "max": [215, 215],
+        "probeCount": [5, 5]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-anycubic-kobra-go-2022.cfg"
+    }
+  },
+  {
+    "id": "anycubic-kobra-plus-2022",
+    "name": "Anycubic Kobra Plus",
+    "year": 2022,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": -4,
+        "maxX": 304,
+        "minY": -6,
+        "maxY": 300,
+        "maxZ": 350
+      },
+      "probe": {
+        "type": "probe",
+        "xOffset": 0,
+        "yOffset": 0
+      },
+      "mesh": {
+        "min": [10, 10],
+        "max": [290, 290],
+        "probeCount": [5, 5]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-anycubic-kobra-plus-2022.cfg"
+    }
+  },
+  {
+    "id": "anycubic-kossel-2016",
+    "name": "Anycubic Kossel",
+    "year": 2016,
+    "mechanics": {
+      "kinematics": "delta"
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-anycubic-kossel-2016.cfg"
+    }
+  },
+  {
+    "id": "anycubic-kossel-plus-2017",
+    "name": "Anycubic Kossel Linear Plus",
+    "year": 2017,
+    "mechanics": {
+      "kinematics": "delta"
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-anycubic-kossel-plus-2017.cfg"
+    }
+  },
+  {
+    "id": "anycubic-vyper-2021",
+    "name": "Anycubic Vyper",
+    "year": 2021,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": -3,
+        "maxX": 245,
+        "minY": -17,
+        "maxY": 245,
+        "maxZ": 260
+      },
+      "probe": {
+        "type": "probe",
+        "xOffset": 0,
+        "yOffset": 0
+      },
+      "mesh": {
+        "min": [15, 15],
+        "max": [230, 230]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-anycubic-vyper-2021.cfg"
+    }
+  },
+  {
+    "id": "artillery-genius-pro-2022",
+    "name": "Artillery Genius Pro",
+    "year": 2022,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 220,
+        "minY": 0,
+        "maxY": 220,
+        "maxZ": 250
+      },
+      "probe": {
+        "type": "bltouch",
+        "xOffset": 27.25,
+        "yOffset": -12.8
+      },
+      "screws": {
+        "source": "bed_screws",
+        "points": [
+          {
+            "x": 38,
+            "y": 45
+          },
+          {
+            "x": 180,
+            "y": 45
+          },
+          {
+            "x": 180,
+            "y": 180
+          },
+          {
+            "x": 38,
+            "y": 180
+          }
+        ]
+      },
+      "mesh": {
+        "min": [30, 20],
+        "max": [210, 200],
+        "probeCount": [5, 5]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-artillery-genius-pro-2022.cfg"
+    }
+  },
+  {
+    "id": "artillery-sidewinder-x2-2022",
+    "name": "Artillery Sidewinder X2",
+    "year": 2022,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 300,
+        "minY": 0,
+        "maxY": 300,
+        "maxZ": 410
+      },
+      "probe": {
+        "type": "bltouch",
+        "xOffset": 27.25,
+        "yOffset": -12.8
+      },
+      "screws": {
+        "source": "screws_tilt_adjust",
+        "points": [
+          {
+            "x": 23,
+            "y": 63,
+            "name": "front left"
+          },
+          {
+            "x": 223,
+            "y": 63,
+            "name": "front right"
+          },
+          {
+            "x": 223,
+            "y": 263,
+            "name": "back right"
+          },
+          {
+            "x": 23,
+            "y": 263,
+            "name": "back left"
+          }
+        ],
+        "thread": "CW-M5"
+      },
+      "mesh": {
+        "min": [27.25, 12.8],
+        "max": [272.75, 287.2],
+        "probeCount": [5, 5]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-artillery-sidewinder-x2-2022.cfg"
+    }
+  },
+  {
+    "id": "artillery-sidewinder-x3-plus-2024",
+    "name": "Artillery Sidewinder X3 Pro / Plus",
+    "year": 2024,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 315,
+        "minY": 0,
+        "maxY": 315,
+        "maxZ": 400
+      },
+      "probe": {
+        "type": "probe",
+        "xOffset": 45.2,
+        "yOffset": 11.6
+      },
+      "screws": {
+        "source": "screws_tilt_adjust",
+        "points": [
+          {
+            "x": 120,
+            "y": 153,
+            "name": "center reference"
+          },
+          {
+            "x": 7,
+            "y": 45,
+            "name": "front left"
+          },
+          {
+            "x": 210,
+            "y": 45,
+            "name": "front right"
+          },
+          {
+            "x": 227,
+            "y": 145,
+            "name": "right center"
+          },
+          {
+            "x": 210,
+            "y": 245,
+            "name": "rear right"
+          },
+          {
+            "x": 7,
+            "y": 245,
+            "name": "rear left"
+          },
+          {
+            "x": 7,
+            "y": 145,
+            "name": "left center"
+          }
+        ],
+        "thread": "CW-M4"
+      },
+      "mesh": {
+        "min": [46, 15],
+        "max": [300, 300],
+        "probeCount": [10, 10]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-artillery-sidewinder-x3-plus-2024.cfg"
+    }
+  },
+  {
+    "id": "biqu-b1-se-plus-2022",
+    "name": "BIQU B1 SE Plus",
+    "year": 2022,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 310,
+        "minY": 0,
+        "maxY": 310,
+        "maxZ": 340
+      },
+      "probe": {
+        "type": "probe",
+        "xOffset": 0,
+        "yOffset": 0
+      },
+      "mesh": {
+        "min": [20, 20],
+        "max": [290, 290],
+        "probeCount": [7, 7]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-biqu-b1-se-plus-2022.cfg"
+    }
+  },
+  {
+    "id": "biqu-bx-2021",
+    "name": "BIQU BX",
+    "year": 2021,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": -13,
+        "maxX": 250,
+        "minY": -7,
+        "maxY": 250,
+        "maxZ": 250
+      },
+      "probe": {
+        "type": "probe",
+        "xOffset": -30.1,
+        "yOffset": 26.78
+      },
+      "screws": {
+        "source": "screws_tilt_adjust",
+        "points": [
+          {
+            "x": 58,
+            "y": -7,
+            "name": "front left"
+          },
+          {
+            "x": 245,
+            "y": -7,
+            "name": "front right"
+          },
+          {
+            "x": 245,
+            "y": 179,
+            "name": "rear right"
+          },
+          {
+            "x": 58,
+            "y": 179,
+            "name": "rear left"
+          }
+        ],
+        "thread": "CCW-M3"
+      },
+      "mesh": {
+        "min": [10, 19.78],
+        "max": [219.9, 230],
+        "probeCount": [4, 4]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-biqu-bx-2021.cfg"
+    }
+  },
+  {
+    "id": "bq-hephestos-2014",
+    "name": "BQ Prusa i3 Hephestos",
+    "year": 2014,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 215,
+        "minY": 0,
+        "maxY": 210,
+        "maxZ": 200
+      },
+      "screws": {
+        "source": "bed_screws",
+        "points": [
+          {
+            "x": 40,
+            "y": 40
+          },
+          {
+            "x": 180,
+            "y": 40
+          },
+          {
+            "x": 180,
+            "y": 160
+          },
+          {
+            "x": 40,
+            "y": 160
+          },
+          {
+            "x": 110,
+            "y": 100
+          }
+        ]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-bq-hephestos-2014.cfg"
+    }
+  },
+  {
+    "id": "creality-cr10-2017",
+    "name": "Creality CR-10",
+    "year": 2017,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 300,
+        "minY": 0,
+        "maxY": 300,
+        "maxZ": 400
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-creality-cr10-2017.cfg"
+    }
+  },
+  {
+    "id": "creality-cr10-smart-pro-2022",
+    "name": "Creality CR-10 Smart Pro",
+    "year": 2022,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": -5,
+        "maxX": 305,
+        "minY": -2,
+        "maxY": 302,
+        "maxZ": 400
+      },
+      "probe": {
+        "type": "bltouch",
+        "xOffset": -32.5,
+        "yOffset": -40.6
+      },
+      "screws": {
+        "source": "screws_tilt_adjust",
+        "points": [
+          {
+            "x": 60,
+            "y": 80,
+            "name": "front left screw"
+          },
+          {
+            "x": 300,
+            "y": 80,
+            "name": "front right screw"
+          },
+          {
+            "x": 300,
+            "y": 300,
+            "name": "rear right screw"
+          },
+          {
+            "x": 60,
+            "y": 300,
+            "name": "rear left screw"
+          }
+        ],
+        "thread": "CW-M3"
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-creality-cr10-smart-pro-2022.cfg"
+    }
+  },
+  {
+    "id": "creality-cr10-v3-2020",
+    "name": "Creality CR-10 V3",
+    "year": 2020,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 300,
+        "minY": 0,
+        "maxY": 300,
+        "maxZ": 400
+      },
+      "screws": {
+        "source": "bed_screws",
+        "points": [
+          {
+            "x": 33,
+            "y": 29,
+            "name": "front left screw"
+          },
+          {
+            "x": 273,
+            "y": 29,
+            "name": "front right screw"
+          },
+          {
+            "x": 273,
+            "y": 269,
+            "name": "rear right screw"
+          },
+          {
+            "x": 33,
+            "y": 269,
+            "name": "rear left screw"
+          }
+        ]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-creality-cr10-v3-2020.cfg"
+    }
+  },
+  {
+    "id": "creality-cr10mini-2017",
+    "name": "Creality CR-10 Mini",
+    "year": 2017,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 300,
+        "minY": 0,
+        "maxY": 220,
+        "maxZ": 300
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-creality-cr10mini-2017.cfg"
+    }
+  },
+  {
+    "id": "creality-cr10s-2017",
+    "name": "Creality CR-10S",
+    "year": 2017,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 300,
+        "minY": 0,
+        "maxY": 300,
+        "maxZ": 400
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-creality-cr10s-2017.cfg"
+    }
+  },
+  {
+    "id": "creality-cr10s-pro-v2-2020",
+    "name": "Creality CR-10S Pro V2",
+    "year": 2020,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 300,
+        "minY": 0,
+        "maxY": 310,
+        "maxZ": 363
+      },
+      "probe": {
+        "type": "bltouch",
+        "xOffset": -27,
+        "yOffset": -2
+      },
+      "screws": {
+        "source": "screws_tilt_adjust",
+        "points": [
+          {
+            "x": 40,
+            "y": 40,
+            "name": "front left screw"
+          },
+          {
+            "x": 295,
+            "y": 40,
+            "name": "front right screw"
+          },
+          {
+            "x": 295,
+            "y": 280,
+            "name": "rear right screw"
+          },
+          {
+            "x": 40,
+            "y": 280,
+            "name": "rear left screw"
+          }
+        ],
+        "thread": "CW-M3"
+      },
+      "mesh": {
+        "min": [5, 5],
+        "max": [268, 305],
+        "probeCount": [5, 5]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-creality-cr10s-pro-v2-2020.cfg"
+    }
+  },
+  {
+    "id": "creality-cr20-2018",
+    "name": "Creality CR-20",
+    "year": 2018,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 235,
+        "minY": 0,
+        "maxY": 235,
+        "maxZ": 250
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-creality-cr20-2018.cfg"
+    }
+  },
+  {
+    "id": "creality-cr20-pro-2019",
+    "name": "Creality CR-20 Pro",
+    "year": 2019,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 235,
+        "minY": 0,
+        "maxY": 235,
+        "maxZ": 250
+      },
+      "probe": {
+        "type": "bltouch",
+        "xOffset": 46,
+        "yOffset": 9
+      },
+      "mesh": {
+        "min": [106, 39],
+        "max": [281, 229],
+        "probeCount": [3, 3]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-creality-cr20-pro-2019.cfg"
+    }
+  },
+  {
+    "id": "creality-cr30-2021",
+    "name": "Creality CR-30 PrintMill",
+    "year": 2021,
+    "mechanics": {
+      "kinematics": "corexy",
+      "travel": {
+        "minX": 0,
+        "maxX": 220,
+        "minY": 0,
+        "maxY": 240,
+        "maxZ": 20000000
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-creality-cr30-2021.cfg"
+    }
+  },
+  {
+    "id": "creality-cr5pro-ht-2022",
+    "name": "Creality CR-5 Pro HT",
+    "year": 2022,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 300,
+        "minY": 0,
+        "maxY": 220,
+        "maxZ": 380
+      },
+      "probe": {
+        "type": "bltouch",
+        "xOffset": 37,
+        "yOffset": 0
+      },
+      "screws": {
+        "source": "screws_tilt_adjust",
+        "points": [
+          {
+            "x": 8,
+            "y": 5,
+            "name": "front left screw"
+          },
+          {
+            "x": 8,
+            "y": 210,
+            "name": "rear left screw"
+          },
+          {
+            "x": 218,
+            "y": 210,
+            "name": "rear right screw"
+          },
+          {
+            "x": 218,
+            "y": 5,
+            "name": "front right screw"
+          }
+        ],
+        "thread": "CW-M4"
+      },
+      "mesh": {
+        "min": [47, 10],
+        "max": [270, 210],
+        "probeCount": [7, 7]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-creality-cr5pro-ht-2022.cfg"
+    }
+  },
+  {
+    "id": "creality-cr6se-2020",
+    "name": "Creality CR-6 SE (2020)",
+    "year": 2020,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": -5,
+        "maxX": 235,
+        "minY": -2,
+        "maxY": 235,
+        "maxZ": 250
+      },
+      "probe": {
+        "type": "probe",
+        "xOffset": 0,
+        "yOffset": 0
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-creality-cr6se-2020.cfg"
+    }
+  },
+  {
+    "id": "creality-cr6se-2021",
+    "name": "Creality CR-6 SE (2021)",
+    "year": 2021,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": -5,
+        "maxX": 235,
+        "minY": -2,
+        "maxY": 235,
+        "maxZ": 250
+      },
+      "probe": {
+        "type": "probe",
+        "xOffset": 0,
+        "yOffset": 0
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-creality-cr6se-2021.cfg"
+    }
+  },
+  {
+    "id": "creality-ender2-2017",
+    "name": "Creality Ender 2",
+    "year": 2017,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 165,
+        "minY": 0,
+        "maxY": 165,
+        "maxZ": 205
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-creality-ender2-2017.cfg"
+    }
+  },
+  {
+    "id": "creality-ender2pro-2021",
+    "name": "Creality Ender 2 Pro",
+    "year": 2021,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": -20,
+        "maxX": 165,
+        "minY": -5,
+        "maxY": 165,
+        "maxZ": 180
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-creality-ender2pro-2021.cfg"
+    }
+  },
+  {
+    "id": "creality-ender2pro-hc32-2022",
+    "name": "Creality Ender 2 Pro (HC32)",
+    "year": 2022,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": -20,
+        "maxX": 165,
+        "minY": -5,
+        "maxY": 165,
+        "maxZ": 180
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-creality-ender2pro-hc32-2022.cfg"
+    }
+  },
+  {
+    "id": "creality-ender3-2018",
+    "name": "Creality Ender 3",
+    "year": 2018,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 235,
+        "minY": 0,
+        "maxY": 235,
+        "maxZ": 250
+      },
+      "screws": {
+        "source": "bed_screws",
+        "points": [
+          {
+            "x": 30.5,
+            "y": 37
+          },
+          {
+            "x": 30.5,
+            "y": 207
+          },
+          {
+            "x": 204.5,
+            "y": 207
+          },
+          {
+            "x": 204.5,
+            "y": 37
+          }
+        ]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-creality-ender3-2018.cfg"
+    }
+  },
+  {
+    "id": "creality-ender3-s1-2021",
+    "name": "Creality Ender 3 S1 / S1 Pro",
+    "year": 2021,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": -15,
+        "maxX": 235,
+        "minY": -13,
+        "maxY": 238,
+        "maxZ": 270
+      },
+      "probe": {
+        "type": "bltouch",
+        "xOffset": -31.8,
+        "yOffset": -40.5
+      },
+      "screws": {
+        "source": "bed_screws",
+        "points": [
+          {
+            "x": 20,
+            "y": 29
+          },
+          {
+            "x": 195,
+            "y": 29
+          },
+          {
+            "x": 195,
+            "y": 198
+          },
+          {
+            "x": 20,
+            "y": 198
+          }
+        ]
+      },
+      "mesh": {
+        "min": [10, 10],
+        "max": [200, 194],
+        "probeCount": [4, 4]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-creality-ender3-s1-2021.cfg"
+    }
+  },
+  {
+    "id": "creality-ender3-s1plus-2022",
+    "name": "Creality Ender 3 S1 Plus",
+    "year": 2022,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": -15,
+        "maxX": 316,
+        "minY": -15,
+        "maxY": 304,
+        "maxZ": 300
+      },
+      "probe": {
+        "type": "bltouch",
+        "xOffset": -31.8,
+        "yOffset": -40.5
+      },
+      "mesh": {
+        "min": [20, 20],
+        "max": [283, 263],
+        "probeCount": [4, 4]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-creality-ender3-s1plus-2022.cfg"
+    }
+  },
+  {
+    "id": "creality-ender3-v2-2020",
+    "name": "Creality Ender 3 V2",
+    "year": 2020,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 235,
+        "minY": 0,
+        "maxY": 235,
+        "maxZ": 250
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-creality-ender3-v2-2020.cfg"
+    }
+  },
+  {
+    "id": "creality-ender3-v2-neo-2022",
+    "name": "Creality Ender 3 V2 Neo",
+    "year": 2022,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 235,
+        "minY": 0,
+        "maxY": 235,
+        "maxZ": 250
+      },
+      "probe": {
+        "type": "bltouch",
+        "xOffset": -45,
+        "yOffset": -10
+      },
+      "screws": {
+        "source": "screws_tilt_adjust",
+        "points": [
+          {
+            "x": 67,
+            "y": 42,
+            "name": "front left screw"
+          },
+          {
+            "x": 237.6,
+            "y": 42,
+            "name": "front right screw"
+          },
+          {
+            "x": 237.6,
+            "y": 212,
+            "name": "rear right screw"
+          },
+          {
+            "x": 67.6,
+            "y": 212,
+            "name": "rear left screw"
+          }
+        ],
+        "thread": "CW-M4"
+      },
+      "mesh": {
+        "min": [30, 30],
+        "max": [189, 189],
+        "probeCount": [5, 5]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-creality-ender3-v2-neo-2022.cfg"
+    }
+  },
+  {
+    "id": "creality-ender3max-2021",
+    "name": "Creality Ender 3 Max",
+    "year": 2021,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 300,
+        "minY": 0,
+        "maxY": 300,
+        "maxZ": 340
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-creality-ender3max-2021.cfg"
+    }
+  },
+  {
+    "id": "creality-ender3pro-2020",
+    "name": "Creality Ender 3 Pro",
+    "year": 2020,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 235,
+        "minY": 0,
+        "maxY": 235,
+        "maxZ": 250
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-creality-ender3pro-2020.cfg"
+    }
+  },
+  {
+    "id": "creality-ender5-2019",
+    "name": "Creality Ender 5",
+    "year": 2019,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 235,
+        "minY": 0,
+        "maxY": 235,
+        "maxZ": 300
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-creality-ender5-2019.cfg"
+    }
+  },
+  {
+    "id": "creality-ender5-s1-2023",
+    "name": "Creality Ender 5 S1",
+    "year": 2023,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 222,
+        "minY": 0,
+        "maxY": 220,
+        "maxZ": 280
+      },
+      "probe": {
+        "type": "bltouch",
+        "xOffset": -13,
+        "yOffset": 27
+      },
+      "screws": {
+        "source": "screws_tilt_adjust",
+        "points": [
+          {
+            "x": 38,
+            "y": 6,
+            "name": "Front Left Screw"
+          },
+          {
+            "x": 215,
+            "y": 6,
+            "name": "Front Right Screw"
+          },
+          {
+            "x": 215,
+            "y": 175,
+            "name": "Rear Right Screw"
+          },
+          {
+            "x": 38,
+            "y": 175,
+            "name": "Rear Left Screw"
+          }
+        ],
+        "thread": "CW-M4"
+      },
+      "mesh": {
+        "min": [3, 28],
+        "max": [205, 218],
+        "probeCount": [4, 4]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-creality-ender5-s1-2023.cfg"
+    }
+  },
+  {
+    "id": "creality-ender5plus-2019",
+    "name": "Creality Ender 5 Plus",
+    "year": 2019,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 350,
+        "minY": 0,
+        "maxY": 350,
+        "maxZ": 400
+      },
+      "probe": {
+        "type": "bltouch",
+        "xOffset": -45,
+        "yOffset": 0
+      },
+      "mesh": {
+        "min": [50, 50],
+        "max": [300, 300],
+        "probeCount": [3, 3]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-creality-ender5plus-2019.cfg"
+    }
+  },
+  {
+    "id": "creality-ender5pro-2020",
+    "name": "Creality Ender 5 Pro",
+    "year": 2020,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 220,
+        "minY": 0,
+        "maxY": 220,
+        "maxZ": 300
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-creality-ender5pro-2020.cfg"
+    }
+  },
+  {
+    "id": "creality-ender6-2020",
+    "name": "Creality Ender 6",
+    "year": 2020,
+    "mechanics": {
+      "kinematics": "corexy",
+      "travel": {
+        "minX": 0,
+        "maxX": 260,
+        "minY": 0,
+        "maxY": 260,
+        "maxZ": 400
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-creality-ender6-2020.cfg"
+    }
+  },
+  {
+    "id": "creality-sermoonD1-2021",
+    "name": "Creality Sermoon D1",
+    "year": 2021,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": -5,
+        "maxX": 280,
+        "minY": -2,
+        "maxY": 260,
+        "maxZ": 300
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-creality-sermoonD1-2021.cfg"
+    }
+  },
+  {
+    "id": "creality-sermoonV1-2022",
+    "name": "Creality Sermoon V1",
+    "year": 2022,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 175,
+        "minY": 0,
+        "maxY": 175,
+        "maxZ": 168
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-creality-sermoonV1-2022.cfg"
+    }
+  },
+  {
+    "id": "elegoo-neptune2-2021",
+    "name": "Elegoo Neptune 2",
+    "year": 2021,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 235,
+        "minY": 0,
+        "maxY": 235,
+        "maxZ": 250
+      },
+      "screws": {
+        "source": "bed_screws",
+        "points": [
+          {
+            "x": 32.5,
+            "y": 32.5
+          },
+          {
+            "x": 32.5,
+            "y": 202.5
+          },
+          {
+            "x": 202.5,
+            "y": 32.5
+          },
+          {
+            "x": 202.5,
+            "y": 202.5
+          }
+        ]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-elegoo-neptune2-2021.cfg"
+    }
+  },
+  {
+    "id": "elegoo-neptune3-pro-2023",
+    "name": "Elegoo Neptune 3 Pro",
+    "year": 2023,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": -5,
+        "maxX": 235,
+        "minY": 0,
+        "maxY": 234,
+        "maxZ": 283
+      },
+      "probe": {
+        "type": "probe",
+        "xOffset": -28.5,
+        "yOffset": 22
+      },
+      "mesh": {
+        "min": [10, 25],
+        "max": [205, 220],
+        "probeCount": [6, 6]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-elegoo-neptune3-pro-2023.cfg"
+    }
+  },
+  {
+    "id": "eryone-er20-2021",
+    "name": "Eryone ER-20",
+    "year": 2021,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 250,
+        "minY": -9,
+        "maxY": 235,
+        "maxZ": 250
+      },
+      "probe": {
+        "type": "bltouch",
+        "xOffset": 34,
+        "yOffset": 0
+      },
+      "mesh": {
+        "min": [40, 20],
+        "max": [210, 205],
+        "probeCount": [5, 5]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-eryone-er20-2021.cfg"
+    }
+  },
+  {
+    "id": "eryone-thinker-series-v2-2020",
+    "name": "Eryone Thinker Series V2",
+    "year": 2020,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": -5,
+        "maxX": 300,
+        "minY": -5,
+        "maxY": 300,
+        "maxZ": 400
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-eryone-thinker-series-v2-2020.cfg"
+    }
+  },
+  {
+    "id": "flashforge-creator-pro-2018",
+    "name": "FlashForge Creator Pro",
+    "year": 2018,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": -116,
+        "maxX": 116,
+        "minY": -80,
+        "maxY": 80,
+        "maxZ": 181
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-flashforge-creator-pro-2018.cfg"
+    }
+  },
+  {
+    "id": "flsun-q5-2020",
+    "name": "FLSUN Q5",
+    "year": 2020,
+    "mechanics": {
+      "kinematics": "delta",
+      "probe": {
+        "type": "probe",
+        "xOffset": 0,
+        "yOffset": 0
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-flsun-q5-2020.cfg"
+    }
+  },
+  {
+    "id": "flsun-qqs-2020",
+    "name": "FLSUN QQ-S",
+    "year": 2020,
+    "mechanics": {
+      "kinematics": "delta",
+      "probe": {
+        "type": "probe",
+        "xOffset": 0,
+        "yOffset": 0
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-flsun-qqs-2020.cfg"
+    }
+  },
+  {
+    "id": "fokoos-odin5-f3-2021",
+    "name": "FOKOOS Odin-5 F3",
+    "year": 2021,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 235,
+        "minY": 0,
+        "maxY": 235,
+        "maxZ": 250
+      },
+      "screws": {
+        "source": "bed_screws",
+        "points": [
+          {
+            "x": 33,
+            "y": 33
+          },
+          {
+            "x": 203,
+            "y": 33
+          },
+          {
+            "x": 203,
+            "y": 201
+          },
+          {
+            "x": 33,
+            "y": 201
+          }
+        ]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-fokoos-odin5-f3-2021.cfg"
+    }
+  },
+  {
+    "id": "geeetech-301-2019",
+    "name": "Geeetech 301",
+    "year": 2019,
+    "mechanics": {
+      "kinematics": "delta"
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-geeetech-301-2019.cfg"
+    }
+  },
+  {
+    "id": "geeetech-A10T-A20T-2021",
+    "name": "Geeetech A10T / A20T",
+    "year": 2021,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 220,
+        "minY": 0,
+        "maxY": 220,
+        "maxZ": 230
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-geeetech-A10T-A20T-2021.cfg"
+    }
+  },
+  {
+    "id": "hiprecy-leo-2019",
+    "name": "Hiprecy Leo",
+    "year": 2019,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 220,
+        "minY": 0,
+        "maxY": 230,
+        "maxZ": 260
+      },
+      "probe": {
+        "type": "probe",
+        "xOffset": 35,
+        "yOffset": 2
+      },
+      "mesh": {
+        "min": [40, 40],
+        "max": [185, 230],
+        "probeCount": [4, 4]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-hiprecy-leo-2019.cfg"
+    }
+  },
+  {
+    "id": "kingroon-kp3s-2020",
+    "name": "Kingroon KP3S",
+    "year": 2020,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 180,
+        "minY": 0,
+        "maxY": 180,
+        "maxZ": 180
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-kingroon-kp3s-2020.cfg"
+    }
+  },
+  {
+    "id": "longer-lk4-pro-2019",
+    "name": "Longer LK4 Pro",
+    "year": 2019,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 235,
+        "minY": 0,
+        "maxY": 235,
+        "maxZ": 250
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-longer-lk4-pro-2019.cfg"
+    }
+  },
+  {
+    "id": "longer-lk4x-2022",
+    "name": "Longer LK4 X",
+    "year": 2022,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 265,
+        "minY": 0,
+        "maxY": 220,
+        "maxZ": 250
+      },
+      "probe": {
+        "type": "bltouch",
+        "xOffset": -51,
+        "yOffset": -8
+      },
+      "screws": {
+        "source": "bed_screws",
+        "points": [
+          {
+            "x": 30,
+            "y": 30
+          },
+          {
+            "x": 190,
+            "y": 30
+          },
+          {
+            "x": 190,
+            "y": 190
+          },
+          {
+            "x": 30,
+            "y": 190
+          }
+        ]
+      },
+      "mesh": {
+        "min": [10, 10],
+        "max": [210, 210],
+        "probeCount": [4, 4]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-longer-lk4x-2022.cfg"
+    }
+  },
+  {
+    "id": "lulzbot-mini1-2016",
+    "name": "LulzBot Mini 1",
+    "year": 2016,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": -3,
+        "maxX": 159,
+        "minY": -7,
+        "maxY": 173,
+        "maxZ": 161.5
+      },
+      "probe": {
+        "type": "probe",
+        "xOffset": 0,
+        "yOffset": 0
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-lulzbot-mini1-2016.cfg"
+    }
+  },
+  {
+    "id": "lulzbot-mini2-2018",
+    "name": "LulzBot Mini 2",
+    "year": 2018,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": -7,
+        "maxX": 168,
+        "minY": -5,
+        "maxY": 192,
+        "maxZ": 185
+      },
+      "probe": {
+        "type": "probe",
+        "xOffset": 0,
+        "yOffset": 0
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-lulzbot-mini2-2018.cfg"
+    }
+  },
+  {
+    "id": "lulzbot-taz6-2017",
+    "name": "LulzBot TAZ 6",
+    "year": 2017,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": -20,
+        "maxX": 300,
+        "minY": -20,
+        "maxY": 306,
+        "maxZ": 270
+      },
+      "probe": {
+        "type": "probe",
+        "xOffset": 0,
+        "yOffset": 0
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-lulzbot-taz6-2017.cfg"
+    }
+  },
+  {
+    "id": "lulzbot-taz6-dual-v3-2017",
+    "name": "LulzBot TAZ 6 (Dual v3)",
+    "year": 2017,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": -20,
+        "maxX": 295,
+        "minY": -17,
+        "maxY": 306,
+        "maxZ": 270
+      },
+      "probe": {
+        "type": "probe",
+        "xOffset": 0,
+        "yOffset": 0
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-lulzbot-taz6-dual-v3-2017.cfg"
+    }
+  },
+  {
+    "id": "makergear-m2-2012",
+    "name": "MakerGear M2 (2012)",
+    "year": 2012,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 200,
+        "minY": 0,
+        "maxY": 250,
+        "maxZ": 200
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-makergear-m2-2012.cfg"
+    }
+  },
+  {
+    "id": "makergear-m2-2016",
+    "name": "MakerGear M2 (2016)",
+    "year": 2016,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 205,
+        "minY": 0,
+        "maxY": 250,
+        "maxZ": 200
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-makergear-m2-2016.cfg"
+    }
+  },
+  {
+    "id": "micromake-d1-2016",
+    "name": "Micromake D1",
+    "year": 2016,
+    "mechanics": {
+      "kinematics": "delta"
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-micromake-d1-2016.cfg"
+    }
+  },
+  {
+    "id": "modix-big60-2020",
+    "name": "Modix Big60",
+    "year": 2020,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 600,
+        "minY": 0,
+        "maxY": 600,
+        "maxZ": 660
+      },
+      "probe": {
+        "type": "bltouch",
+        "xOffset": -14,
+        "yOffset": 21
+      },
+      "screws": {
+        "source": "bed_screws",
+        "points": [
+          {
+            "x": 0,
+            "y": 0,
+            "name": "Front Left"
+          },
+          {
+            "x": 600,
+            "y": 0,
+            "name": "Front Right"
+          },
+          {
+            "x": 600,
+            "y": 600,
+            "name": "Rear Right"
+          },
+          {
+            "x": 0,
+            "y": 600,
+            "name": "Rear Left"
+          }
+        ]
+      },
+      "mesh": {
+        "min": [25, 25],
+        "max": [595, 585],
+        "probeCount": [11, 11]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-modix-big60-2020.cfg"
+    }
+  },
+  {
+    "id": "monoprice-mini-delta-2017",
+    "name": "Monoprice Mini Delta",
+    "year": 2017,
+    "mechanics": {
+      "kinematics": "delta",
+      "probe": {
+        "type": "probe",
+        "xOffset": 0,
+        "yOffset": 0
+      },
+      "mesh": {}
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-monoprice-mini-delta-2017.cfg"
+    }
+  },
+  {
+    "id": "monoprice-select-mini-v1-2016",
+    "name": "Monoprice Select Mini V1",
+    "year": 2016,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 120,
+        "minY": 0,
+        "maxY": 120,
+        "maxZ": 120
+      },
+      "screws": {
+        "source": "bed_screws",
+        "points": [
+          {
+            "x": 22,
+            "y": 10
+          },
+          {
+            "x": 22,
+            "y": 90
+          },
+          {
+            "x": 98,
+            "y": 90
+          },
+          {
+            "x": 98,
+            "y": 10
+          }
+        ]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-monoprice-select-mini-v1-2016.cfg"
+    }
+  },
+  {
+    "id": "monoprice-select-mini-v2-2018",
+    "name": "Monoprice Select Mini V2",
+    "year": 2018,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": -1,
+        "maxX": 120,
+        "minY": -1,
+        "maxY": 120,
+        "maxZ": 120
+      },
+      "screws": {
+        "source": "bed_screws",
+        "points": [
+          {
+            "x": 22,
+            "y": 10
+          },
+          {
+            "x": 22,
+            "y": 90
+          },
+          {
+            "x": 98,
+            "y": 90
+          },
+          {
+            "x": 98,
+            "y": 10
+          }
+        ]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-monoprice-select-mini-v2-2018.cfg"
+    }
+  },
+  {
+    "id": "mtw-create-2015",
+    "name": "MTW Create",
+    "year": 2015,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 250,
+        "minY": 0,
+        "maxY": 320,
+        "maxZ": 225
+      },
+      "probe": {
+        "type": "bltouch",
+        "xOffset": -17,
+        "yOffset": 37
+      },
+      "mesh": {
+        "min": [5, 5],
+        "max": [225, 225]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-mtw-create-2015.cfg"
+    }
+  },
+  {
+    "id": "prusa-mini-plus-2020",
+    "name": "Prusa Mini+",
+    "year": 2020,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": -2,
+        "maxX": 180.4,
+        "minY": -3,
+        "maxY": 180,
+        "maxZ": 185
+      },
+      "probe": {
+        "type": "probe",
+        "xOffset": -29,
+        "yOffset": -3
+      },
+      "mesh": {
+        "min": [10, 10],
+        "max": [141, 167],
+        "probeCount": [4, 4]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-prusa-mini-plus-2020.cfg"
+    }
+  },
+  {
+    "id": "ratrig-v-minion-2021",
+    "name": "RatRig V-Minion",
+    "year": 2021,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 180,
+        "minY": 0,
+        "maxY": 180,
+        "maxZ": 180
+      },
+      "probe": {
+        "type": "probe",
+        "xOffset": -24,
+        "yOffset": -13
+      },
+      "screws": {
+        "source": "screws_tilt_adjust",
+        "points": [
+          {
+            "x": 80,
+            "y": 108,
+            "name": "Left Screw"
+          },
+          {
+            "x": 155,
+            "y": 72,
+            "name": "Front Right Screw"
+          },
+          {
+            "x": 155,
+            "y": 147,
+            "name": "Rear Right Screw"
+          }
+        ],
+        "thread": "CCW-M4"
+      },
+      "mesh": {
+        "min": [15, 15],
+        "max": [150, 160],
+        "probeCount": [5, 5]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-ratrig-v-minion-2021.cfg"
+    }
+  },
+  {
+    "id": "robo3d-r2-2017",
+    "name": "Robo3D R2",
+    "year": 2017,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 195,
+        "minY": 0,
+        "maxY": 195,
+        "maxZ": 250
+      },
+      "probe": {
+        "type": "probe",
+        "xOffset": 2,
+        "yOffset": 30
+      },
+      "mesh": {
+        "min": [5, 30],
+        "max": [190, 195],
+        "probeCount": [4, 4]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-robo3d-r2-2017.cfg"
+    }
+  },
+  {
+    "id": "seemecnc-rostock-max-v2-2015",
+    "name": "SeeMeCNC Rostock Max V2",
+    "year": 2015,
+    "mechanics": {
+      "kinematics": "delta"
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-seemecnc-rostock-max-v2-2015.cfg"
+    }
+  },
+  {
+    "id": "sovol-sv01-2020",
+    "name": "Sovol SV01",
+    "year": 2020,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 300,
+        "minY": 0,
+        "maxY": 255,
+        "maxZ": 300
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-sovol-sv01-2020.cfg"
+    }
+  },
+  {
+    "id": "sovol-sv05-2022",
+    "name": "Sovol SV05",
+    "year": 2022,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": -4,
+        "maxX": 220,
+        "minY": -4,
+        "maxY": 220,
+        "maxZ": 300
+      },
+      "probe": {
+        "type": "bltouch",
+        "xOffset": 40,
+        "yOffset": 7
+      },
+      "screws": {
+        "source": "screws_tilt_adjust",
+        "points": [
+          {
+            "x": -4,
+            "y": 21,
+            "name": "front left screw"
+          },
+          {
+            "x": 155,
+            "y": 21,
+            "name": "front right screw"
+          },
+          {
+            "x": 155,
+            "y": 190,
+            "name": "rear right screw"
+          },
+          {
+            "x": -4,
+            "y": 190,
+            "name": "rear left screw"
+          }
+        ],
+        "thread": "CW-M4"
+      },
+      "mesh": {
+        "min": [40, 7],
+        "max": [220, 220],
+        "probeCount": [5, 5]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-sovol-sv05-2022.cfg"
+    }
+  },
+  {
+    "id": "sovol-sv06-2022",
+    "name": "Sovol SV06",
+    "year": 2022,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 220,
+        "minY": 0,
+        "maxY": 220,
+        "maxZ": 250
+      },
+      "probe": {
+        "type": "probe",
+        "xOffset": 27,
+        "yOffset": -20
+      },
+      "mesh": {
+        "min": [28, 20],
+        "max": [210, 205],
+        "probeCount": [10, 10]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-sovol-sv06-2022.cfg"
+    }
+  },
+  {
+    "id": "sovol-sv06-plus-2023",
+    "name": "Sovol SV06 Plus",
+    "year": 2023,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 305,
+        "minY": 0,
+        "maxY": 305,
+        "maxZ": 350
+      },
+      "probe": {
+        "type": "probe",
+        "xOffset": 28,
+        "yOffset": -20
+      },
+      "mesh": {
+        "min": [28, 20],
+        "max": [270, 270],
+        "probeCount": [5, 5]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-sovol-sv06-plus-2023.cfg"
+    }
+  },
+  {
+    "id": "sunlu-s8-2020",
+    "name": "SUNLU S8",
+    "year": 2020,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 310,
+        "minY": 0,
+        "maxY": 310,
+        "maxZ": 400
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-sunlu-s8-2020.cfg"
+    }
+  },
+  {
+    "id": "sunlu-t3-2022",
+    "name": "SUNLU Terminator T3",
+    "year": 2022,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 235,
+        "minY": 0,
+        "maxY": 235,
+        "maxZ": 250
+      },
+      "probe": {
+        "type": "bltouch",
+        "xOffset": -28.45,
+        "yOffset": 4
+      },
+      "screws": {
+        "source": "bed_screws",
+        "points": [
+          {
+            "x": 31,
+            "y": 38,
+            "name": "Front Left"
+          },
+          {
+            "x": 201,
+            "y": 38,
+            "name": "Front Right"
+          },
+          {
+            "x": 201,
+            "y": 204,
+            "name": "Rear Right"
+          },
+          {
+            "x": 31,
+            "y": 204,
+            "name": "Rear Left"
+          }
+        ]
+      },
+      "mesh": {
+        "min": [10, 10],
+        "max": [190, 220],
+        "probeCount": [5, 5]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-sunlu-t3-2022.cfg"
+    }
+  },
+  {
+    "id": "tevo-flash-2018",
+    "name": "Tevo Flash",
+    "year": 2018,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": -13,
+        "maxX": 235,
+        "minY": -3,
+        "maxY": 235,
+        "maxZ": 250
+      },
+      "probe": {
+        "type": "bltouch",
+        "xOffset": 0,
+        "yOffset": 18
+      },
+      "mesh": {
+        "min": [5, 18],
+        "max": [230, 228],
+        "probeCount": [9, 9]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-tevo-flash-2018.cfg"
+    }
+  },
+  {
+    "id": "tevo-tarantula-pro-2020",
+    "name": "Tevo Tarantula Pro",
+    "year": 2020,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": -2,
+        "maxX": 220,
+        "minY": 0,
+        "maxY": 220,
+        "maxZ": 200
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-tevo-tarantula-pro-2020.cfg"
+    }
+  },
+  {
+    "id": "tronxy-crux1-2022",
+    "name": "Tronxy Crux1",
+    "year": 2022,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": -1,
+        "maxX": 180,
+        "minY": -3,
+        "maxY": 180,
+        "maxZ": 180
+      },
+      "screws": {
+        "source": "bed_screws",
+        "points": [
+          {
+            "x": 17.5,
+            "y": 11,
+            "name": "front_left"
+          },
+          {
+            "x": 162.5,
+            "y": 11,
+            "name": "front_right"
+          },
+          {
+            "x": 162.5,
+            "y": 162.5,
+            "name": "back_right"
+          },
+          {
+            "x": 17.5,
+            "y": 162.5,
+            "name": "back_left"
+          }
+        ]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-tronxy-crux1-2022.cfg"
+    }
+  },
+  {
+    "id": "tronxy-p802e-2020",
+    "name": "Tronxy P802E",
+    "year": 2020,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": -8,
+        "maxX": 220,
+        "minY": 0,
+        "maxY": 220,
+        "maxZ": 210
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-tronxy-p802e-2020.cfg"
+    }
+  },
+  {
+    "id": "tronxy-p802m-2020",
+    "name": "Tronxy P802M",
+    "year": 2020,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": -45,
+        "maxX": 220,
+        "minY": -5,
+        "maxY": 220,
+        "maxZ": 230
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-tronxy-p802m-2020.cfg"
+    }
+  },
+  {
+    "id": "tronxy-x5s-2018",
+    "name": "Tronxy X5S",
+    "year": 2018,
+    "mechanics": {
+      "kinematics": "corexy",
+      "travel": {
+        "minX": 0,
+        "maxX": 330,
+        "minY": 0,
+        "maxY": 310,
+        "maxZ": 400
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-tronxy-x5s-2018.cfg"
+    }
+  },
+  {
+    "id": "tronxy-x5sa-pro-2020",
+    "name": "Tronxy X5SA Pro",
+    "year": 2020,
+    "mechanics": {
+      "kinematics": "corexy",
+      "travel": {
+        "minX": -1,
+        "maxX": 350,
+        "minY": 0,
+        "maxY": 330,
+        "maxZ": 400
+      },
+      "probe": {
+        "type": "probe",
+        "xOffset": -35,
+        "yOffset": 0
+      },
+      "screws": {
+        "source": "bed_screws",
+        "points": [
+          {
+            "x": 5,
+            "y": 5
+          },
+          {
+            "x": 165,
+            "y": 5
+          },
+          {
+            "x": 325,
+            "y": 5
+          },
+          {
+            "x": 5,
+            "y": 325
+          },
+          {
+            "x": 165,
+            "y": 325
+          },
+          {
+            "x": 325,
+            "y": 325
+          }
+        ]
+      },
+      "mesh": {
+        "min": [20, 20],
+        "max": [310, 310],
+        "probeCount": [5, 5]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-tronxy-x5sa-pro-2020.cfg"
+    }
+  },
+  {
+    "id": "tronxy-x5sa-v6-2019",
+    "name": "Tronxy X5SA",
+    "year": 2019,
+    "mechanics": {
+      "kinematics": "corexy",
+      "travel": {
+        "minX": -1,
+        "maxX": 350,
+        "minY": 0,
+        "maxY": 330,
+        "maxZ": 400
+      },
+      "probe": {
+        "type": "probe",
+        "xOffset": -40,
+        "yOffset": 0
+      },
+      "screws": {
+        "source": "bed_screws",
+        "points": [
+          {
+            "x": 5,
+            "y": 5
+          },
+          {
+            "x": 165,
+            "y": 5
+          },
+          {
+            "x": 325,
+            "y": 5
+          },
+          {
+            "x": 5,
+            "y": 325
+          },
+          {
+            "x": 165,
+            "y": 325
+          },
+          {
+            "x": 325,
+            "y": 325
+          }
+        ]
+      },
+      "mesh": {
+        "min": [20, 20],
+        "max": [310, 310],
+        "probeCount": [5, 5]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-tronxy-x5sa-v6-2019.cfg"
+    }
+  },
+  {
+    "id": "tronxy-x8-2018",
+    "name": "Tronxy X8",
+    "year": 2018,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": -47,
+        "maxX": 220,
+        "minY": 0,
+        "maxY": 220,
+        "maxZ": 210
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-tronxy-x8-2018.cfg"
+    }
+  },
+  {
+    "id": "tronxy-xy-2-Pro-2020",
+    "name": "Tronxy XY-2 Pro",
+    "year": 2020,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": -1,
+        "maxX": 255,
+        "minY": 0,
+        "maxY": 255,
+        "maxZ": 260
+      },
+      "probe": {
+        "type": "probe",
+        "xOffset": -50,
+        "yOffset": -10
+      },
+      "mesh": {
+        "min": [50, 50],
+        "max": [205, 205],
+        "probeCount": [4, 4]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-tronxy-xy-2-Pro-2020.cfg"
+    }
+  },
+  {
+    "id": "twotrees-sapphire-plus-sp-5-v1-2020",
+    "name": "Two Trees Sapphire Plus V1",
+    "year": 2020,
+    "mechanics": {
+      "kinematics": "corexy",
+      "travel": {
+        "minX": 0,
+        "maxX": 300,
+        "minY": 0,
+        "maxY": 300,
+        "maxZ": 340
+      },
+      "screws": {
+        "source": "bed_screws",
+        "points": [
+          {
+            "x": 35,
+            "y": 35
+          },
+          {
+            "x": 275,
+            "y": 35
+          },
+          {
+            "x": 275,
+            "y": 275
+          },
+          {
+            "x": 35,
+            "y": 275
+          }
+        ]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-twotrees-sapphire-plus-sp-5-v1-2020.cfg"
+    }
+  },
+  {
+    "id": "twotrees-sapphire-plus-sp-5-v1.1-2021",
+    "name": "Two Trees Sapphire Plus V1.1",
+    "year": 2021,
+    "mechanics": {
+      "kinematics": "corexy",
+      "travel": {
+        "minX": 0,
+        "maxX": 300,
+        "minY": 0,
+        "maxY": 300,
+        "maxZ": 340
+      },
+      "screws": {
+        "source": "bed_screws",
+        "points": [
+          {
+            "x": 35,
+            "y": 35
+          },
+          {
+            "x": 275,
+            "y": 35
+          },
+          {
+            "x": 275,
+            "y": 275
+          },
+          {
+            "x": 35,
+            "y": 275
+          }
+        ]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-twotrees-sapphire-plus-sp-5-v1.1-2021.cfg"
+    }
+  },
+  {
+    "id": "twotrees-sapphire-pro-sp-3-2020",
+    "name": "Two Trees Sapphire Pro",
+    "year": 2020,
+    "mechanics": {
+      "kinematics": "corexy",
+      "travel": {
+        "minX": 0,
+        "maxX": 230,
+        "minY": 0,
+        "maxY": 230,
+        "maxZ": 230
+      },
+      "screws": {
+        "source": "bed_screws",
+        "points": [
+          {
+            "x": 15,
+            "y": 15
+          },
+          {
+            "x": 210,
+            "y": 15
+          },
+          {
+            "x": 210,
+            "y": 210
+          },
+          {
+            "x": 15,
+            "y": 210
+          }
+        ]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-twotrees-sapphire-pro-sp-3-2020.cfg"
+    }
+  },
+  {
+    "id": "velleman-k8200-2013",
+    "name": "Velleman K8200",
+    "year": 2013,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 200,
+        "minY": 0,
+        "maxY": 200,
+        "maxZ": 250
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-velleman-k8200-2013.cfg"
+    }
+  },
+  {
+    "id": "velleman-k8800-2017",
+    "name": "Velleman K8800",
+    "year": 2017,
+    "mechanics": {
+      "kinematics": "delta",
+      "probe": {
+        "type": "probe",
+        "xOffset": 0,
+        "yOffset": 0
+      },
+      "mesh": {}
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-velleman-k8800-2017.cfg"
+    }
+  },
+  {
+    "id": "voxelab-aquila-2021",
+    "name": "Voxelab Aquila",
+    "year": 2021,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 235,
+        "minY": 0,
+        "maxY": 235,
+        "maxZ": 250
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-voxelab-aquila-2021.cfg"
+    }
+  },
+  {
+    "id": "wanhao-duplicator-6-2016",
+    "name": "Wanhao Duplicator 6",
+    "year": 2016,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 200,
+        "minY": 0,
+        "maxY": 200,
+        "maxZ": 175
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-wanhao-duplicator-6-2016.cfg"
+    }
+  },
+  {
+    "id": "wanhao-duplicator-9-2018",
+    "name": "Wanhao Duplicator 9 MK1",
+    "year": 2018,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 295,
+        "minY": 0,
+        "maxY": 290,
+        "maxZ": 370
+      },
+      "probe": {
+        "type": "probe",
+        "xOffset": 27,
+        "yOffset": 3
+      },
+      "screws": {
+        "source": "bed_screws",
+        "points": [
+          {
+            "x": 5,
+            "y": 5,
+            "name": "front left screw"
+          },
+          {
+            "x": 295,
+            "y": 0,
+            "name": "front right screw"
+          },
+          {
+            "x": 295,
+            "y": 290,
+            "name": "back right screw"
+          },
+          {
+            "x": 0,
+            "y": 290,
+            "name": "back left screw"
+          }
+        ]
+      },
+      "mesh": {
+        "min": [27, 3],
+        "max": [270, 290],
+        "probeCount": [5, 3]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-wanhao-duplicator-9-2018.cfg"
+    }
+  },
+  {
+    "id": "wanhao-duplicator-i3-mini-2017",
+    "name": "Wanhao Duplicator i3 Mini",
+    "year": 2017,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 120,
+        "minY": 0,
+        "maxY": 135,
+        "maxZ": 100
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-wanhao-duplicator-i3-mini-2017.cfg"
+    }
+  },
+  {
+    "id": "wanhao-duplicator-i3-plus-2017",
+    "name": "Wanhao Duplicator i3 Plus",
+    "year": 2017,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 200,
+        "minY": 0,
+        "maxY": 200,
+        "maxZ": 180
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-wanhao-duplicator-i3-plus-2017.cfg"
+    }
+  },
+  {
+    "id": "wanhao-duplicator-i3-plus-mark2-2019",
+    "name": "Wanhao Duplicator i3 Plus Mark II",
+    "year": 2019,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 200,
+        "minY": 0,
+        "maxY": 200,
+        "maxZ": 180
+      },
+      "probe": {
+        "type": "probe",
+        "xOffset": 0,
+        "yOffset": 0
+      },
+      "mesh": {
+        "min": [20, 20],
+        "max": [190, 130],
+        "probeCount": [4, 4]
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-wanhao-duplicator-i3-plus-mark2-2019.cfg"
+    }
+  },
+  {
+    "id": "wanhao-duplicator-i3-v2.1-2017",
+    "name": "Wanhao Duplicator i3 V2.1",
+    "year": 2017,
+    "mechanics": {
+      "kinematics": "cartesian",
+      "travel": {
+        "minX": 0,
+        "maxX": 200,
+        "minY": 0,
+        "maxY": 200,
+        "maxZ": 180
+      }
+    },
+    "source": {
+      "repository": "Klipper3d/klipper",
+      "commit": "214fdb2877",
+      "license": "GPL-3.0-only",
+      "path": "config/printer-wanhao-duplicator-i3-v2.1-2017.cfg"
+    }
+  }
+]
