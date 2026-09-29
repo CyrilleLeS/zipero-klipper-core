@@ -31,6 +31,8 @@ GET_TYPES = {
     "getintlist": "int_list",
     "getfloatlist": "float_list",
     "getlists": "lists",
+    # Kalico : script G-code (`getscript`), lu comme un texte.
+    "getscript": "string",
 }
 BOUNDS = ("minval", "maxval", "above", "below")
 UNKNOWN = "{?}"
@@ -59,9 +61,7 @@ class Module:
             if isinstance(node, ast.FunctionDef):
                 self.functions[node.name] = node
             elif isinstance(node, ast.ClassDef):
-                methods = {n.name: n for n in node.body if isinstance(n, ast.FunctionDef)}
-                bases = [b.id for b in node.bases if isinstance(b, ast.Name)]
-                self.classes[node.name] = {"node": node, "methods": methods, "bases": bases}
+                self.add_class(node, node.name)
             elif isinstance(node, ast.Assign) and len(node.targets) == 1 and isinstance(node.targets[0], ast.Name):
                 target = node.targets[0].id
                 try:
@@ -76,6 +76,17 @@ class Module:
             elif isinstance(node, ast.ImportFrom):
                 for alias in node.names:
                     self.imports[alias.asname or alias.name] = ("from", node.module or "", node.level, alias.name)
+
+
+    def add_class(self, node, name):
+        """Classe et classes imbriquées (« Heater.ProfileManager » dans Kalico)."""
+        methods = {n.name: n for n in node.body if isinstance(n, ast.FunctionDef)}
+        # Classes parentes : « Base » ou « module.Base » (résolues à la demande).
+        bases = [ast.unparse(b) for b in node.bases if isinstance(b, (ast.Name, ast.Attribute))]
+        self.classes[name] = {"node": node, "methods": methods, "bases": bases}
+        for child in node.body:
+            if isinstance(child, ast.ClassDef):
+                self.add_class(child, f"{name}.{child.name}")
 
 
 class Project:
@@ -99,13 +110,17 @@ class Project:
         if entry is None:
             return None
         package = module.name.rsplit(".", 1)[0] if "." in module.name else ""
+        # Kalico : klippy/ est un paquet (« from klippy import stepper », « import klippy.x »).
+        strip = lambda name: name[len("klippy"):].lstrip(".") if name == "klippy" or name.startswith("klippy.") else name
         if entry[0] == "abs":
-            target = entry[1]
+            target = strip(entry[1])
             for candidate in (target, f"{package}.{target}" if package else target):
                 if candidate in self.modules:
                     return candidate, None
             return None
         _, source, level, symbol = entry
+        if level == 0:
+            source = strip(source)
         base = module.name.split(".")
         # Dans un paquet (__init__.py), « from . import x » part du paquet lui-même.
         if module.path.name == "__init__.py":
@@ -146,10 +161,22 @@ def literal_nonempty(node):
     return isinstance(value, (str, list, tuple)) and len(value) > 0
 
 
-def loop_bindings(function):
-    """Variable de boucle ou de compréhension → valeurs, quand l'itérable est un littéral."""
+def loop_bindings(function, module=None):
+    """Variable de boucle ou de compréhension → valeurs, quand l'itérable est un littéral, ou les
+    clés d'un dictionnaire du module (`for key, (type, fmt) in PID_PROFILE_OPTIONS.items()`)."""
     values = {}
     for node in ast.walk(function):
+        if module is not None and isinstance(node, (ast.For, ast.comprehension)):
+            iterable = node.iter
+            if isinstance(iterable, ast.Call) and isinstance(iterable.func, ast.Attribute) and iterable.func.attr in ("items", "keys"):
+                iterable = iterable.func.value
+            table = module.dicts.get(iterable.id) if isinstance(iterable, ast.Name) else None
+            target = node.target.elts[0] if isinstance(node.target, ast.Tuple) and node.target.elts else node.target
+            if isinstance(table, ast.Dict) and isinstance(target, ast.Name):
+                keys = [k.value for k in table.keys if isinstance(k, ast.Constant) and isinstance(k.value, str)]
+                if keys:
+                    values.setdefault(target.id, []).extend(keys)
+                    continue
         if isinstance(node, (ast.For, ast.comprehension)) and isinstance(node.target, ast.Name):
             try:
                 iterable = ast.literal_eval(node.iter)
@@ -214,12 +241,34 @@ class Analyzer:
         self.seen = set()
 
     # --- résolution des appels ---------------------------------------------------------------
-    def class_method(self, module, class_name, method):
-        info = module.classes.get(class_name)
-        while info is not None:
+    def base_class(self, module, base):
+        """« Base » ou « module.Base » → (module, nom de classe) ou None."""
+        if "." not in base:
+            if base in module.classes:
+                return module, base
+            imported = self.project.resolve_import(module, base)
+            if imported and imported[1] and imported[1] in self.project.modules[imported[0]].classes:
+                return self.project.modules[imported[0]], imported[1]
+            return None
+        owner, _, name = base.rpartition(".")
+        imported = self.project.resolve_import(module, owner)
+        if imported and imported[1] is None and name in self.project.modules[imported[0]].classes:
+            return self.project.modules[imported[0]], name
+        return None
+
+    def class_method(self, module, class_name, method, with_module=False):
+        """Méthode d'une classe ou de ses parentes (même module ou module importé)."""
+        seen = set()
+        current = (module, class_name)
+        while current is not None and current not in seen:
+            seen.add(current)
+            owner, name = current
+            info = owner.classes.get(name)
+            if info is None:
+                break
             if method in info["methods"]:
-                return info["methods"][method]
-            info = module.classes.get(info["bases"][0]) if info["bases"] else None
+                return (owner, info["methods"][method]) if with_module else info["methods"][method]
+            current = self.base_class(owner, info["bases"][0]) if info["bases"] else None
         return None
 
     def resolve(self, module, func, context):
@@ -232,8 +281,7 @@ class Analyzer:
                 and isinstance(func.value.value, ast.Name) and func.value.value.id == "self"):
             kind = context["types"].get(f"self.{func.value.attr}")
             if kind and kind[0] == "instance":
-                method = self.class_method(kind[1], kind[2], func.attr)
-                return (kind[1], method, 1) if method else None
+                return self.method_target(kind[1], kind[2], func.attr, 1)
             return None
         # kinematics.extruder.add_printer_objects(…) : module désigné par un nom pointé.
         if isinstance(func, ast.Attribute) and isinstance(func.value, ast.Attribute):
@@ -249,8 +297,7 @@ class Analyzer:
             if name in module.functions:
                 return module, module.functions[name], 0
             if name in module.classes:
-                init = self.class_method(module, name, "__init__")
-                return (module, init, 1) if init else None
+                return self.method_target(module, name, "__init__", 1)
             imported = self.project.resolve_import(module, name)
             if imported and imported[1]:
                 target = self.project.modules[imported[0]]
@@ -259,34 +306,41 @@ class Analyzer:
         if isinstance(func, ast.Attribute) and isinstance(func.value, ast.Name):
             owner, attr = func.value.id, func.attr
             if owner == "self" and cls:
-                method = self.class_method(module, cls, attr)
-                return (module, method, 1) if method else None
+                return self.method_target(module, cls, attr, 1)
             # Parent.__init__(self, config) : self est passé explicitement.
             if owner in module.classes:
-                method = self.class_method(module, owner, attr)
-                return (module, method, 0) if method else None
+                return self.method_target(module, owner, attr, 0)
             kind = context["types"].get(owner)
             if kind and kind[0] == "instance":
-                target, class_name = kind[1], kind[2]
-                method = self.class_method(target, class_name, attr)
-                return (target, method, 1) if method else None
+                return self.method_target(kind[1], kind[2], attr, 1)
             if kind and kind[0] == "modules":
                 for name in kind[1]:
                     target = self.project.modules.get(f"extras.{name}")
                     if target is None:
                         continue
                     for class_name in target.classes:
-                        method = self.class_method(target, class_name, attr)
-                        if method:
-                            return target, method, 1
+                        found = self.method_target(target, class_name, attr, 1)
+                        if found:
+                            return found
                 return None
             imported = self.project.resolve_import(module, owner)
             if imported and imported[1] is None:
                 target = self.project.modules[imported[0]]
                 return self.resolve(target, ast.Name(id=attr), {"class": None, "types": {}, "choices": {}})
+        # super().__init__(config) / super(Classe, self).__init__(config) : méthode de la parente.
+        if (isinstance(func, ast.Attribute) and isinstance(func.value, ast.Call)
+                and isinstance(func.value.func, ast.Name) and func.value.func.id == "super" and cls):
+            bases = module.classes[cls]["bases"]
+            parent = self.base_class(module, bases[0]) if bases else None
+            return self.method_target(parent[0], parent[1], func.attr, 1) if parent else None
         if isinstance(func, ast.Attribute):
             return self.unique_method(func.attr)
         return None
+
+    def method_target(self, module, class_name, method, offset):
+        """(module où la méthode est définie, méthode, décalage) ou None."""
+        found = self.class_method(module, class_name, method, with_module=True)
+        return (found[0], found[1], offset) if found else None
 
     def unique_method(self, name):
         """Méthode définie par UNE SEULE classe de Klipper : l'appel est sans ambiguïté."""
@@ -308,7 +362,7 @@ class Analyzer:
             return
         self.seen.add(key)
         cls = next((c for c, info in module.classes.items() if function in info["methods"].values()), None)
-        for name, values in loop_bindings(function).items():
+        for name, values in loop_bindings(function, module).items():
             bindings.setdefault(name, values)
         # Valeurs par défaut littérales des paramètres (`pin_option="cs_pin"`).
         positional = function.args.args
@@ -374,6 +428,10 @@ class Analyzer:
         """Étiquettes de section d'une expression (variable, élément de liste de sections)."""
         if isinstance(node, ast.Name) and node.id in aliases:
             return [aliases[node.id]]
+        # self.config : section rangée dans un attribut plus haut dans la même méthode.
+        if (isinstance(node, ast.Attribute) and isinstance(node.value, ast.Name) and node.value.id == "self"
+                and f"self.{node.attr}" in context["multi"]):
+            return context["multi"][f"self.{node.attr}"]
         if isinstance(node, ast.Name) and node.id in context["multi"]:
             return context["multi"][node.id]
         if isinstance(node, ast.Subscript) and isinstance(node.value, ast.Name) and node.value.id in context["lists"]:
@@ -400,8 +458,11 @@ class Analyzer:
     def assignment(self, module, statement, aliases, context, bindings):
         target = statement.targets[0] if len(statement.targets) == 1 else None
         value = statement.value
-        # self.fields = tmc.FieldHelper(…) ; self.name = config.get_name()
+        # self.fields = tmc.FieldHelper(…) ; self.name = config.get_name() ; self.config = config
         if isinstance(target, ast.Attribute) and isinstance(target.value, ast.Name) and target.value.id == "self":
+            if isinstance(value, ast.Name) and value.id in aliases:
+                context["multi"][f"self.{target.attr}"] = [aliases[value.id]]
+                return
             names = string_values(value, bindings, aliases)
             if names and UNKNOWN not in "".join(names):
                 bindings[f"self.{target.attr}"] = names
@@ -599,6 +660,13 @@ class Analyzer:
                 # ([extruder] n'est lue que si elle existe, mais alors heater_pin est exigé).
                 same = label in aliases.values()
                 self.walk(target_module, function, params[index + offset], label, when, literal_args, conditional if same else False)
+        # Arguments nommés (Kalico : `Heater(config=config, sensor=sensor)`).
+        for keyword in node.keywords:
+            if keyword.arg is None or keyword.arg not in params:
+                continue
+            for label in self.alias_of(keyword.value, aliases, context) or self.section_label(keyword.value, aliases, bindings) or []:
+                same = label in aliases.values()
+                self.walk(target_module, function, keyword.arg, label, when, literal_args, conditional if same else False)
 
     def read(self, module, node, label, when, bindings, aliases, conditional, context=None):
         method = node.func.attr

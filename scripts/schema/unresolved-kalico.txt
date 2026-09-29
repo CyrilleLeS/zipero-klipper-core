@@ -1,0 +1,16 @@
+extras.angle:753 sensor_class
+extras.board_pins:15 option opt
+extras.display.display:218 config.getchoice('lcd_type', LCD_chips)
+extras.display.menu:1434 menu_items[type]
+extras.gcode_macro:446 option option
+extras.led:142 option name + '_pin'
+extras.load_cell.load_cell_probe:132 option self._get_name(gcmd)
+extras.load_cell:28 sensor_class
+extras.load_cell_probe:38 sensor_class
+extras.load_cell_probe:38 tap_classifier
+extras.probe_eddy_current:381 sensors[sensor_type]
+kinematics.limited_cartesian:62 cartesian.CartKinematics.__init__
+kinematics.limited_cartesian:68 option f'max_{ax}_velocity'
+kinematics.limited_cartesian:77 option f'max_{ax}_accel'
+kinematics.limited_corexy:40 corexy.CoreXYKinematics.__init__
+kinematics.limited_corexz:26 corexz.CoreXZKinematics.__init__

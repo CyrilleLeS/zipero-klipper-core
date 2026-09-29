@@ -1,0 +1,8 @@
+extras.angle:431 sensor_class
+extras.board_pins:14 option opt
+extras.display.display:180 config.getchoice('lcd_type', LCD_chips)
+extras.display.menu:1018 menu_items[type]
+extras.gcode_macro:148 option option
+extras.led:196 option name + '_pin'
+extras.x_twist_compensation:48 option config_key
+extras.x_twist_compensation:50 option config_key

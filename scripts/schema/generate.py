@@ -1,17 +1,19 @@
 # SPDX-License-Identifier: GPL-3.0-only
-"""Génère le schéma des options de configuration de Klipper (EP-01.10, EP-06.03, ADR 0022).
+"""Génère le schéma des options de configuration d'un firmware (EP-01.10, EP-01.17, ADR 0022).
 
-Usage (depuis packages/klipper-core) : python scripts/schema/generate.py [commit]
-Télécharge Klipper au commit demandé (hors dépôt, dans le dossier temporaire), analyse son code
-sans l'exécuter (analyze.py), applique la couche curée (curated.json) et écrit
-src/config/schema/klipper-<commit>.json. Relancer après chaque nouvelle version de Klipper, puis
-relire le diff du schéma.
+Usage (depuis packages/klipper-core) : python scripts/schema/generate.py [firmware…]
+Pour chaque firmware de FIRMWARES (par défaut : tous), récupère son dossier klippy/ au commit
+épinglé (hors dépôt, dans le dossier temporaire, extraction partielle git), analyse son code sans
+l'exécuter (analyze.py), applique la couche curée (curated.json) et écrit
+src/config/schema/<firmware>-<commit>.json. Pour suivre une nouvelle version : changer le commit
+ci-dessous, régénérer, relire le diff du schéma.
 """
 import ast
 import configparser
 import io
 import json
 import re
+import subprocess
 import sys
 import tarfile
 import tempfile
@@ -23,18 +25,47 @@ from analyze import Analyzer, Project, UNKNOWN, string_values  # noqa: E402
 
 HERE = Path(__file__).parent
 PACKAGE = HERE.parent.parent
-DEFAULT_COMMIT = "214fdb2877ff4640e9316a663c1b8b2e232c86fd"
+# Firmwares : dépôt public (GPL), commit épinglé, dossier contenant klippy/ dans le dépôt.
+# Elegoo (Neptune 4) ne publie pas ses sources : pas de schéma possible (EP-01.17).
+FIRMWARES = {
+    "klipper": {"repo": "Klipper3d/klipper", "commit": "214fdb2877ff4640e9316a663c1b8b2e232c86fd", "path": ""},
+    "kalico": {
+        "repo": "KalicoCrew/kalico", "commit": "1f791b4d74b44bd72b22c0b2528617aa96ed4959", "path": "",
+        # Profils de régulation (PID, MPC) : section reçue via self.outer_instance.config, trop
+        # indirect pour l'analyse ; lue par _init_profile pour chaque section de chauffage.
+        "entries": [{"module": "extras.heaters", "function": "Heater.ProfileManager._init_profile",
+                     "param": "config_section", "labels": "heaters"}],
+    },
+    "creality-k1": {"repo": "CrealityOfficial/K1_Series_Klipper", "commit": "e09f36e6ada60e5467b0bef731a96263b5d8095b", "path": ""},
+    "qidi": {"repo": "QIDITECH/klipper", "commit": "653d7a8f6ec4700ec02c2319888ad98a92c1a0c3", "path": ""},
+    "qidi-plus4": {"repo": "QIDITECH/klipper", "commit": "4bb7c6337936ef273e621d1f55bc0ef92114785d", "path": ""},
+    "sovol-sv08": {"repo": "Sovol3d/SV08", "commit": "a60644875f8c756d20b3828c9416518b414b5491", "path": "home/sovol/klipper"},
+}
 
 
-def fetch(commit):
+def fetch(firmware):
+    """Dossier du firmware (contenant klippy/) : archive GitHub, ou extraction partielle git."""
+    spec = FIRMWARES[firmware]
     cache = Path(tempfile.gettempdir()) / "klipper-src"
-    root = cache / f"klipper-{commit}"
-    if not root.exists():
-        cache.mkdir(parents=True, exist_ok=True)
-        data = urllib.request.urlopen(f"https://codeload.github.com/Klipper3d/klipper/tar.gz/{commit}").read()
-        with tarfile.open(fileobj=io.BytesIO(data)) as archive:
-            archive.extractall(cache, filter="data")
-    return root
+    if firmware == "klipper":
+        root = cache / f"klipper-{spec['commit']}"
+        if not root.exists():
+            cache.mkdir(parents=True, exist_ok=True)
+            data = urllib.request.urlopen(f"https://codeload.github.com/Klipper3d/klipper/tar.gz/{spec['commit']}").read()
+            with tarfile.open(fileobj=io.BytesIO(data)) as archive:
+                archive.extractall(cache, filter="data")
+        return root
+    root = cache / f"{firmware}-{spec['commit'][:10]}"
+    if not (root / ".git").exists():
+        root.mkdir(parents=True, exist_ok=True)
+        base = f"{spec['path']}/" if spec["path"] else ""
+        git = lambda *args: subprocess.run(["git", "-C", str(root), *args], check=True, capture_output=True)
+        git("init", "-q")
+        git("remote", "add", "origin", f"https://github.com/{spec['repo']}.git")
+        git("sparse-checkout", "set", "--no-cone", f"/{base}klippy/", f"/{base}docs/")
+        git("fetch", "-q", "--depth", "1", "--filter=blob:none", "origin", spec["commit"])
+        git("checkout", "-q", "FETCH_HEAD")
+    return root / spec["path"] if spec["path"] else root
 
 
 def label_regex(label):
@@ -142,8 +173,8 @@ def factory_targets(analyzer, family):
     if isinstance(factory, ast.Attribute) and isinstance(factory.value, ast.Name):
         class_name = family["instances"].get(factory.value.id)
         if class_name:
-            method = analyzer.class_method(module, class_name, factory.attr)
-            return [(module, method, 1)] if method else []
+            found = analyzer.method_target(module, class_name, factory.attr, 1)
+            return [found] if found else []
     if isinstance(factory, ast.Lambda):
         function = ast.FunctionDef(name="<lambda>", args=factory.args, body=[ast.Return(value=factory.body)],
                                    decorator_list=[], lineno=factory.lineno)
@@ -216,8 +247,63 @@ def merge(reads):
 
 
 def main():
-    commit = sys.argv[1] if len(sys.argv) > 1 else DEFAULT_COMMIT
-    klippy = fetch(commit) / "klippy"
+    for firmware in sys.argv[1:] or list(FIRMWARES):
+        generate(firmware)
+    write_signatures()
+
+
+def write_signatures():
+    """Indices de chaque fork (EP-01.17) : sections et options qu'il connaît et Klipper non.
+
+    Les options supprimées de Klipper (curated.json) sont exclues : un fork fondé sur un Klipper
+    ancien les lit encore, mais une vieille configuration de Klipper aussi, ce n'est pas un indice.
+    """
+    folder = PACKAGE / "src" / "config" / "schema"
+    load = lambda firmware: json.loads(
+        (folder / f"{firmware}-{FIRMWARES[firmware]['commit'][:10]}.json").read_text(encoding="utf8"))
+    base = load("klipper")
+    removed = {entry["option"] for entry in base["removed"]}
+    sections = lambda s: set(s["modules"]["exact"]) | {f"{m} " for m in s["modules"]["prefix"]}
+    # Noms d'options que Klipper lit dans une section quelconque : jamais un indice de fork.
+    known = {o for r in base["rules"] for o in r["options"]}
+    # Modules installés à part sur Klipper (gcode_shell_command, z_calibration…) : un fork peut les
+    # embarquer, mais un utilisateur de Klipper aussi ; ce ne sont pas des indices.
+    forks = {"kalico", "creality", "qidi"}
+    addons = {s for o in base["outsideKlipper"] if o["origin"] not in forks for s in o.get("sections", [])}
+    raw = {}
+    for firmware in FIRMWARES:
+        if firmware == "klipper":
+            continue
+        schema = load(firmware)
+        addon_rule = lambda regex: any(re.match(regex, name) or re.match(regex, f"{name} x") for name in addons)
+        raw[firmware] = (
+            {s for s in sections(schema) - sections(base) if s.strip() not in addons},
+            {
+                (r["regex"], o) for r in schema["rules"] for o in r["options"]
+                if o not in known and o not in removed and not addon_rule(r["regex"])
+            },
+        )
+    # Indice partagé par des forks de familles différentes : pas discriminant. Les deux Qidi
+    # forment une famille (mêmes indices, départagés par ceux propres à chaque branche).
+    family = lambda fw: "qidi" if fw.startswith("qidi") else fw
+    count = lambda index, item: len({family(fw) for fw, sets in raw.items() if item in sets[index]})
+    signatures = {}
+    for firmware, (fork_sections, fork_options) in raw.items():
+        signatures[firmware] = {
+            "commit": FIRMWARES[firmware]["commit"],
+            # « nom » : section exacte ; « nom » suivi d'une espace : préfixe ([nom quelque_chose]).
+            "sections": sorted(s for s in fork_sections if count(0, s) == 1),
+            "options": [[regex, option] for regex, option in sorted(fork_options) if count(1, (regex, option)) == 1],
+        }
+    out = folder / "firmware-signatures.json"
+    out.write_text(json.dumps(signatures, ensure_ascii=False, indent=1) + "\n", encoding="utf8", newline="\n")
+    print(f"{out.name} : " + ", ".join(
+        f"{fw} {len(s['sections'])} sections et {len(s['options'])} options propres" for fw, s in signatures.items()))
+
+
+def generate(firmware):
+    commit = FIRMWARES[firmware]["commit"]
+    klippy = fetch(firmware) / "klippy"
     project = Project(klippy)
     defaults = temperature_sensor_defaults(klippy)
     kin_hook, kinds = kinematics_hook(project)
@@ -242,8 +328,18 @@ def main():
             prefixed.append(short)
             analyzer.walk(module, module.functions["load_config_prefix"], "config", f"{short} {{*}}", ())
 
+    # Points d'entrée déclarés du firmware ; « heaters » : toutes les sections qui lisent heater_pin.
+    for entry in FIRMWARES[firmware].get("entries", []):
+        module = project.modules[entry["module"]]
+        class_name, _, method = entry["function"].rpartition(".")
+        function = module.classes[class_name]["methods"][method]
+        heaters = sorted({label for (label, when), rule in analyzer.reads.rules.items() if "heater_pin" in rule["options"]})
+        for label in heaters if entry["labels"] == "heaters" else [entry["labels"]]:
+            analyzer.walk(module, function, entry["param"], label, ())
+
     curated = json.loads((HERE / "curated.json").read_text(encoding="utf8"))
-    changes = (klippy.parent / "docs" / "Config_Changes.md").read_text(encoding="utf8")
+    changes_file = klippy.parent / "docs" / "Config_Changes.md"
+    changes = changes_file.read_text(encoding="utf8") if changes_file.exists() else ""
 
     rules = []
     for (label, when), rule in sorted(analyzer.reads.rules.items(), key=lambda item: (item[0][0], str(item[0][1]))):
@@ -262,13 +358,14 @@ def main():
             **({"patterns": {label_regex(p)[1:-1]: {k: v for k, v in info.items() if k != "reads"} for p, info in sorted(rule["patterns"].items())}} if rule["patterns"] else {}),
         })
 
-    for entry in curated["removed"]:
-        # Garde-fou : chaque option supprimée est bien citée dans Config_Changes.md.
+    for entry in curated["removed"] if firmware == "klipper" else []:
+        # Garde-fou : chaque option supprimée est bien citée dans Config_Changes.md (de Klipper ;
+        # un fork garde les options qu'il lit encore : le schéma les connaît alors).
         if entry["option"] not in changes:
             raise SystemExit(f"Option supprimée absente de Config_Changes.md : {entry['option']}")
 
     schema = {
-        "firmware": "klipper",
+        "firmware": firmware,
         "commit": commit,
         "kinematics": kinds,
         "sensorFamilies": [
@@ -281,13 +378,13 @@ def main():
         "removed": curated["removed"],
         "outsideKlipper": curated["outsideKlipper"],
     }
-    out = PACKAGE / "src" / "config" / "schema" / f"klipper-{commit[:10]}.json"
+    out = PACKAGE / "src" / "config" / "schema" / f"{firmware}-{commit[:10]}.json"
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(schema, ensure_ascii=False, indent=1) + "\n", encoding="utf8", newline="\n")
-    report = HERE / "unresolved.txt"
+    report = HERE / f"unresolved-{firmware}.txt"
     report.write_text("\n".join(sorted(set(analyzer.reads.unresolved))) + "\n", encoding="utf8", newline="\n")
     print(f"{out.name} : {len(rules)} règles, {sum(len(r['options']) for r in rules)} options ; "
-          f"{len(set(analyzer.reads.unresolved))} appels non résolus (unresolved.txt)")
+          f"{len(set(analyzer.reads.unresolved))} appels non résolus (unresolved-{firmware}.txt)")
 
 
 if __name__ == "__main__":

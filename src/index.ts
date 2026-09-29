@@ -2,6 +2,14 @@
 // API publique du cœur d'analyse. Les résultats portent des codes (traduits par l'interface).
 
 export {
+  detectFirmware,
+  FIRMWARES,
+  type FirmwareCandidate,
+  type FirmwareDetection,
+  type FirmwareId,
+  loadSchema,
+} from "./config/firmwares";
+export {
   CONFIG_READ_CODES,
   type ConfigInput,
   type ConfigOption,
