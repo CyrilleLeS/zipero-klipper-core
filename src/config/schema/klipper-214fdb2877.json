@@ -1954,6 +1954,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:87",
       "extras.gcode_macro:89"
@@ -6373,6 +6374,7 @@
      "type": "string",
      "required": "conditional",
      "default": null,
+     "template": true,
      "sources": [
       "extras.filament_switch_sensor:24",
       "extras.gcode_macro:87",
@@ -6400,6 +6402,7 @@
      "type": "string",
      "required": "conditional",
      "default": null,
+     "template": true,
      "sources": [
       "extras.filament_switch_sensor:21",
       "extras.gcode_macro:87",
@@ -6441,6 +6444,7 @@
      "type": "string",
      "required": "conditional",
      "default": null,
+     "template": true,
      "sources": [
       "extras.filament_switch_sensor:24",
       "extras.gcode_macro:87",
@@ -6468,6 +6472,7 @@
      "type": "string",
      "required": "conditional",
      "default": null,
+     "template": true,
      "sources": [
       "extras.filament_switch_sensor:21",
       "extras.gcode_macro:87",
@@ -6597,6 +6602,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:87",
       "extras.gcode_macro:89"
@@ -6606,6 +6612,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:87",
       "extras.gcode_macro:89"
@@ -6629,6 +6636,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:87",
       "extras.gcode_macro:89"
@@ -6720,6 +6728,7 @@
      "type": "string",
      "required": "conditional",
      "default": null,
+     "template": true,
      "sources": [
       "extras.filament_switch_sensor:24",
       "extras.gcode_macro:87",
@@ -6811,6 +6820,7 @@
      "type": "string",
      "required": "conditional",
      "default": null,
+     "template": true,
      "sources": [
       "extras.filament_switch_sensor:21",
       "extras.gcode_macro:87",
@@ -9370,6 +9380,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:87",
       "extras.gcode_macro:89"
@@ -9565,6 +9576,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:87",
       "extras.gcode_macro:89"
@@ -11953,6 +11965,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:87",
       "extras.gcode_macro:89"
@@ -11962,6 +11975,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:87",
       "extras.gcode_macro:89"
@@ -12877,6 +12891,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:87",
       "extras.gcode_macro:89"
@@ -12894,6 +12909,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:87",
       "extras.gcode_macro:89"
@@ -25946,6 +25962,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:87",
       "extras.gcode_macro:89"

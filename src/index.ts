@@ -32,6 +32,23 @@ export {
 } from "./config/validate";
 export { ANALYSIS_LIMITS } from "./limits";
 export {
+  JINJA_CODES,
+  JINJA_ENVIRONMENTS,
+  type JinjaCode,
+  type JinjaEnvironment,
+  type JinjaIssue,
+  jinjaEnvironment,
+  lintTemplate,
+} from "./macros/jinja";
+export {
+  lintMacros,
+  type MacroIssue,
+  type MacroTemplate,
+  macroTemplates,
+  templateOptions,
+  templateSource,
+} from "./macros/templates";
+export {
   type ConsoleMesh,
   MESH_CONSOLE_CODES,
   type MeshConsoleCode,

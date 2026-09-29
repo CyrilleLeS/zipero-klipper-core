@@ -28,6 +28,11 @@ export interface ConfigOption {
   readonly value: string;
   readonly file: string;
   readonly line: number;
+  /**
+   * Ligne du fichier de chaque ligne de la valeur (`value.split("\n")[i]` → `valueLines[i]`) :
+   * les lignes de commentaire, retirées de la valeur, décalent la numérotation.
+   */
+  readonly valueLines: readonly number[];
   /** true si l'option provient du bloc SAVE_CONFIG (`#*#`). */
   readonly autosave: boolean;
 }
@@ -150,15 +155,17 @@ class Store {
   /** Un appel de `RawConfigParser.read_file` : l'état (section en cours) repart de zéro. */
   readChunk(lines: readonly Line[], file: string, autosave: boolean) {
     let section: MutableSection | undefined;
-    let option: { name: string; lines: string[]; line: number } | undefined;
+    let option: { name: string; lines: string[]; sourceLines: number[]; line: number } | undefined;
     let indentLevel = 0;
     const flush = () => {
       if (section && option) {
+        const value = pyRstrip(option.lines.join("\n"));
         section.options.set(option.name, {
           name: option.name,
-          value: pyRstrip(option.lines.join("\n")),
+          value,
           file,
           line: option.line,
+          valueLines: option.sourceLines.slice(0, value.split("\n").length),
           autosave,
         });
       }
@@ -174,12 +181,16 @@ class Store {
 
       if (value === "") {
         // Ligne vide dans une valeur (empty_lines_in_values), sauf si c'était un commentaire.
-        if (!hasComment && section && option) option.lines.push("");
+        if (!hasComment && section && option) {
+          option.lines.push("");
+          option.sourceLines.push(line);
+        }
         continue;
       }
       const indent = text.search(NON_SPACE);
       if (section && option && indent > indentLevel) {
         option.lines.push(value);
+        option.sourceLines.push(line);
         continue;
       }
       indentLevel = indent;
@@ -207,7 +218,12 @@ class Store {
         continue;
       }
       flush();
-      option = { name: name.toLowerCase(), lines: [pyStrip(match[3] ?? "")], line };
+      option = {
+        name: name.toLowerCase(),
+        lines: [pyStrip(match[3] ?? "")],
+        sourceLines: [line],
+        line,
+      };
     }
     flush();
   }

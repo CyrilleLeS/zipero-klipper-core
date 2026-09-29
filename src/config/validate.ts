@@ -37,6 +37,8 @@ export interface SchemaOption {
   readonly sep?: string;
   readonly seps?: readonly string[];
   readonly deprecated?: boolean;
+  /** Lue par `load_template` : modèle Jinja compilé au démarrage (EP-06.07). */
+  readonly template?: boolean;
   readonly sources: readonly string[];
 }
 

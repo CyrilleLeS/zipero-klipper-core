@@ -242,6 +242,8 @@ def merge(reads):
                 info[key] = same_type[0][key]
     if any(r.get("deprecated") for r in reads):
         info["deprecated"] = True
+    if any(r.get("template") for r in reads):
+        info["template"] = True
     info["sources"] = sorted({r["source"] for r in reads})
     return info
 

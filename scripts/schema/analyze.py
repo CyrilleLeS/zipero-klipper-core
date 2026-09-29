@@ -369,7 +369,7 @@ class Analyzer:
         for arg, default in zip(positional[len(positional) - len(function.args.defaults):], function.args.defaults):
             if isinstance(default, ast.Constant) and isinstance(default.value, str):
                 bindings.setdefault(arg.arg, [default.value])
-        context = {"class": cls, "types": {}, "choices": {}, "lists": {}, "multi": {}}
+        context = {"class": cls, "function": function.name, "types": {}, "choices": {}, "lists": {}, "multi": {}}
         aliases = {param: label}
         self.block(module, function.body, aliases, context, bindings, when, conditional)
 
@@ -675,6 +675,9 @@ class Analyzer:
         default_index = 2 if method == "getchoice" else 1
         default_node = node.args[default_index] if len(node.args) > default_index else kwargs.get("default")
         info = {"type": GET_TYPES[method], "source": f"{module.name}:{node.lineno}"}
+        # Lue par `load_template` : modèle Jinja compilé au démarrage (lint des macros, EP-06.07).
+        if module.name == "extras.gcode_macro" and (context or {}).get("function") == "load_template":
+            info["template"] = True
         if default_node is None:
             info["required"] = "conditional" if conditional else "always"
         else:

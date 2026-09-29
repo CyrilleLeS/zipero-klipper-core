@@ -979,6 +979,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:336",
       "extras.gcode_macro:338"
@@ -1237,6 +1238,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:336",
       "extras.gcode_macro:338"
@@ -1441,6 +1443,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:336",
       "extras.gcode_macro:338"
@@ -2113,6 +2116,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:336",
       "extras.gcode_macro:338"
@@ -2202,6 +2206,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:336",
       "extras.gcode_macro:338"
@@ -2702,6 +2707,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:336",
       "extras.gcode_macro:338"
@@ -2761,6 +2767,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:336",
       "extras.gcode_macro:338"
@@ -2857,6 +2864,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:336",
       "extras.gcode_macro:338"
@@ -2882,6 +2890,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:336",
       "extras.gcode_macro:338"
@@ -2891,6 +2900,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:336",
       "extras.gcode_macro:338"
@@ -2900,6 +2910,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:336",
       "extras.gcode_macro:338"
@@ -2909,6 +2920,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:336",
       "extras.gcode_macro:338"
@@ -7976,6 +7988,7 @@
      "type": "string",
      "required": "conditional",
      "default": null,
+     "template": true,
      "sources": [
       "extras.filament_switch_sensor:30",
       "extras.gcode_macro:336",
@@ -8003,6 +8016,7 @@
      "type": "string",
      "required": "conditional",
      "default": null,
+     "template": true,
      "sources": [
       "extras.filament_switch_sensor:26",
       "extras.gcode_macro:336",
@@ -8068,6 +8082,7 @@
      "type": "string",
      "required": "conditional",
      "default": null,
+     "template": true,
      "sources": [
       "extras.filament_switch_sensor:248",
       "extras.gcode_macro:336",
@@ -8078,6 +8093,7 @@
      "type": "string",
      "required": "conditional",
      "default": null,
+     "template": true,
      "sources": [
       "extras.filament_switch_sensor:30",
       "extras.gcode_macro:336",
@@ -8114,6 +8130,7 @@
      "type": "string",
      "required": "conditional",
      "default": null,
+     "template": true,
      "sources": [
       "extras.filament_switch_sensor:26",
       "extras.gcode_macro:336",
@@ -8209,6 +8226,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:336",
       "extras.gcode_macro:338"
@@ -8218,6 +8236,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:336",
       "extras.gcode_macro:338"
@@ -8241,6 +8260,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:336",
       "extras.gcode_macro:338"
@@ -8370,6 +8390,7 @@
      "type": "string",
      "required": "conditional",
      "default": null,
+     "template": true,
      "sources": [
       "extras.gcode_macro:336",
       "extras.gcode_macro:338",
@@ -8380,6 +8401,7 @@
      "type": "string",
      "required": "conditional",
      "default": null,
+     "template": true,
      "sources": [
       "extras.filament_switch_sensor:30",
       "extras.gcode_macro:336",
@@ -8480,6 +8502,7 @@
      "type": "string",
      "required": "conditional",
      "default": null,
+     "template": true,
      "sources": [
       "extras.filament_switch_sensor:26",
       "extras.gcode_macro:336",
@@ -13509,6 +13532,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:336",
       "extras.gcode_macro:338"
@@ -13704,6 +13728,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:336",
       "extras.gcode_macro:338"
@@ -14640,6 +14665,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:336",
       "extras.gcode_macro:338"
@@ -14675,6 +14701,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:336",
       "extras.gcode_macro:338"
@@ -14709,6 +14736,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:336",
       "extras.gcode_macro:338"
@@ -15746,6 +15774,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:336",
       "extras.gcode_macro:338"
@@ -16739,6 +16768,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:336",
       "extras.gcode_macro:338"
@@ -16765,6 +16795,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:336",
       "extras.gcode_macro:338"
@@ -16799,6 +16830,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:336",
       "extras.gcode_macro:338"
@@ -16969,6 +17001,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:336",
       "extras.gcode_macro:338"
@@ -17308,6 +17341,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:336",
       "extras.gcode_macro:338"
@@ -17816,6 +17850,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:336",
       "extras.gcode_macro:338"
@@ -17979,6 +18014,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:336",
       "extras.gcode_macro:338"
@@ -18013,6 +18049,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:336",
       "extras.gcode_macro:338"
@@ -18047,6 +18084,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:336",
       "extras.gcode_macro:338"
@@ -31723,6 +31761,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:336",
       "extras.gcode_macro:338"
@@ -31732,6 +31771,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:336",
       "extras.gcode_macro:338"
@@ -31741,6 +31781,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:336",
       "extras.gcode_macro:338"
@@ -31750,6 +31791,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:336",
       "extras.gcode_macro:338"
@@ -31759,6 +31801,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:336",
       "extras.gcode_macro:338"
@@ -31776,6 +31819,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:336",
       "extras.gcode_macro:338"
@@ -32071,6 +32115,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:336",
       "extras.gcode_macro:338"
@@ -32101,6 +32146,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:336",
       "extras.gcode_macro:338"
@@ -32121,6 +32167,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:336",
       "extras.gcode_macro:338"
@@ -32251,6 +32298,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:336",
       "extras.gcode_macro:338"
@@ -34830,6 +34878,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:336",
       "extras.gcode_macro:338"
@@ -35057,6 +35106,7 @@
      "type": "string",
      "required": "conditional",
      "default": "calculée",
+     "template": true,
      "sources": [
       "extras.gcode_macro:336",
       "extras.gcode_macro:338"
