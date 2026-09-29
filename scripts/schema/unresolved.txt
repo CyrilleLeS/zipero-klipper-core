@@ -1,0 +1,7 @@
+extras.angle:631 sensor_class
+extras.board_pins:14 option opt
+extras.display.display:181 config.getchoice('lcd_type', LCD_chips)
+extras.display.menu:1018 menu_items[type]
+extras.gcode_macro:156 option option
+extras.led:118 option name + '_pin'
+extras.probe_eddy_current:1032 sensors[sensor_type]

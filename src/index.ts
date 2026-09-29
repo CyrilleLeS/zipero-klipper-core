@@ -13,6 +13,15 @@ export {
   readConfig,
 } from "./config/ini";
 export { normalizePath } from "./config/paths";
+export { KLIPPER_SCHEMA } from "./config/schema";
+export {
+  COVERED_SECTIONS,
+  type ConfigSchema,
+  VALIDATION_CODES,
+  type ValidationCode,
+  type ValidationIssue,
+  validateConfig,
+} from "./config/validate";
 export { ANALYSIS_LIMITS } from "./limits";
 export {
   type ConsoleMesh,

@@ -1,0 +1,167 @@
+{
+  "$comment": "Couche curée du schéma (ADR 0022, point 3) : ce que l'analyse du code ne peut pas savoir. Options supprimées : vérifiées dans docs/Config_Changes.md de Klipper à chaque génération (`since` = date de l'entrée). Hors Klipper : sections et options de forks ou de modules installés à part, relevées dans le corpus (`seenIn`) ; signalées comme telles, jamais en erreur.",
+  "removed": [
+    {
+      "sectionRegex": "^printer$",
+      "option": "max_accel_to_decel",
+      "since": "2025-08-11",
+      "replacement": "minimum_cruise_ratio"
+    },
+    {
+      "sectionRegex": "^stepper_",
+      "option": "step_distance",
+      "since": "2021-11-02",
+      "replacement": "rotation_distance"
+    },
+    {
+      "sectionRegex": "^extruder\\d*$",
+      "option": "step_distance",
+      "since": "2021-11-02",
+      "replacement": "rotation_distance"
+    },
+    {
+      "sectionRegex": "^extruder\\d*$",
+      "option": "shared_heater",
+      "since": "2024-02-15",
+      "replacement": null
+    },
+    {
+      "sectionRegex": "^(extruder\\d*|heater_bed)$",
+      "option": "pid_integral_max",
+      "since": "2021-11-02",
+      "replacement": null
+    },
+    {
+      "sectionRegex": "^bed_mesh$",
+      "option": "relative_reference_index",
+      "since": "2024-02-15",
+      "replacement": "zero_reference_position"
+    },
+    {
+      "sectionRegex": "^bed_mesh$",
+      "option": "bed_shape",
+      "since": "2019-02-24",
+      "replacement": "mesh_radius"
+    },
+    {
+      "sectionRegex": "^bed_mesh$",
+      "option": "min_point",
+      "since": "2020-01-09",
+      "replacement": "mesh_min"
+    },
+    {
+      "sectionRegex": "^bed_mesh$",
+      "option": "max_point",
+      "since": "2020-01-09",
+      "replacement": "mesh_max"
+    },
+    {
+      "sectionRegex": "^bed_mesh$",
+      "option": "bed_radius",
+      "since": "2020-01-09",
+      "replacement": "mesh_radius"
+    },
+    {
+      "sectionRegex": "^bed_mesh$",
+      "option": "samples",
+      "since": "2019-06-06",
+      "replacement": "[probe] samples"
+    },
+    {
+      "sectionRegex": "^bed_mesh$",
+      "option": "samples_result",
+      "since": "2019-06-06",
+      "replacement": "[probe] samples_result"
+    },
+    {
+      "sectionRegex": "^bed_mesh$",
+      "option": "sample_retract_dist",
+      "since": "2019-06-06",
+      "replacement": "[probe] sample_retract_dist"
+    },
+    {
+      "sectionRegex": "^mcu( |$)",
+      "option": "pin_map",
+      "since": "2021-11-02",
+      "replacement": null
+    },
+    {
+      "sectionRegex": "^gcode_macro ",
+      "option": "default_parameter_",
+      "optionRegex": "^default_parameter_.+$",
+      "since": "2021-11-02",
+      "replacement": "params"
+    }
+  ],
+  "outsideKlipper": [
+    {
+      "origin": "kalico",
+      "seenIn": "corpus/printer-cfg/ChazLayyd__Bambu-Lab-Klipper-Conversion.cfg ; sources Kalico 84a41057 (spike EP-01.10)",
+      "options": [
+        {
+          "sectionRegex": "^(extruder\\d*|heater_bed|heater_generic .+)$",
+          "names": [
+            "pid_target",
+            "pid_tolerance",
+            "pid_version",
+            "heater_power",
+            "cooling_fan",
+            "filament_density",
+            "filament_heat_capacity",
+            "block_heat_capacity",
+            "sensor_responsiveness",
+            "ambient_transfer",
+            "fan_ambient_transfer"
+          ]
+        },
+        {
+          "sectionRegex": "^stepper_",
+          "names": ["homing_accel", "min_home_dist", "use_sensorless_homing"]
+        }
+      ]
+    },
+    {
+      "origin": "creality",
+      "seenIn": "corpus/printer-cfg/Grenvals__Creality-K1C-Optimized-Klipper-Configuration.cfg, corpus/config-sets/VinoY27__K1Configs",
+      "sections": ["prtouch", "prtouch_v2", "bl24c16f", "custom_macro", "fan_feedback"],
+      "options": [{ "sectionRegex": "^printer$", "names": ["square_corner_max_velocity"] }]
+    },
+    {
+      "origin": "qidi",
+      "seenIn": "corpus/printer-cfg/FxWoody__Qidi-Plus-4-Mods.cfg, corpus/printer-cfg/spegelius__3DModels.cfg",
+      "sections": ["qdprobe", "chamber_fan", "gcode_macro_break"],
+      "options": [
+        {
+          "sectionRegex": "^stepper_",
+          "names": [
+            "endstop_pin_reverse",
+            "position_endstop_reverse",
+            "homing_speed_reverse",
+            "homing_positive_dir_reverse"
+          ]
+        }
+      ]
+    },
+    {
+      "origin": "beacon",
+      "seenIn": "corpus/config-sets/jakew02__voron-v2",
+      "sections": ["beacon"]
+    },
+    {
+      "origin": "shaketune",
+      "seenIn": "corpus/printer-cfg/FxWoody__Qidi-Plus-4-Mods.cfg",
+      "sections": ["shaketune"]
+    },
+    {
+      "origin": "gcode_shell_command",
+      "seenIn": "corpus/config-sets/jakew02__voron-v2, zellneralex__klipper_config, VinoY27__K1Configs",
+      "sections": ["gcode_shell_command"]
+    },
+    { "origin": "z_calibration", "seenIn": "corpus/config-sets", "sections": ["z_calibration"] },
+    {
+      "origin": "virtual_pins",
+      "seenIn": "corpus/printer-cfg/Grenvals__Creality-K1C-Optimized-Klipper-Configuration.cfg",
+      "sections": ["virtual_pins"]
+    }
+  ]
+}
