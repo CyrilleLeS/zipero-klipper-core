@@ -1,7 +1,18 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // API publique du cœur d'analyse. Les résultats portent des codes (traduits par l'interface).
 
-export { type ConfigOption, type ConfigSection, parseConfig } from "./config/ini";
+export {
+  CONFIG_READ_CODES,
+  type ConfigInput,
+  type ConfigOption,
+  type ConfigProblem,
+  type ConfigReadCode,
+  type ConfigReadResult,
+  type ConfigSection,
+  parseConfig,
+  readConfig,
+} from "./config/ini";
+export { normalizePath } from "./config/paths";
 export { ANALYSIS_LIMITS } from "./limits";
 export {
   type ConsoleMesh,

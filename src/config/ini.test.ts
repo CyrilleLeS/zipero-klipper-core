@@ -24,13 +24,13 @@ describe("parseConfig", () => {
     expect(section?.options.get("step_pin")?.line).toBe(3);
   });
 
-  it("ignore les commentaires de ligne et de fin de ligne (# et ;)", () => {
+  it("commentaires : « # » partout (retiré par Klipper), « ; » en début ou après un blanc", () => {
     const cfg =
       "[probe]\n# commentaire\n; autre\nx_offset: -44 # à gauche\ny_offset: -6 ;avant\npin: ^PB7#pas un commentaire";
     expect(optionsOf(cfg, "probe")).toEqual({
       x_offset: "-44",
       y_offset: "-6",
-      pin: "^PB7#pas un commentaire",
+      pin: "^PB7",
     });
   });
 
@@ -38,7 +38,8 @@ describe("parseConfig", () => {
     const cfg =
       "[gcode_macro START]\ngcode:\n  G28\n  {% if x %}\n    G1 Z5\n  {% endif %}\nvariable_a: 1";
     expect(optionsOf(cfg, "gcode_macro START")).toEqual({
-      gcode: "G28\n{% if x %}\nG1 Z5\n{% endif %}",
+      // Valeur vide sur la ligne de l'option : la valeur commence par un saut de ligne (Python).
+      gcode: "\nG28\n{% if x %}\nG1 Z5\n{% endif %}",
       variable_a: "1",
     });
   });
@@ -48,7 +49,7 @@ describe("parseConfig", () => {
     expect(optionsOf(cfg, "bed_mesh")).toEqual({ speed: "120", horizontal_move_z: "5" });
   });
 
-  it("lit le bloc SAVE_CONFIG (#*#) avec tabulations, qui l'emporte sur la configuration", () => {
+  it("lit le bloc SAVE_CONFIG (#*#) ; une option déjà définie garde la valeur du fichier", () => {
     const cfg = [
       "[probe]",
       "z_offset: 1.0",
@@ -67,10 +68,11 @@ describe("parseConfig", () => {
     ].join("\n");
     const sections = parseConfig(cfg);
     const probe = sections.find((s) => s.name === "probe")?.options.get("z_offset");
-    expect(probe).toMatchObject({ value: "1.915", autosave: true, line: 8 });
+    // Comme Klipper : l'option du fichier l'emporte, celle du bloc est ignorée.
+    expect(probe).toMatchObject({ value: "1.0", autosave: false, line: 2 });
     expect(optionsOf(cfg, "bed_mesh default")).toEqual({
       version: "1",
-      points: "-0.057500, -0.030000\n0.005000, 0.035000",
+      points: "\n-0.057500, -0.030000\n0.005000, 0.035000",
     });
   });
 
