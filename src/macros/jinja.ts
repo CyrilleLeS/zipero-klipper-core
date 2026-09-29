@@ -636,35 +636,35 @@ class TokenStream {
 // ---------------------------------------------------------------------------------------------
 // Arbre (jinja2/nodes.py, réduit à ce que les contrôles utilisent)
 
-type Ctx = "load" | "store" | "param";
+export type Ctx = "load" | "store" | "param";
 
-interface CallArgs {
+export interface CallArgs {
   readonly args: Expr[];
   readonly kwargs: { readonly key: string; readonly value: Expr }[];
   readonly dynArgs: Expr | undefined;
   readonly dynKwargs: Expr | undefined;
 }
 
-type Expr =
+export type Expr =
   | { kind: "name"; name: string; ctx: Ctx; line: number }
   | { kind: "nsref"; name: string; line: number }
-  | { kind: "const"; truthy: boolean; line: number }
+  | { kind: "const"; truthy: boolean; text?: string; line: number }
   | { kind: "tuple"; items: Expr[]; ctx: Ctx; line: number }
   | { kind: "list"; items: Expr[]; line: number }
   | { kind: "dict"; items: { key: Expr; value: Expr }[]; line: number }
   | { kind: "condexpr"; test: Expr; expr1: Expr; expr2: Expr | undefined; line: number }
   | { kind: "binop"; op: string; left: Expr; right: Expr; line: number }
   | { kind: "unary"; op: "not" | "neg" | "pos"; node: Expr; line: number }
-  | { kind: "compare"; expr: Expr; ops: Expr[]; line: number }
+  | { kind: "compare"; expr: Expr; ops: Expr[]; operators: string[]; line: number }
   | { kind: "concat"; nodes: Expr[]; line: number }
-  | { kind: "getattr"; node: Expr; line: number }
+  | { kind: "getattr"; node: Expr; attr: string; line: number }
   | { kind: "getitem"; node: Expr; arg: Expr; line: number }
   | { kind: "slice"; parts: (Expr | undefined)[]; line: number }
   | { kind: "call"; node: Expr; args: CallArgs; line: number }
   | { kind: "filter"; node: Expr | undefined; name: string; args: CallArgs; line: number }
   | { kind: "test"; node: Expr; name: string; args: CallArgs; line: number };
 
-type Stmt =
+export type Stmt =
   | { kind: "output"; nodes: Expr[]; line: number }
   | { kind: "extends"; template: Expr; line: number }
   | {
@@ -697,10 +697,10 @@ type Stmt =
   | { kind: "scope"; option: Expr; body: Stmt[]; line: number }
   | { kind: "break" | "continue"; line: number };
 
-type Node = Expr | Stmt;
+export type Node = Expr | Stmt;
 
 /** Enfants dans l'ordre des champs de Jinja (`iter_child_nodes`), pour `find_all`. */
-function children(node: Node): Node[] {
+export function children(node: Node): Node[] {
   const call = (a: CallArgs) => [
     ...a.args,
     ...a.kwargs.map((k) => k.value),
@@ -1269,19 +1269,24 @@ class Parser {
     let line = this.stream.current.line;
     const expr = this.parseMath1();
     const ops: Expr[] = [];
+    const operators: string[] = [];
     for (;;) {
       const type = this.stream.current.type;
       if (COMPARE_OPERATORS.has(type)) {
         this.stream.next();
+        operators.push(type);
         ops.push(this.parseMath1());
-      } else if (this.stream.skipIf("name:in")) ops.push(this.parseMath1());
-      else if (test(this.stream.current, "name:not") && test(this.stream.look(), "name:in")) {
+      } else if (this.stream.skipIf("name:in")) {
+        operators.push("in");
+        ops.push(this.parseMath1());
+      } else if (test(this.stream.current, "name:not") && test(this.stream.look(), "name:in")) {
         this.stream.skip(2);
+        operators.push("notin");
         ops.push(this.parseMath1());
       } else break;
       line = this.stream.current.line;
     }
-    return ops.length === 0 ? expr : { kind: "compare", expr, ops, line };
+    return ops.length === 0 ? expr : { kind: "compare", expr, ops, operators, line };
   }
 
   private parseMath1(): Expr {
@@ -1357,11 +1362,21 @@ class Parser {
     if (token.type === "string") {
       this.stream.next();
       let empty = decodeString(token.value.slice(1, -1)).empty;
+      // Texte de la chaîne, pour l'analyse des macros (inconnu s'il contient un échappement).
+      let text: string | undefined = token.value.slice(1, -1);
       while (this.stream.current.type === "string") {
-        empty &&= decodeString(this.stream.current.value.slice(1, -1)).empty;
+        const next = this.stream.current.value.slice(1, -1);
+        empty &&= decodeString(next).empty;
+        text = text === undefined ? undefined : text + next;
         this.stream.next();
       }
-      return { kind: "const", truthy: !empty, line: token.line };
+      if (text?.includes("\\")) text = undefined;
+      return {
+        kind: "const",
+        truthy: !empty,
+        line: token.line,
+        ...(text === undefined ? {} : { text }),
+      };
     }
     if (token.type === "integer" || token.type === "float") {
       this.stream.next();
@@ -1466,7 +1481,8 @@ class Parser {
     if (token.type === "dot") {
       const attribute = this.stream.current;
       this.stream.next();
-      if (attribute.type === "name") return { kind: "getattr", node, line: token.line };
+      if (attribute.type === "name")
+        return { kind: "getattr", node, attr: attribute.value, line: token.line };
       if (attribute.type !== "integer") this.fail("expected name or number", attribute.line);
       return {
         kind: "getitem",
@@ -2103,4 +2119,43 @@ export function lintTemplate(
       },
     ];
   }
+}
+
+/** Arbre du modèle, pour l'analyse du sens (EP-06.08) ; undefined si Jinja le refuse. */
+export function parseTemplate(source: string, env: JinjaEnvironment): Stmt[] | undefined {
+  if (lintTemplate(source, env).some((issue) => issue.startup)) return undefined;
+  return new Parser(source, env).parse();
+}
+
+/** Marque d'une expression `{…}` dans le texte produit (sa valeur n'est connue qu'à l'exécution). */
+export const EXPRESSION_MARK = "\u0000";
+
+/**
+ * Lignes que le modèle produit, toutes branches confondues : texte tel quel, expressions
+ * remplacées par EXPRESSION_MARK, balises `{% … %}` et commentaires retirés ; avec la ligne du
+ * modèle où chacune commence. undefined si Jinja refuse le modèle.
+ */
+export function templateLines(
+  source: string,
+  env: JinjaEnvironment,
+): { readonly text: string; readonly line: number }[] | undefined {
+  if (lintTemplate(source, env).some((issue) => issue.startup)) return undefined;
+  const lines: { text: string; line: number }[] = [];
+  let current: { text: string; line: number } | undefined;
+  const append = (text: string, line: number) => {
+    const parts = text.split("\n");
+    parts.forEach((part, index) => {
+      if (index > 0) current = undefined;
+      if (!current) {
+        current = { text: "", line: line + index };
+        lines.push(current);
+      }
+      current.text += part;
+    });
+  };
+  for (const token of tokenize(source, env)) {
+    if (token.type === "data") append(token.value, token.line);
+    else if (token.type === "variable_begin") append(EXPRESSION_MARK, token.line);
+  }
+  return lines;
 }

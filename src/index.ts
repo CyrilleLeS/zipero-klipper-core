@@ -40,6 +40,16 @@ export {
   jinjaEnvironment,
   lintTemplate,
 } from "./macros/jinja";
+export { checkMacroLiteral, type LiteralProblem } from "./macros/pyliteral";
+export {
+  checkMacros,
+  isTraditionalGcode,
+  klipperCommand,
+  MACRO_CODES,
+  type MacroCheckIssue,
+  type MacroCheckOptions,
+  type MacroCode,
+} from "./macros/semantics";
 export {
   lintMacros,
   type MacroIssue,

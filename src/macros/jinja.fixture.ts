@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-only
-// Généré par tooling/corpus-tests/harvest/jinja_fixture.ts : verdicts du vrai Jinja (2.11.3 pour
+// Généré par tooling/corpus-tests/harvest/core_fixtures.ts : verdicts du vrai Jinja (2.11.3 pour
 // Klipper, 3.1.6 pour Kalico) sur les cas limites. Ne pas modifier à la main.
 
 export type JinjaVerdict = null | { readonly line: number; readonly message: string } | { readonly python: string };

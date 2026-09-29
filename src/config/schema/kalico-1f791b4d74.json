@@ -35702,5 +35702,1141 @@
     "virtual_pins"
    ]
   }
- ]
+ ],
+ "commands": {
+  "always": [
+   "ABORT",
+   "ACCEPT",
+   "ACTIVATE_EXTRUDER",
+   "COLD_EXTRUDE",
+   "DISABLE_TELEMETRY",
+   "ECHO",
+   "ENABLE_TELEMETRY",
+   "EXCLUDE_OBJECT",
+   "EXCLUDE_OBJECT_DEFINE",
+   "EXCLUDE_OBJECT_END",
+   "EXCLUDE_OBJECT_START",
+   "FIRMWARE_RESTART",
+   "FORCE_MOVE",
+   "G0",
+   "G1",
+   "G20",
+   "G21",
+   "G28",
+   "G4",
+   "G90",
+   "G91",
+   "G92",
+   "GET_POSITION",
+   "HEATER_INTERRUPT",
+   "HELP",
+   "LOG_ROLLOVER",
+   "M104",
+   "M105",
+   "M109",
+   "M110",
+   "M112",
+   "M114",
+   "M115",
+   "M118",
+   "M119",
+   "M18",
+   "M204",
+   "M220",
+   "M221",
+   "M302",
+   "M400",
+   "M82",
+   "M83",
+   "M84",
+   "MANUAL_PROBE",
+   "NEXT",
+   "PID_CALIBRATE",
+   "PID_PROFILE",
+   "QUERY_ENDSTOPS",
+   "RELOAD_GCODE_MACROS",
+   "RESET_VELOCITY_LIMIT",
+   "RESPOND",
+   "RESTART",
+   "RESTORE_DUAL_CARRIAGE_STATE",
+   "RESTORE_GCODE_STATE",
+   "SAVE_CONFIG",
+   "SAVE_DUAL_CARRIAGE_STATE",
+   "SAVE_GCODE_STATE",
+   "SET_DUAL_CARRIAGE",
+   "SET_EXTRUDER_ROTATION_DISTANCE",
+   "SET_GCODE_OFFSET",
+   "SET_GCODE_VARIABLE",
+   "SET_HEATER_PID",
+   "SET_HEATER_TEMPERATURE",
+   "SET_IDLE_TIMEOUT",
+   "SET_KINEMATICS_LIMIT",
+   "SET_KINEMATIC_POSITION",
+   "SET_PRESSURE_ADVANCE",
+   "SET_SMOOTH_TIME",
+   "SET_STEPPER_ENABLE",
+   "SET_VELOCITY_LIMIT",
+   "STATUS",
+   "STEPPER_BUZZ",
+   "SYNC_EXTRUDER_MOTION",
+   "TELEMETRY_EXAMPLE",
+   "TEMPERATURE_WAIT",
+   "TESTZ",
+   "TUNING_TOWER",
+   "TURN_OFF_HEATERS",
+   "Z_ENDSTOP_CALIBRATE",
+   "Z_OFFSET_APPLY_ENDSTOP"
+  ],
+  "alwaysPossible": [
+   "MPC_CALIBRATE",
+   "MPC_SET"
+  ],
+  "sections": {
+   "adc_scaled": [
+    "QUERY_ADC"
+   ],
+   "adc_temperature": [
+    "QUERY_ADC"
+   ],
+   "adxl345": [
+    "ACCELEROMETER_DEBUG_READ",
+    "ACCELEROMETER_DEBUG_WRITE",
+    "ACCELEROMETER_MEASURE",
+    "ACCELEROMETER_QUERY"
+   ],
+   "angle": [
+    "ANGLE_CALIBRATE",
+    "ANGLE_CHIP_CALIBRATE",
+    "ANGLE_DEBUG_READ",
+    "ANGLE_DEBUG_WRITE"
+   ],
+   "axis_twist_compensation": [
+    "AXIS_TWIST_COMPENSATION_CALIBRATE"
+   ],
+   "bed_mesh": [
+    "BED_MESH_CALIBRATE",
+    "BED_MESH_CHECK",
+    "BED_MESH_CLEAR",
+    "BED_MESH_MAP",
+    "BED_MESH_OFFSET",
+    "BED_MESH_OUTPUT",
+    "BED_MESH_PROFILE"
+   ],
+   "bed_screws": [
+    "ADJUSTED",
+    "BED_SCREWS_ADJUST"
+   ],
+   "bed_tilt": [
+    "BED_TILT_CALIBRATE"
+   ],
+   "belay": [
+    "BELAY_DISABLE",
+    "BELAY_ENABLE",
+    "BELAY_SET_MULTIPLIER",
+    "BELAY_SET_STEPPER",
+    "QUERY_ADC",
+    "QUERY_BELAY"
+   ],
+   "bltouch": [
+    "BLTOUCH_DEBUG",
+    "BLTOUCH_STORE"
+   ],
+   "buttons": [
+    "QUERY_ADC"
+   ],
+   "control_mpc": [
+    "MPC_CALIBRATE",
+    "MPC_SET"
+   ],
+   "delayed_gcode": [
+    "UPDATE_DELAYED_GCODE"
+   ],
+   "delta_calibrate": [
+    "DELTA_ANALYZE",
+    "DELTA_CALIBRATE"
+   ],
+   "display_status": [
+    "M117",
+    "M73",
+    "SET_DISPLAY_TEXT"
+   ],
+   "dockable_probe": [
+    "ATTACH_PROBE",
+    "DETACH_PROBE",
+    "MOVE_AVOIDING_DOCK",
+    "MOVE_TO_APPROACH_PROBE",
+    "MOVE_TO_DETACH_PROBE",
+    "MOVE_TO_DOCK_PROBE",
+    "MOVE_TO_EXTRACT_PROBE",
+    "MOVE_TO_INSERT_PROBE",
+    "QUERY_DOCKABLE_PROBE",
+    "SET_DOCKABLE_PROBE"
+   ],
+   "endstop_phase": [
+    "ENDSTOP_PHASE_CALIBRATE"
+   ],
+   "fan": [
+    "M106",
+    "M107"
+   ],
+   "fan_generic": [
+    "SET_FAN_SPEED"
+   ],
+   "filament_motion_sensor": [
+    "QUERY_ADC"
+   ],
+   "filament_switch_sensor": [
+    "CANCEL_PRINT",
+    "CLEAR_PAUSE",
+    "PAUSE",
+    "QUERY_ADC",
+    "QUERY_FILAMENT_SENSOR",
+    "RESUME",
+    "SET_FILAMENT_SENSOR"
+   ],
+   "firmware_retraction": [
+    "CLEAR_RETRACTION",
+    "G10",
+    "G11",
+    "GET_RETRACTION",
+    "RESET_RETRACTION",
+    "SET_RETRACTION"
+   ],
+   "gcode_arcs": [
+    "G17",
+    "G18",
+    "G19",
+    "G2",
+    "G3"
+   ],
+   "gcode_button": [
+    "QUERY_ADC",
+    "QUERY_BUTTON"
+   ],
+   "gcode_shell_command": [
+    "RUN_SHELL_COMMAND"
+   ],
+   "hall_filament_width_sensor": [
+    "DISABLE_FILAMENT_WIDTH_LOG",
+    "DISABLE_FILAMENT_WIDTH_SENSOR",
+    "ENABLE_FILAMENT_WIDTH_LOG",
+    "ENABLE_FILAMENT_WIDTH_SENSOR",
+    "QUERY_FILAMENT_WIDTH",
+    "QUERY_RAW_FILAMENT_WIDTH",
+    "RESET_FILAMENT_WIDTH_SENSOR"
+   ],
+   "heated_fan": [
+    "M106",
+    "M107",
+    "SET_HEATED_FAN_TARGET"
+   ],
+   "heater_bed": [
+    "M140",
+    "M190"
+   ],
+   "input_shaper": [
+    "SET_INPUT_SHAPER"
+   ],
+   "ldc1612": [
+    "LDC_CALIBRATE_DRIVE_CURRENT"
+   ],
+   "led": [
+    "SET_LED",
+    "SET_LED_TEMPLATE"
+   ],
+   "manual_stepper": [
+    "MANUAL_STEPPER"
+   ],
+   "mcp4018": [
+    "SET_DIGIPOT"
+   ],
+   "mixing_extruder": [
+    "SET_MIXING_EXTRUDER",
+    "SET_MIXING_EXTRUDER_GRADIENT"
+   ],
+   "nozzle_cleanup": [
+    "NOZZLE_CLEANUP"
+   ],
+   "output_pin": [
+    "SET_PIN"
+   ],
+   "palette2": [
+    "CANCEL_PRINT",
+    "CLEAR_PAUSE",
+    "M20",
+    "M21",
+    "M23",
+    "M24",
+    "M25",
+    "M26",
+    "M27",
+    "M28",
+    "M29",
+    "M30",
+    "PALETTE_CLEAR",
+    "PALETTE_CONNECT",
+    "PALETTE_CUT",
+    "PALETTE_DISCONNECT",
+    "PALETTE_SMART_LOAD",
+    "PAUSE",
+    "RESUME",
+    "SDCARD_PRINT_FILE",
+    "SDCARD_RESET_FILE",
+    "SET_PRINT_STATS_INFO"
+   ],
+   "pause_resume": [
+    "CANCEL_PRINT",
+    "CLEAR_PAUSE",
+    "PAUSE",
+    "RESUME"
+   ],
+   "print_stats": [
+    "SET_PRINT_STATS_INFO"
+   ],
+   "probe": [
+    "PROBE",
+    "PROBE_ACCURACY",
+    "PROBE_CALIBRATE",
+    "QUERY_PROBE",
+    "Z_OFFSET_APPLY_PROBE"
+   ],
+   "probe_eddy_current": [
+    "PROBE_EDDY_CURRENT_CALIBRATE"
+   ],
+   "pwm_cycle_time": [
+    "SET_PIN"
+   ],
+   "pwm_tool": [
+    "SET_PIN"
+   ],
+   "quad_gantry_level": [
+    "QUAD_GANTRY_LEVEL"
+   ],
+   "query_adc": [
+    "QUERY_ADC"
+   ],
+   "resonance_tester": [
+    "MEASURE_AXES_NOISE",
+    "SHAPER_CALIBRATE",
+    "TEST_RESONANCES"
+   ],
+   "save_variables": [
+    "SAVE_VARIABLE"
+   ],
+   "screws_tilt_adjust": [
+    "SCREWS_TILT_CALCULATE"
+   ],
+   "sdcard_loop": [
+    "M20",
+    "M21",
+    "M23",
+    "M24",
+    "M25",
+    "M26",
+    "M27",
+    "M28",
+    "M29",
+    "M30",
+    "SDCARD_LOOP_BEGIN",
+    "SDCARD_LOOP_DESIST",
+    "SDCARD_LOOP_END",
+    "SDCARD_PRINT_FILE",
+    "SDCARD_RESET_FILE",
+    "SET_PRINT_STATS_INFO"
+   ],
+   "servo": [
+    "SET_SERVO"
+   ],
+   "skew_correction": [
+    "CALC_MEASURED_SKEW",
+    "GET_CURRENT_SKEW",
+    "SET_SKEW",
+    "SKEW_PROFILE"
+   ],
+   "smart_effector": [
+    "RESET_SMART_EFFECTOR",
+    "SET_SMART_EFFECTOR"
+   ],
+   "temperature_fan": [
+    "SET_TEMPERATURE_FAN_TARGET"
+   ],
+   "temperature_mcu": [
+    "QUERY_ADC"
+   ],
+   "tmc": [
+    "DUMP_TMC",
+    "INIT_TMC",
+    "SET_TMC_CURRENT",
+    "SET_TMC_FIELD"
+   ],
+   "tools_calibrate": [
+    "TOOL_CALIBRATE_QUERY_PROBE",
+    "TOOL_CALIBRATE_SAVE_TOOL_OFFSET",
+    "TOOL_CALIBRATE_TOOL_OFFSET",
+    "TOOL_LOCATE_SENSOR"
+   ],
+   "trad_rack": [
+    "QUERY_ADC",
+    "TR_ASSIGN_LANE",
+    "TR_CALIBRATE_SELECTOR",
+    "TR_DISCARD_BOWDEN_LENGTHS",
+    "TR_GO_TO_LANE",
+    "TR_HOME",
+    "TR_LOAD_LANE",
+    "TR_LOAD_TOOLHEAD",
+    "TR_LOCATE_SELECTOR",
+    "TR_NEXT",
+    "TR_PRINT_TOOL_GROUPS",
+    "TR_PRINT_TOOL_MAP",
+    "TR_RESET_ACTIVE_LANE",
+    "TR_RESET_TOOL_MAP",
+    "TR_RESUME",
+    "TR_SERVO_DOWN",
+    "TR_SERVO_TEST",
+    "TR_SERVO_UP",
+    "TR_SET_ACTIVE_LANE",
+    "TR_SET_DEFAULT_LANE",
+    "TR_SET_HOTEND_LOAD_LENGTH",
+    "TR_SYNC_TO_EXTRUDER",
+    "TR_UNLOAD_TOOLHEAD",
+    "TR_UNSYNC_FROM_EXTRUDER"
+   ],
+   "tsl1401cl_filament_width_sensor": [
+    "DISABLE_FILAMENT_WIDTH_SENSOR",
+    "ENABLE_FILAMENT_WIDTH_SENSOR",
+    "QUERY_FILAMENT_WIDTH",
+    "RESET_FILAMENT_WIDTH_SENSOR"
+   ],
+   "virtual_sdcard": [
+    "M20",
+    "M21",
+    "M23",
+    "M24",
+    "M25",
+    "M26",
+    "M27",
+    "M28",
+    "M29",
+    "M30",
+    "SDCARD_PRINT_FILE",
+    "SDCARD_RESET_FILE",
+    "SET_PRINT_STATS_INFO"
+   ],
+   "z_calibration": [
+    "CALCULATE_SWITCH_OFFSET",
+    "CALIBRATE_Z",
+    "PROBE_Z_ACCURACY"
+   ],
+   "z_thermal_adjust": [
+    "SET_Z_THERMAL_ADJUST"
+   ],
+   "z_tilt": [
+    "Z_TILT_ADJUST"
+   ],
+   "z_tilt_ng": [
+    "Z_TILT_ADJUST",
+    "Z_TILT_AUTODETECT",
+    "Z_TILT_CALIBRATE"
+   ]
+  },
+  "possible": {
+   "adc_temperature": [
+    "MPC_CALIBRATE",
+    "MPC_SET"
+   ],
+   "axis_twist_compensation": [
+    "BED_MESH_CALIBRATE",
+    "BED_MESH_CHECK",
+    "BED_MESH_CLEAR",
+    "BED_MESH_MAP",
+    "BED_MESH_OFFSET",
+    "BED_MESH_OUTPUT",
+    "BED_MESH_PROFILE",
+    "MPC_CALIBRATE",
+    "MPC_SET",
+    "PROBE",
+    "PROBE_ACCURACY",
+    "PROBE_CALIBRATE",
+    "QUERY_PROBE",
+    "Z_OFFSET_APPLY_PROBE"
+   ],
+   "bed_mesh": [
+    "MPC_CALIBRATE",
+    "MPC_SET",
+    "PROBE",
+    "PROBE_ACCURACY",
+    "PROBE_CALIBRATE",
+    "QUERY_PROBE",
+    "Z_OFFSET_APPLY_PROBE"
+   ],
+   "bed_tilt": [
+    "MPC_CALIBRATE",
+    "MPC_SET",
+    "PROBE",
+    "PROBE_ACCURACY",
+    "PROBE_CALIBRATE",
+    "QUERY_PROBE",
+    "Z_OFFSET_APPLY_PROBE"
+   ],
+   "bltouch": [
+    "MPC_CALIBRATE",
+    "MPC_SET",
+    "PROBE",
+    "PROBE_ACCURACY",
+    "PROBE_CALIBRATE",
+    "QUERY_PROBE",
+    "Z_OFFSET_APPLY_PROBE"
+   ],
+   "bme280": [
+    "MPC_CALIBRATE",
+    "MPC_SET"
+   ],
+   "controller_fan": [
+    "M106",
+    "M107",
+    "M117",
+    "M20",
+    "M21",
+    "M23",
+    "M24",
+    "M25",
+    "M26",
+    "M27",
+    "M28",
+    "M29",
+    "M30",
+    "M73",
+    "MPC_CALIBRATE",
+    "MPC_SET",
+    "QUERY_ADC",
+    "SDCARD_PRINT_FILE",
+    "SDCARD_RESET_FILE",
+    "SET_DISPLAY_GROUP",
+    "SET_DISPLAY_TEXT",
+    "SET_PIN",
+    "SET_PRINT_STATS_INFO"
+   ],
+   "delta_calibrate": [
+    "MPC_CALIBRATE",
+    "MPC_SET",
+    "PROBE",
+    "PROBE_ACCURACY",
+    "PROBE_CALIBRATE",
+    "QUERY_PROBE",
+    "Z_OFFSET_APPLY_PROBE"
+   ],
+   "display": [
+    "M117",
+    "M20",
+    "M21",
+    "M23",
+    "M24",
+    "M25",
+    "M26",
+    "M27",
+    "M28",
+    "M29",
+    "M30",
+    "M73",
+    "QUERY_ADC",
+    "SDCARD_PRINT_FILE",
+    "SDCARD_RESET_FILE",
+    "SET_DISPLAY_GROUP",
+    "SET_DISPLAY_TEXT",
+    "SET_PRINT_STATS_INFO"
+   ],
+   "dockable_probe": [
+    "MPC_CALIBRATE",
+    "MPC_SET",
+    "PROBE",
+    "PROBE_ACCURACY",
+    "PROBE_CALIBRATE",
+    "QUERY_PROBE",
+    "Z_OFFSET_APPLY_PROBE"
+   ],
+   "dotstar": [
+    "M117",
+    "M20",
+    "M21",
+    "M23",
+    "M24",
+    "M25",
+    "M26",
+    "M27",
+    "M28",
+    "M29",
+    "M30",
+    "M73",
+    "QUERY_ADC",
+    "SDCARD_PRINT_FILE",
+    "SDCARD_RESET_FILE",
+    "SET_DISPLAY_GROUP",
+    "SET_DISPLAY_TEXT",
+    "SET_LED",
+    "SET_LED_TEMPLATE",
+    "SET_PIN",
+    "SET_PRINT_STATS_INFO"
+   ],
+   "ds18b20": [
+    "MPC_CALIBRATE",
+    "MPC_SET"
+   ],
+   "extruder_stepper": [
+    "MPC_CALIBRATE",
+    "MPC_SET"
+   ],
+   "fan": [
+    "M117",
+    "M20",
+    "M21",
+    "M23",
+    "M24",
+    "M25",
+    "M26",
+    "M27",
+    "M28",
+    "M29",
+    "M30",
+    "M73",
+    "QUERY_ADC",
+    "SDCARD_PRINT_FILE",
+    "SDCARD_RESET_FILE",
+    "SET_DISPLAY_GROUP",
+    "SET_DISPLAY_TEXT",
+    "SET_PIN",
+    "SET_PRINT_STATS_INFO"
+   ],
+   "fan_generic": [
+    "M106",
+    "M107",
+    "M117",
+    "M20",
+    "M21",
+    "M23",
+    "M24",
+    "M25",
+    "M26",
+    "M27",
+    "M28",
+    "M29",
+    "M30",
+    "M73",
+    "QUERY_ADC",
+    "SDCARD_PRINT_FILE",
+    "SDCARD_RESET_FILE",
+    "SET_DISPLAY_GROUP",
+    "SET_DISPLAY_TEXT",
+    "SET_PIN",
+    "SET_PRINT_STATS_INFO"
+   ],
+   "filament_motion_sensor": [
+    "CANCEL_PRINT",
+    "CLEAR_PAUSE",
+    "PAUSE",
+    "QUERY_FILAMENT_SENSOR",
+    "RESUME",
+    "SET_FILAMENT_SENSOR"
+   ],
+   "hall_filament_width_sensor": [
+    "CANCEL_PRINT",
+    "CLEAR_PAUSE",
+    "PAUSE",
+    "QUERY_ADC",
+    "QUERY_FILAMENT_SENSOR",
+    "RESUME",
+    "SET_FILAMENT_SENSOR"
+   ],
+   "heated_fan": [
+    "M117",
+    "M20",
+    "M21",
+    "M23",
+    "M24",
+    "M25",
+    "M26",
+    "M27",
+    "M28",
+    "M29",
+    "M30",
+    "M73",
+    "MPC_CALIBRATE",
+    "MPC_SET",
+    "QUERY_ADC",
+    "SDCARD_PRINT_FILE",
+    "SDCARD_RESET_FILE",
+    "SET_DISPLAY_GROUP",
+    "SET_DISPLAY_TEXT",
+    "SET_PIN",
+    "SET_PRINT_STATS_INFO"
+   ],
+   "heater_bed": [
+    "MPC_CALIBRATE",
+    "MPC_SET"
+   ],
+   "heater_fan": [
+    "M106",
+    "M107",
+    "M117",
+    "M20",
+    "M21",
+    "M23",
+    "M24",
+    "M25",
+    "M26",
+    "M27",
+    "M28",
+    "M29",
+    "M30",
+    "M73",
+    "MPC_CALIBRATE",
+    "MPC_SET",
+    "QUERY_ADC",
+    "SDCARD_PRINT_FILE",
+    "SDCARD_RESET_FILE",
+    "SET_DISPLAY_GROUP",
+    "SET_DISPLAY_TEXT",
+    "SET_PIN",
+    "SET_PRINT_STATS_INFO"
+   ],
+   "heater_generic": [
+    "MPC_CALIBRATE",
+    "MPC_SET"
+   ],
+   "heaters": [
+    "MPC_CALIBRATE",
+    "MPC_SET"
+   ],
+   "homing_heaters": [
+    "MPC_CALIBRATE",
+    "MPC_SET"
+   ],
+   "icm20948": [
+    "ACCELEROMETER_DEBUG_READ",
+    "ACCELEROMETER_DEBUG_WRITE",
+    "ACCELEROMETER_MEASURE",
+    "ACCELEROMETER_QUERY"
+   ],
+   "indx": [
+    "INDX_CALIBRATE",
+    "INDX_CLEAR_FILAMENT",
+    "INDX_DEBUG_IR_SENSOR_EEPROM",
+    "INDX_DEBUG_STREAM_RAW_IR_SENSOR",
+    "INDX_DOCK_MEASURE",
+    "INDX_DUMP_MODEL_UPDATE",
+    "INDX_EXTRUDER_MOVE",
+    "INDX_FAN_CALIBRATE",
+    "INDX_FORCE_BRACKET_TEMP",
+    "INDX_LED_FORCE_COLOR",
+    "INDX_LED_SET_CURRENT",
+    "INDX_LOAD_FILAMENT",
+    "INDX_LOG",
+    "INDX_MEASURE_POWER",
+    "INDX_SET_CYCLE_LIMIT",
+    "INDX_SET_IR_SENSOR_PARAMS",
+    "INDX_SET_MODEL_PARAMS",
+    "INDX_SET_PID",
+    "M106",
+    "M107",
+    "M117",
+    "M20",
+    "M21",
+    "M23",
+    "M24",
+    "M25",
+    "M26",
+    "M27",
+    "M28",
+    "M29",
+    "M30",
+    "M73",
+    "MPC_CALIBRATE",
+    "MPC_SET",
+    "QUERY_ADC",
+    "SDCARD_PRINT_FILE",
+    "SDCARD_RESET_FILE",
+    "SET_DISPLAY_GROUP",
+    "SET_DISPLAY_TEXT",
+    "SET_PIN",
+    "SET_PRINT_STATS_INFO"
+   ],
+   "led": [
+    "M117",
+    "M20",
+    "M21",
+    "M23",
+    "M24",
+    "M25",
+    "M26",
+    "M27",
+    "M28",
+    "M29",
+    "M30",
+    "M73",
+    "QUERY_ADC",
+    "SDCARD_PRINT_FILE",
+    "SDCARD_RESET_FILE",
+    "SET_DISPLAY_GROUP",
+    "SET_DISPLAY_TEXT",
+    "SET_PIN",
+    "SET_PRINT_STATS_INFO"
+   ],
+   "lis2dw": [
+    "ACCELEROMETER_DEBUG_READ",
+    "ACCELEROMETER_DEBUG_WRITE",
+    "ACCELEROMETER_MEASURE",
+    "ACCELEROMETER_QUERY"
+   ],
+   "lis3dh": [
+    "ACCELEROMETER_DEBUG_READ",
+    "ACCELEROMETER_DEBUG_WRITE",
+    "ACCELEROMETER_MEASURE",
+    "ACCELEROMETER_QUERY"
+   ],
+   "lm75": [
+    "MPC_CALIBRATE",
+    "MPC_SET"
+   ],
+   "load_cell": [
+    "CALIBRATE",
+    "LOAD_CELL_CALIBRATE",
+    "LOAD_CELL_DIAGNOSTIC",
+    "LOAD_CELL_READ",
+    "LOAD_CELL_TARE",
+    "MPC_CALIBRATE",
+    "MPC_SET",
+    "TARE"
+   ],
+   "load_cell_probe": [
+    "CALIBRATE",
+    "LOAD_CELL_CALIBRATE",
+    "LOAD_CELL_DIAGNOSTIC",
+    "LOAD_CELL_READ",
+    "LOAD_CELL_TARE",
+    "LOAD_CELL_TEST_TAP",
+    "MPC_CALIBRATE",
+    "MPC_SET",
+    "PROBE",
+    "PROBE_ACCURACY",
+    "PROBE_CALIBRATE",
+    "QUERY_PROBE",
+    "TARE",
+    "Z_OFFSET_APPLY_PROBE"
+   ],
+   "mpc_ambient_temperature": [
+    "MPC_CALIBRATE",
+    "MPC_SET"
+   ],
+   "mpc_block_temperature": [
+    "MPC_CALIBRATE",
+    "MPC_SET"
+   ],
+   "mpu9250": [
+    "ACCELEROMETER_DEBUG_READ",
+    "ACCELEROMETER_DEBUG_WRITE",
+    "ACCELEROMETER_MEASURE",
+    "ACCELEROMETER_QUERY"
+   ],
+   "neopixel": [
+    "M117",
+    "M20",
+    "M21",
+    "M23",
+    "M24",
+    "M25",
+    "M26",
+    "M27",
+    "M28",
+    "M29",
+    "M30",
+    "M73",
+    "QUERY_ADC",
+    "SDCARD_PRINT_FILE",
+    "SDCARD_RESET_FILE",
+    "SET_DISPLAY_GROUP",
+    "SET_DISPLAY_TEXT",
+    "SET_LED",
+    "SET_LED_TEMPLATE",
+    "SET_PIN",
+    "SET_PRINT_STATS_INFO"
+   ],
+   "nozzle_cleanup": [
+    "MPC_CALIBRATE",
+    "MPC_SET",
+    "PROBE",
+    "PROBE_ACCURACY",
+    "PROBE_CALIBRATE",
+    "QUERY_PROBE",
+    "Z_OFFSET_APPLY_PROBE"
+   ],
+   "output_pin": [
+    "M117",
+    "M20",
+    "M21",
+    "M23",
+    "M24",
+    "M25",
+    "M26",
+    "M27",
+    "M28",
+    "M29",
+    "M30",
+    "M73",
+    "QUERY_ADC",
+    "SDCARD_PRINT_FILE",
+    "SDCARD_RESET_FILE",
+    "SET_DISPLAY_GROUP",
+    "SET_DISPLAY_TEXT",
+    "SET_PRINT_STATS_INFO"
+   ],
+   "pca9533": [
+    "M117",
+    "M20",
+    "M21",
+    "M23",
+    "M24",
+    "M25",
+    "M26",
+    "M27",
+    "M28",
+    "M29",
+    "M30",
+    "M73",
+    "QUERY_ADC",
+    "SDCARD_PRINT_FILE",
+    "SDCARD_RESET_FILE",
+    "SET_DISPLAY_GROUP",
+    "SET_DISPLAY_TEXT",
+    "SET_LED",
+    "SET_LED_TEMPLATE",
+    "SET_PIN",
+    "SET_PRINT_STATS_INFO"
+   ],
+   "pca9632": [
+    "M117",
+    "M20",
+    "M21",
+    "M23",
+    "M24",
+    "M25",
+    "M26",
+    "M27",
+    "M28",
+    "M29",
+    "M30",
+    "M73",
+    "QUERY_ADC",
+    "SDCARD_PRINT_FILE",
+    "SDCARD_RESET_FILE",
+    "SET_DISPLAY_GROUP",
+    "SET_DISPLAY_TEXT",
+    "SET_LED",
+    "SET_LED_TEMPLATE",
+    "SET_PIN",
+    "SET_PRINT_STATS_INFO"
+   ],
+   "pid_calibrate": [
+    "MPC_CALIBRATE",
+    "MPC_SET"
+   ],
+   "probe": [
+    "MPC_CALIBRATE",
+    "MPC_SET"
+   ],
+   "probe_eddy_current": [
+    "LDC_CALIBRATE_DRIVE_CURRENT",
+    "MPC_CALIBRATE",
+    "MPC_SET",
+    "PROBE",
+    "PROBE_ACCURACY",
+    "PROBE_CALIBRATE",
+    "QUERY_PROBE",
+    "Z_OFFSET_APPLY_PROBE"
+   ],
+   "quad_gantry_level": [
+    "MPC_CALIBRATE",
+    "MPC_SET",
+    "PROBE",
+    "PROBE_ACCURACY",
+    "PROBE_CALIBRATE",
+    "QUERY_PROBE",
+    "Z_OFFSET_APPLY_PROBE",
+    "Z_TILT_ADJUST"
+   ],
+   "screws_tilt_adjust": [
+    "MPC_CALIBRATE",
+    "MPC_SET",
+    "PROBE",
+    "PROBE_ACCURACY",
+    "PROBE_CALIBRATE",
+    "QUERY_PROBE",
+    "Z_OFFSET_APPLY_PROBE"
+   ],
+   "servo": [
+    "M117",
+    "M20",
+    "M21",
+    "M23",
+    "M24",
+    "M25",
+    "M26",
+    "M27",
+    "M28",
+    "M29",
+    "M30",
+    "M73",
+    "QUERY_ADC",
+    "SDCARD_PRINT_FILE",
+    "SDCARD_RESET_FILE",
+    "SET_DISPLAY_GROUP",
+    "SET_DISPLAY_TEXT",
+    "SET_PIN",
+    "SET_PRINT_STATS_INFO"
+   ],
+   "smart_effector": [
+    "MPC_CALIBRATE",
+    "MPC_SET",
+    "PROBE",
+    "PROBE_ACCURACY",
+    "PROBE_CALIBRATE",
+    "QUERY_PROBE",
+    "Z_OFFSET_APPLY_PROBE"
+   ],
+   "spi_temperature": [
+    "MPC_CALIBRATE",
+    "MPC_SET"
+   ],
+   "temperature_combined": [
+    "MPC_CALIBRATE",
+    "MPC_SET"
+   ],
+   "temperature_fan": [
+    "M106",
+    "M107",
+    "M117",
+    "M20",
+    "M21",
+    "M23",
+    "M24",
+    "M25",
+    "M26",
+    "M27",
+    "M28",
+    "M29",
+    "M30",
+    "M73",
+    "MPC_CALIBRATE",
+    "MPC_SET",
+    "QUERY_ADC",
+    "SDCARD_PRINT_FILE",
+    "SDCARD_RESET_FILE",
+    "SET_DISPLAY_GROUP",
+    "SET_DISPLAY_TEXT",
+    "SET_PIN",
+    "SET_PRINT_STATS_INFO"
+   ],
+   "temperature_host": [
+    "MPC_CALIBRATE",
+    "MPC_SET"
+   ],
+   "temperature_mcu": [
+    "MPC_CALIBRATE",
+    "MPC_SET"
+   ],
+   "temperature_sensor": [
+    "MPC_CALIBRATE",
+    "MPC_SET"
+   ],
+   "thermistor": [
+    "MPC_CALIBRATE",
+    "MPC_SET",
+    "QUERY_ADC"
+   ],
+   "tmc": [
+    "MPC_CALIBRATE",
+    "MPC_SET"
+   ],
+   "tmc2130": [
+    "DUMP_TMC",
+    "INIT_TMC",
+    "MPC_CALIBRATE",
+    "MPC_SET",
+    "SET_TMC_CURRENT",
+    "SET_TMC_FIELD"
+   ],
+   "tmc2208": [
+    "DUMP_TMC",
+    "INIT_TMC",
+    "MPC_CALIBRATE",
+    "MPC_SET",
+    "SET_TMC_CURRENT",
+    "SET_TMC_FIELD"
+   ],
+   "tmc2209": [
+    "DUMP_TMC",
+    "INIT_TMC",
+    "MPC_CALIBRATE",
+    "MPC_SET",
+    "SET_TMC_CURRENT",
+    "SET_TMC_FIELD"
+   ],
+   "tmc2240": [
+    "DUMP_TMC",
+    "INIT_TMC",
+    "MPC_CALIBRATE",
+    "MPC_SET",
+    "SET_TMC_CURRENT",
+    "SET_TMC_FIELD"
+   ],
+   "tmc2660": [
+    "DUMP_TMC",
+    "INIT_TMC",
+    "MPC_CALIBRATE",
+    "MPC_SET",
+    "SET_TMC_CURRENT",
+    "SET_TMC_FIELD"
+   ],
+   "tmc5160": [
+    "DUMP_TMC",
+    "INIT_TMC",
+    "MPC_CALIBRATE",
+    "MPC_SET",
+    "SET_TMC_CURRENT",
+    "SET_TMC_FIELD"
+   ],
+   "trad_rack": [
+    "MPC_CALIBRATE",
+    "MPC_SET"
+   ],
+   "z_thermal_adjust": [
+    "MPC_CALIBRATE",
+    "MPC_SET"
+   ],
+   "z_tilt": [
+    "MPC_CALIBRATE",
+    "MPC_SET",
+    "PROBE",
+    "PROBE_ACCURACY",
+    "PROBE_CALIBRATE",
+    "QUERY_PROBE",
+    "Z_OFFSET_APPLY_PROBE"
+   ],
+   "z_tilt_ng": [
+    "MPC_CALIBRATE",
+    "MPC_SET",
+    "PROBE",
+    "PROBE_ACCURACY",
+    "PROBE_CALIBRATE",
+    "QUERY_PROBE",
+    "Z_OFFSET_APPLY_PROBE"
+   ]
+  },
+  "patterns": {
+   "palette2": [
+    "^O[0-9]+$"
+   ],
+   "trad_rack": [
+    "^T[0-9]+$"
+   ]
+  }
+ }
 }

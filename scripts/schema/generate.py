@@ -22,6 +22,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 from analyze import Analyzer, Project, UNKNOWN, string_values  # noqa: E402
+from commands import command_table  # noqa: E402
 
 HERE = Path(__file__).parent
 PACKAGE = HERE.parent.parent
@@ -366,6 +367,7 @@ def generate(firmware):
         if entry["option"] not in changes:
             raise SystemExit(f"Option supprimée absente de Config_Changes.md : {entry['option']}")
 
+    commands, dynamic = command_table(project)
     schema = {
         "firmware": firmware,
         "commit": commit,
@@ -379,6 +381,8 @@ def generate(firmware):
         "rules": rules,
         "removed": curated["removed"],
         "outsideKlipper": curated["outsideKlipper"],
+        # Commandes G-code du firmware (lint des macros, EP-06.08).
+        "commands": commands,
     }
     out = PACKAGE / "src" / "config" / "schema" / f"{firmware}-{commit[:10]}.json"
     out.parent.mkdir(parents=True, exist_ok=True)
@@ -386,7 +390,8 @@ def generate(firmware):
     report = HERE / f"unresolved-{firmware}.txt"
     report.write_text("\n".join(sorted(set(analyzer.reads.unresolved))) + "\n", encoding="utf8", newline="\n")
     print(f"{out.name} : {len(rules)} règles, {sum(len(r['options']) for r in rules)} options ; "
-          f"{len(set(analyzer.reads.unresolved))} appels non résolus (unresolved-{firmware}.txt)")
+          f"{len(set(analyzer.reads.unresolved))} appels non résolus (unresolved-{firmware}.txt) ; "
+          f"{len(commands['always'])} commandes de base, commandes dynamiques ignorées : {', '.join(dynamic) or 'aucune'}")
 
 
 if __name__ == "__main__":

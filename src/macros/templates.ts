@@ -112,6 +112,10 @@ export function macroTemplates(
   return templates;
 }
 
+/** Ligne du fichier d'une ligne du modèle (celle de l'option si elle est inconnue). */
+export const fileLineOf = (template: MacroTemplate, line: number) =>
+  template.option.valueLines[line - 1 + template.offset] ?? template.option.line;
+
 /** Vérifie tous les modèles de la configuration, pour le firmware donné. */
 export function lintMacros(
   sections: readonly ConfigSection[],

@@ -18412,5 +18412,539 @@
     "virtual_pins"
    ]
   }
- ]
+ ],
+ "commands": {
+  "always": [
+   "ABORT",
+   "ACCEPT",
+   "ACTIVATE_EXTRUDER",
+   "CLOSE_MCU_PORT",
+   "ECHO",
+   "FIRMWARE_RESTART",
+   "FORCE_MOVE",
+   "G0",
+   "G1",
+   "G20",
+   "G21",
+   "G28",
+   "G4",
+   "G90",
+   "G91",
+   "G92",
+   "GET_POSITION",
+   "HELP",
+   "M104",
+   "M105",
+   "M109",
+   "M110",
+   "M112",
+   "M114",
+   "M115",
+   "M119",
+   "M18",
+   "M204",
+   "M220",
+   "M221",
+   "M400",
+   "M82",
+   "M83",
+   "M84",
+   "MANUAL_PROBE",
+   "NEXT",
+   "PID_CALIBRATE",
+   "QUERY_ENDSTOPS",
+   "RESTART",
+   "RESTORE_GCODE_STATE",
+   "SAVE_CONFIG",
+   "SAVE_GCODE_STATE",
+   "SET_DUAL_CARRIAGE",
+   "SET_EXTRUDER_ROTATION_DISTANCE",
+   "SET_EXTRUDER_STEP_DISTANCE",
+   "SET_GCODE_OFFSET",
+   "SET_GCODE_VARIABLE",
+   "SET_HEATER_TEMPERATURE",
+   "SET_IDLE_TIMEOUT",
+   "SET_KINEMATIC_POSITION",
+   "SET_PRESSURE_ADVANCE",
+   "SET_STEPPER_ENABLE",
+   "SET_VELOCITY_LIMIT",
+   "STATUS",
+   "STEPPER_BUZZ",
+   "SYNC_EXTRUDER_MOTION",
+   "SYNC_STEPPER_TO_EXTRUDER",
+   "TEMPERATURE_WAIT",
+   "TESTZ",
+   "TUNING_TOWER",
+   "TURN_OFF_HEATERS",
+   "Z_ENDSTOP_CALIBRATE",
+   "Z_OFFSET_APPLY_ENDSTOP"
+  ],
+  "alwaysPossible": [],
+  "sections": {
+   "adc_scaled": [
+    "QUERY_ADC"
+   ],
+   "adc_temperature": [
+    "QUERY_ADC"
+   ],
+   "adxl345": [
+    "ACCELEROMETER_DEBUG_READ",
+    "ACCELEROMETER_DEBUG_WRITE",
+    "ACCELEROMETER_MEASURE",
+    "ACCELEROMETER_QUERY"
+   ],
+   "angle": [
+    "ANGLE_CALIBRATE",
+    "ANGLE_DEBUG_READ",
+    "ANGLE_DEBUG_WRITE"
+   ],
+   "bed_mesh": [
+    "BED_MESH_CALIBRATE",
+    "BED_MESH_CLEAR",
+    "BED_MESH_MAP",
+    "BED_MESH_OFFSET",
+    "BED_MESH_OUTPUT",
+    "BED_MESH_PROFILE"
+   ],
+   "bed_screws": [
+    "ADJUSTED",
+    "BED_SCREWS_ADJUST"
+   ],
+   "bed_tilt": [
+    "BED_TILT_CALIBRATE"
+   ],
+   "bltouch": [
+    "BLTOUCH_DEBUG",
+    "BLTOUCH_STORE"
+   ],
+   "buttons": [
+    "QUERY_ADC"
+   ],
+   "delayed_gcode": [
+    "UPDATE_DELAYED_GCODE"
+   ],
+   "delta_calibrate": [
+    "DELTA_ANALYZE",
+    "DELTA_CALIBRATE"
+   ],
+   "display_status": [
+    "M117",
+    "M73",
+    "SET_DISPLAY_TEXT"
+   ],
+   "dotstar": [
+    "SET_LED",
+    "SET_LED_TEMPLATE"
+   ],
+   "endstop_phase": [
+    "ENDSTOP_PHASE_CALIBRATE"
+   ],
+   "exclude_object": [
+    "EXCLUDE_OBJECT",
+    "EXCLUDE_OBJECT_DEFINE",
+    "EXCLUDE_OBJECT_END",
+    "EXCLUDE_OBJECT_START"
+   ],
+   "fan": [
+    "M106",
+    "M107"
+   ],
+   "fan_generic": [
+    "SET_FAN_SPEED"
+   ],
+   "filament_motion_sensor": [
+    "QUERY_ADC"
+   ],
+   "filament_switch_sensor": [
+    "CANCEL_PRINT",
+    "CLEAR_PAUSE",
+    "PAUSE",
+    "QUERY_ADC",
+    "QUERY_FILAMENT_SENSOR",
+    "RESUME",
+    "SET_FILAMENT_SENSOR"
+   ],
+   "firmware_retraction": [
+    "G10",
+    "G11",
+    "GET_RETRACTION",
+    "SET_RETRACTION"
+   ],
+   "gcode_arcs": [
+    "G2",
+    "G3"
+   ],
+   "gcode_button": [
+    "QUERY_ADC",
+    "QUERY_BUTTON"
+   ],
+   "hall_filament_width_sensor": [
+    "DISABLE_FILAMENT_WIDTH_LOG",
+    "DISABLE_FILAMENT_WIDTH_SENSOR",
+    "ENABLE_FILAMENT_WIDTH_LOG",
+    "ENABLE_FILAMENT_WIDTH_SENSOR",
+    "QUERY_FILAMENT_WIDTH",
+    "QUERY_RAW_FILAMENT_WIDTH",
+    "RESET_FILAMENT_WIDTH_SENSOR"
+   ],
+   "heater_bed": [
+    "M140",
+    "M190"
+   ],
+   "input_shaper": [
+    "SET_INPUT_SHAPER"
+   ],
+   "led": [
+    "SET_LED",
+    "SET_LED_TEMPLATE"
+   ],
+   "manual_stepper": [
+    "MANUAL_STEPPER"
+   ],
+   "neopixel": [
+    "SET_LED",
+    "SET_LED_TEMPLATE"
+   ],
+   "output_pin": [
+    "SET_PIN"
+   ],
+   "palette2": [
+    "CANCEL_PRINT",
+    "CLEAR_PAUSE",
+    "M20",
+    "M21",
+    "M23",
+    "M24",
+    "M25",
+    "M26",
+    "M27",
+    "M28",
+    "M29",
+    "M30",
+    "PALETTE_CLEAR",
+    "PALETTE_CONNECT",
+    "PALETTE_CUT",
+    "PALETTE_DISCONNECT",
+    "PALETTE_SMART_LOAD",
+    "PAUSE",
+    "RESUME",
+    "SDCARD_PRINT_FILE",
+    "SDCARD_RESET_FILE"
+   ],
+   "pause_resume": [
+    "CANCEL_PRINT",
+    "CLEAR_PAUSE",
+    "PAUSE",
+    "RESUME"
+   ],
+   "pca9533": [
+    "SET_LED",
+    "SET_LED_TEMPLATE"
+   ],
+   "pca9632": [
+    "SET_LED",
+    "SET_LED_TEMPLATE"
+   ],
+   "probe": [
+    "PROBE",
+    "PROBE_ACCURACY",
+    "PROBE_CALIBRATE",
+    "QUERY_PROBE",
+    "Z_OFFSET_APPLY_PROBE"
+   ],
+   "quad_gantry_level": [
+    "QUAD_GANTRY_LEVEL"
+   ],
+   "query_adc": [
+    "QUERY_ADC"
+   ],
+   "resonance_tester": [
+    "MEASURE_AXES_NOISE",
+    "SHAPER_CALIBRATE",
+    "TEST_RESONANCES"
+   ],
+   "respond": [
+    "M118",
+    "RESPOND"
+   ],
+   "save_variables": [
+    "SAVE_VARIABLE"
+   ],
+   "screws_tilt_adjust": [
+    "SCREWS_TILT_CALCULATE"
+   ],
+   "sdcard_loop": [
+    "M20",
+    "M21",
+    "M23",
+    "M24",
+    "M25",
+    "M26",
+    "M27",
+    "M28",
+    "M29",
+    "M30",
+    "SDCARD_LOOP_BEGIN",
+    "SDCARD_LOOP_DESIST",
+    "SDCARD_LOOP_END",
+    "SDCARD_PRINT_FILE",
+    "SDCARD_RESET_FILE"
+   ],
+   "servo": [
+    "SET_SERVO"
+   ],
+   "skew_correction": [
+    "CALC_MEASURED_SKEW",
+    "GET_CURRENT_SKEW",
+    "SET_SKEW",
+    "SKEW_PROFILE"
+   ],
+   "smart_effector": [
+    "RESET_SMART_EFFECTOR",
+    "SET_SMART_EFFECTOR"
+   ],
+   "temperature_fan": [
+    "SET_TEMPERATURE_FAN_TARGET"
+   ],
+   "temperature_mcu": [
+    "QUERY_ADC"
+   ],
+   "tmc": [
+    "DUMP_TMC",
+    "INIT_TMC",
+    "SET_TMC_CURRENT",
+    "SET_TMC_FIELD"
+   ],
+   "tsl1401cl_filament_width_sensor": [
+    "DISABLE_FILAMENT_WIDTH_SENSOR",
+    "ENABLE_FILAMENT_WIDTH_SENSOR",
+    "QUERY_FILAMENT_WIDTH",
+    "RESET_FILAMENT_WIDTH_SENSOR"
+   ],
+   "virtual_sdcard": [
+    "M20",
+    "M21",
+    "M23",
+    "M24",
+    "M25",
+    "M26",
+    "M27",
+    "M28",
+    "M29",
+    "M30",
+    "SDCARD_PRINT_FILE",
+    "SDCARD_RESET_FILE"
+   ],
+   "x_twist_compensation": [
+    "X_TWIST_CALIBRATE",
+    "X_TWIST_COMPENSATE_MESH",
+    "X_TWIST_COMPENSATE_STATUS",
+    "X_TWIST_PROFILE",
+    "X_TWIST_PROFILE_CLEAR",
+    "X_TWIST_PROFILE_DELETE",
+    "X_TWIST_PROFILE_LOAD",
+    "X_TWIST_PROFILE_SAVE"
+   ],
+   "z_tilt": [
+    "Z_TILT_ADJUST"
+   ]
+  },
+  "possible": {
+   "bed_mesh": [
+    "PROBE",
+    "PROBE_ACCURACY",
+    "PROBE_CALIBRATE",
+    "QUERY_PROBE",
+    "Z_OFFSET_APPLY_PROBE"
+   ],
+   "bed_tilt": [
+    "PROBE",
+    "PROBE_ACCURACY",
+    "PROBE_CALIBRATE",
+    "QUERY_PROBE",
+    "Z_OFFSET_APPLY_PROBE"
+   ],
+   "bltouch": [
+    "PROBE",
+    "PROBE_ACCURACY",
+    "PROBE_CALIBRATE",
+    "QUERY_PROBE",
+    "Z_OFFSET_APPLY_PROBE"
+   ],
+   "controller_fan": [
+    "M106",
+    "M107"
+   ],
+   "delta_calibrate": [
+    "PROBE",
+    "PROBE_ACCURACY",
+    "PROBE_CALIBRATE",
+    "QUERY_PROBE",
+    "Z_OFFSET_APPLY_PROBE"
+   ],
+   "display": [
+    "M117",
+    "M73",
+    "QUERY_ADC",
+    "SET_DISPLAY_GROUP",
+    "SET_DISPLAY_TEXT"
+   ],
+   "dotstar": [
+    "M117",
+    "M73",
+    "QUERY_ADC",
+    "SET_DISPLAY_GROUP",
+    "SET_DISPLAY_TEXT"
+   ],
+   "fan_generic": [
+    "M106",
+    "M107"
+   ],
+   "filament_motion_sensor": [
+    "CANCEL_PRINT",
+    "CLEAR_PAUSE",
+    "PAUSE",
+    "QUERY_FILAMENT_SENSOR",
+    "RESUME",
+    "SET_FILAMENT_SENSOR"
+   ],
+   "hall_filament_width_sensor": [
+    "CANCEL_PRINT",
+    "CLEAR_PAUSE",
+    "PAUSE",
+    "QUERY_ADC",
+    "QUERY_FILAMENT_SENSOR",
+    "RESUME",
+    "SET_FILAMENT_SENSOR"
+   ],
+   "heater_fan": [
+    "M106",
+    "M107"
+   ],
+   "led": [
+    "M117",
+    "M73",
+    "QUERY_ADC",
+    "SET_DISPLAY_GROUP",
+    "SET_DISPLAY_TEXT"
+   ],
+   "mpu9250": [
+    "ACCELEROMETER_DEBUG_READ",
+    "ACCELEROMETER_DEBUG_WRITE",
+    "ACCELEROMETER_MEASURE",
+    "ACCELEROMETER_QUERY"
+   ],
+   "neopixel": [
+    "M117",
+    "M73",
+    "QUERY_ADC",
+    "SET_DISPLAY_GROUP",
+    "SET_DISPLAY_TEXT"
+   ],
+   "pca9533": [
+    "M117",
+    "M73",
+    "QUERY_ADC",
+    "SET_DISPLAY_GROUP",
+    "SET_DISPLAY_TEXT"
+   ],
+   "pca9632": [
+    "M117",
+    "M73",
+    "QUERY_ADC",
+    "SET_DISPLAY_GROUP",
+    "SET_DISPLAY_TEXT"
+   ],
+   "quad_gantry_level": [
+    "PROBE",
+    "PROBE_ACCURACY",
+    "PROBE_CALIBRATE",
+    "QUERY_PROBE",
+    "Z_OFFSET_APPLY_PROBE",
+    "Z_TILT_ADJUST"
+   ],
+   "screws_tilt_adjust": [
+    "PROBE",
+    "PROBE_ACCURACY",
+    "PROBE_CALIBRATE",
+    "QUERY_PROBE",
+    "Z_OFFSET_APPLY_PROBE"
+   ],
+   "smart_effector": [
+    "PROBE",
+    "PROBE_ACCURACY",
+    "PROBE_CALIBRATE",
+    "QUERY_PROBE",
+    "Z_OFFSET_APPLY_PROBE"
+   ],
+   "temperature_fan": [
+    "M106",
+    "M107"
+   ],
+   "thermistor": [
+    "QUERY_ADC"
+   ],
+   "tmc2130": [
+    "DUMP_TMC",
+    "INIT_TMC",
+    "SET_TMC_CURRENT",
+    "SET_TMC_FIELD"
+   ],
+   "tmc2208": [
+    "DUMP_TMC",
+    "INIT_TMC",
+    "SET_TMC_CURRENT",
+    "SET_TMC_FIELD"
+   ],
+   "tmc2209": [
+    "DUMP_TMC",
+    "INIT_TMC",
+    "SET_TMC_CURRENT",
+    "SET_TMC_FIELD"
+   ],
+   "tmc2240": [
+    "DUMP_TMC",
+    "INIT_TMC",
+    "SET_TMC_CURRENT",
+    "SET_TMC_FIELD"
+   ],
+   "tmc2660": [
+    "DUMP_TMC",
+    "INIT_TMC",
+    "SET_TMC_CURRENT",
+    "SET_TMC_FIELD"
+   ],
+   "tmc5160": [
+    "DUMP_TMC",
+    "INIT_TMC",
+    "SET_TMC_CURRENT",
+    "SET_TMC_FIELD"
+   ],
+   "x_twist_compensation": [
+    "BED_MESH_CALIBRATE",
+    "BED_MESH_CLEAR",
+    "BED_MESH_MAP",
+    "BED_MESH_OFFSET",
+    "BED_MESH_OUTPUT",
+    "BED_MESH_PROFILE",
+    "PROBE",
+    "PROBE_ACCURACY",
+    "PROBE_CALIBRATE",
+    "QUERY_PROBE",
+    "Z_OFFSET_APPLY_PROBE"
+   ],
+   "z_tilt": [
+    "PROBE",
+    "PROBE_ACCURACY",
+    "PROBE_CALIBRATE",
+    "QUERY_PROBE",
+    "Z_OFFSET_APPLY_PROBE"
+   ]
+  },
+  "patterns": {
+   "palette2": [
+    "^O[0-9]+$"
+   ]
+  }
+ }
 }

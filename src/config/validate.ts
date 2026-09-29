@@ -59,9 +59,24 @@ export interface SchemaRule {
   readonly patterns?: Readonly<Record<string, Partial<SchemaOption>>>;
 }
 
+/** Commandes G-code enregistrées par le firmware (EP-06.08), tirées de son code. */
+export interface SchemaCommands {
+  /** Toujours présentes (cœur de klippy et ce qu'il charge). */
+  readonly always: readonly string[];
+  /** Peut-être présentes (modules seulement importés par le cœur). */
+  readonly alwaysPossible: readonly string[];
+  /** Ajoutées à coup sûr par la section (préfixe) et ce que son module charge. */
+  readonly sections: Readonly<Record<string, readonly string[]>>;
+  /** Peut-être ajoutées (modules importés par celui de la section). */
+  readonly possible: Readonly<Record<string, readonly string[]>>;
+  /** Familles numérotées (`^T[0-9]+$`). */
+  readonly patterns: Readonly<Record<string, readonly string[]>>;
+}
+
 export interface ConfigSchema {
   readonly firmware: string;
   readonly commit: string;
+  readonly commands?: SchemaCommands;
   readonly kinematics: readonly string[];
   readonly sensorFamilies: readonly {
     readonly names: readonly string[];
