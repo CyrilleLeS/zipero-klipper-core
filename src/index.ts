@@ -131,5 +131,15 @@ export {
   type RepeatabilityVerdict,
 } from "./probe/accuracy";
 export { failure, type Issue, type ParseResult, success } from "./result";
+export {
+  evaluateRules,
+  RULES_FORMAT,
+  type RuleBundle,
+  type RuleCondition,
+  type RuleDefinition,
+  type RuleHit,
+  type RuleValue,
+  renderRuleText,
+} from "./rules/engine";
 export { type ConsoleLine, cleanConsoleLine, consoleLines, parseNumberRow } from "./text/console";
 export { type SourceLine, splitLines } from "./text/lines";
