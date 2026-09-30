@@ -25,6 +25,9 @@ export { KLIPPER_SCHEMA } from "./config/schema";
 export {
   COVERED_SECTIONS,
   type ConfigSchema,
+  type SchemaCommands,
+  type SchemaOption,
+  type SchemaRule,
   VALIDATION_CODES,
   type ValidationCode,
   type ValidationIssue,
