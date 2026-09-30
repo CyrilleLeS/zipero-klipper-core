@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-only
-import type { ConfigOption, ConfigSection } from "../config/ini";
+import type { ConfigSection } from "../config/ini";
 import { pyFloat, pyStrip } from "../config/values";
 
 /**
@@ -8,24 +8,33 @@ import { pyFloat, pyStrip } from "../config/values";
  * exécuter de code (CSP stricte, ADR 0020) : un petit langage déclaratif de conditions.
  *
  * Valeurs : `{ "option": "x" }` (section évaluée), `{ "section": "stepper_x", "option": "x" }`,
+ * `{ "sectionMatch": "^(probe|bltouch)$", "option": "x" }` (première section dont le nom correspond),
  * `index` pour un élément de liste (`home_xy_position`), `default` si l'option est absente ;
- * `{ "number": 5 }`, `{ "text": "…" }`.
+ * `{ "number": 5 }`, `{ "text": "…" }` ; calcul (format 2, EP-06.05) : `{ "sum": [a, b, …] }`,
+ * `{ "difference": [a, b] }`, `{ "product": [a, b, …] }`, `{ "quotient": [a, b] }`, sans valeur
+ * si un terme manque (ou division par zéro).
  * Conditions : `all`, `any`, `not`, `exists`, `missing`, `eq`, `ne`, `lt`, `le`, `gt`, `ge`
  * (nombres convertis comme `float()` de Python), `matches` (expression régulière),
  * `sectionExists` (nom de section, expression régulière).
  */
 
-export const RULES_FORMAT = 1;
+export const RULES_FORMAT = 2;
 
 export type RuleValue =
   | {
       readonly option: string;
       readonly section?: string;
+      /** Première section dont le nom correspond (expression régulière), à la place de `section`. */
+      readonly sectionMatch?: string;
       readonly index?: number;
       readonly default?: number | string;
     }
   | { readonly number: number }
-  | { readonly text: string };
+  | { readonly text: string }
+  | { readonly sum: readonly RuleValue[] }
+  | { readonly difference: readonly [RuleValue, RuleValue] }
+  | { readonly product: readonly RuleValue[] }
+  | { readonly quotient: readonly [RuleValue, RuleValue] };
 
 export type RuleCondition =
   | { readonly all: readonly RuleCondition[] }
@@ -92,6 +101,18 @@ interface Context {
   readonly byName: ReadonlyMap<string, ConfigSection>;
 }
 
+/** Section désignée par une valeur : évaluée, nommée, ou première correspondant au motif. */
+function sectionOf(
+  value: Extract<RuleValue, { option: string }>,
+  ctx: Context,
+): ConfigSection | undefined {
+  if (value.sectionMatch !== undefined) {
+    const pattern = regex(value.sectionMatch);
+    return [...ctx.byName.values()].find((s) => pattern.test(s.name));
+  }
+  return value.section === undefined ? ctx.section : ctx.byName.get(value.section);
+}
+
 const regexCache = new Map<string, RegExp>();
 const regex = (source: string) => {
   let compiled = regexCache.get(source);
@@ -102,20 +123,34 @@ const regex = (source: string) => {
   return compiled;
 };
 
-function optionOf(
-  value: Extract<RuleValue, { option: string }>,
-  ctx: Context,
-): ConfigOption | undefined {
-  const section = value.section === undefined ? ctx.section : ctx.byName.get(value.section);
-  return section?.options.get(value.option);
-}
-
 function resolve(value: RuleValue, ctx: Context): Scalar {
   if ("number" in value) return value.number;
   if ("text" in value) return value.text;
+  const operation =
+    "sum" in value
+      ? { terms: value.sum, apply: (n: number[]) => n.reduce((a, b) => a + b, 0) }
+      : "difference" in value
+        ? { terms: value.difference, apply: ([a = 0, b = 0]: number[]) => a - b }
+        : "product" in value
+          ? { terms: value.product, apply: (n: number[]) => n.reduce((a, b) => a * b, 1) }
+          : "quotient" in value
+            ? {
+                terms: value.quotient,
+                apply: ([a = 0, b = 0]: number[]) => (b === 0 ? Number.NaN : a / b),
+              }
+            : undefined;
+  if (operation) {
+    const terms = operation.terms.map((v) => asNumber(resolve(v, ctx)));
+    if (terms.some((t) => t === undefined || Number.isNaN(t))) return undefined;
+    const result = operation.apply(terms as number[]);
+    // Arrondi d'affichage : 0,1 + 0,2 ne doit pas donner 0,30000000000000004.
+    return Number.isFinite(result) ? Math.round(result * 1e9) / 1e9 : undefined;
+  }
+  if (!("option" in value)) return undefined;
+  const section = sectionOf(value, ctx);
   // Section désignée absente (imprimante delta sans [stepper_x]) : pas de valeur, même par défaut.
-  if (value.section !== undefined && !ctx.byName.has(value.section)) return undefined;
-  const option = optionOf(value, ctx);
+  if (!section) return undefined;
+  const option = section.options.get(value.option);
   if (!option) return value.default;
   if (value.index === undefined) return pyStrip(option.value);
   return pyStrip(option.value.split(",")[value.index] ?? "") || undefined;
@@ -164,10 +199,17 @@ export function evaluate(condition: RuleCondition, ctx: Context): boolean {
 export function evaluateRules(
   sections: readonly ConfigSection[],
   bundle: RuleBundle,
-  options: { readonly partial?: boolean } = {},
+  options: {
+    readonly partial?: boolean;
+    /**
+     * Sections consultables par les règles sans être évaluées : l'imprimante choisie par
+     * l'utilisateur (`zipero_printer`, EP-06.05). Une section de la configuration l'emporte.
+     */
+    readonly context?: readonly ConfigSection[];
+  } = {},
 ): RuleHit[] {
   if (bundle.format !== RULES_FORMAT) return [];
-  const byName = new Map(sections.map((s) => [s.name, s]));
+  const byName = new Map([...(options.context ?? []), ...sections].map((s) => [s.name, s]));
   const hits: RuleHit[] = [];
   for (const rule of bundle.rules) {
     if (rule.complete && options.partial) continue;

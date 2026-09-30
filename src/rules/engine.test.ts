@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import { parseConfig } from "../config/ini";
 import {
   evaluateRules,
+  RULES_FORMAT,
   type RuleBundle,
   type RuleCondition,
   type RuleDefinition,
@@ -25,7 +26,7 @@ const CONFIG = parseConfig(
 );
 
 const rule = (when: RuleCondition, extra: Partial<RuleDefinition> = {}): RuleBundle => ({
-  format: 1,
+  format: RULES_FORMAT,
   version: "test",
   rules: [
     {
@@ -108,6 +109,74 @@ describe("evaluateRules", () => {
 
   it("condition inconnue : erreur explicite (jamais ignorée en silence)", () => {
     expect(() => fires({ between: [] } as unknown as RuleCondition)).toThrow(/Condition inconnue/);
+  });
+});
+
+describe("calculs, section par motif, contexte (format 2, EP-06.05)", () => {
+  const MECHANICS = parseConfig(
+    [
+      "[stepper_x]",
+      "position_max: 235",
+      "microsteps: 16",
+      "rotation_distance: 160",
+      "[bltouch]",
+      "x_offset: -44.1",
+      "[safe_z_home]",
+      "home_xy_position: 20.2, 100",
+    ].join("\n"),
+  );
+  const probeX = { sectionMatch: "^(probe|bltouch)$", option: "x_offset", default: 0 } as const;
+  const params = (bundle: RuleBundle) => evaluateRules(MECHANICS, bundle)[0]?.params;
+
+  it("somme, différence, produit, quotient (arrondis), section trouvée par motif", () => {
+    const bundle = rule(
+      { sectionExists: ".*" },
+      {
+        sections: "^safe_z_home$",
+        params: {
+          probe: { sum: [{ option: "home_xy_position", index: 0 }, probeX] },
+          nozzle: { difference: [{ number: 10 }, probeX] },
+          steps: {
+            product: [{ section: "stepper_x", option: "microsteps" }, { number: 200 }],
+          },
+          marlin: {
+            quotient: [{ number: 3200 }, { section: "stepper_x", option: "rotation_distance" }],
+          },
+        },
+      },
+    );
+    expect(params(bundle)).toMatchObject({ probe: -23.9, nozzle: 54.1, steps: 3200, marlin: 20 });
+  });
+
+  it("terme absent ou division par zéro : pas de valeur, la règle ne conclut pas", () => {
+    const bundle = rule(
+      { lt: [{ sum: [{ option: "absente" }, { number: 1 }] }, { number: 100 }] },
+      {
+        params: {
+          zero: { quotient: [{ number: 1 }, { number: 0 }] },
+          none: { difference: [{ sectionMatch: "^probe$", option: "x_offset" }, { number: 1 }] },
+        },
+      },
+    );
+    expect(evaluateRules(MECHANICS, bundle)).toEqual([]);
+    const always = rule({ sectionExists: ".*" }, { params: bundle.rules[0]?.params ?? {} });
+    expect(params(always)).toEqual({ section: "stepper_x" });
+  });
+
+  it("contexte : consultable par les règles, jamais évalué comme section", () => {
+    const bundle = rule(
+      {
+        gt: [
+          { option: "position_max" },
+          { sum: [{ section: "zipero_printer", option: "x_max" }, { number: 5 }] },
+        ],
+      },
+      { sections: ".*" },
+    );
+    expect(evaluateRules(MECHANICS, bundle)).toEqual([]);
+    const context = "[zipero_printer]\nx_max: 220\nposition_max: 999";
+    const hits = evaluateRules(MECHANICS, bundle, { context: parseConfig(context) });
+    expect(hits.map((h) => h.section)).toEqual(["stepper_x"]);
   });
 });
 
