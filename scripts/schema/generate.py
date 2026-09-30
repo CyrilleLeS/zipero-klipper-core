@@ -28,14 +28,26 @@ HERE = Path(__file__).parent
 PACKAGE = HERE.parent.parent
 # Firmwares : dépôt public (GPL), commit épinglé, dossier contenant klippy/ dans le dépôt.
 # Elegoo (Neptune 4) ne publie pas ses sources : pas de schéma possible (EP-01.17).
+# [display_data groupe nom] : sections regroupées par nom de groupe dans un dictionnaire, puis
+# confiées en liste à DisplayGroup (extras/display/display.py) ; trop indirect pour l'analyse.
+DISPLAY_DATA = {"module": "extras.display.display", "function": "DisplayGroup.__init__",
+                "param": "data_configs", "labels": "display_data {*}", "list": True}
+
 FIRMWARES = {
-    "klipper": {"repo": "Klipper3d/klipper", "commit": "214fdb2877ff4640e9316a663c1b8b2e232c86fd", "path": ""},
+    "klipper": {"repo": "Klipper3d/klipper", "commit": "214fdb2877ff4640e9316a663c1b8b2e232c86fd", "path": "",
+                "entries": [DISPLAY_DATA]},
     "kalico": {
         "repo": "KalicoCrew/kalico", "commit": "1f791b4d74b44bd72b22c0b2528617aa96ed4959", "path": "",
         # Profils de régulation (PID, MPC) : section reçue via self.outer_instance.config, trop
         # indirect pour l'analyse ; lue par _init_profile pour chaque section de chauffage.
         "entries": [{"module": "extras.heaters", "function": "Heater.ProfileManager._init_profile",
-                     "param": "config_section", "labels": "heaters"}],
+                     "param": "config_section", "labels": "heaters"},
+                    # Profils enregistrés : [pid_profile <chauffage> <nom>] (EP-06.15).
+                    {"module": "extras.heaters", "function": "Heater.ProfileManager._init_profile",
+                     "param": "config_section", "labels": "pid_profile {*}"},
+                    DISPLAY_DATA],
+        # Références ${section.option} et section [constants] (klippy/configfile.py de Kalico).
+        "interpolation": True,
     },
     "creality-k1": {"repo": "CrealityOfficial/K1_Series_Klipper", "commit": "e09f36e6ada60e5467b0bef731a96263b5d8095b", "path": ""},
     "qidi": {"repo": "QIDITECH/klipper", "commit": "653d7a8f6ec4700ec02c2319888ad98a92c1a0c3", "path": ""},
@@ -90,6 +102,47 @@ def kinematics_hook(project):
                           when + (("printer", "kinematics", (kind,)),), None, conditional)
 
     return hook, kinds
+
+
+def registry_hook(project, option, tables):
+    """Aiguillage par un registre rempli à l'exécution (Kalico : `register_component`, puis
+    `config.getchoice(option, printer.lookup_components(…))(config)`) : on suit la classe de chaque
+    entrée des tables déclarées (module, nom du dictionnaire), avec la variante `option: clé`."""
+    entries = []
+    for module_name, table_name in tables:
+        module = project.modules.get(module_name)
+        table = module.dicts.get(table_name) if module else None
+        if table is None:
+            continue
+        for key, value in zip(table.keys, table.values):
+            if isinstance(key, ast.Constant) and isinstance(value, ast.Name):
+                entries.append((module, key.value, value.id))
+
+    def hook(analyzer, label, when, conditional):
+        for module, key, class_name in entries:
+            target = analyzer.method_target(module, class_name, "__init__", 1)
+            if target:
+                analyzer.walk(target[0], target[1], target[1].args.args[1].arg, label,
+                              when + ((label, option, (key,)),), None, conditional)
+
+    return hook
+
+
+# Registres de Kalico (crochets déclarés) : appelé → (option, tables).
+REGISTRIES = {
+    "kalico": {
+        ("extras.load_cell", "sensor_class"): ("sensor_type", [
+            ("extras.load_cell.hx71x", "HX71X_SENSOR_TYPES"),
+            ("extras.load_cell.ads1220", "ADS1220_SENSOR_TYPE"),
+            ("extras.load_cell.ads131m0x", "ADS131M0X_SENSOR_TYPES"),
+        ]),
+        ("extras.load_cell_probe", "sensor_class"): ("sensor_type", [
+            ("extras.load_cell.hx71x", "HX71X_SENSOR_TYPES"),
+            ("extras.load_cell.ads1220", "ADS1220_SENSOR_TYPE"),
+            ("extras.load_cell.ads131m0x", "ADS131M0X_SENSOR_TYPES"),
+        ]),
+    },
+}
 
 
 def sensor_families(project, defaults):
@@ -161,6 +214,19 @@ def factory_targets(analyzer, family):
     """Fabrique → [(module, fonction, paramètre de la section)]."""
     module, factory = family["module"], family["factory"]
     targets = []
+    # `func = (lambda config, params=params: …)` ou `def func(config, params=params): …` dans la
+    # fonction, puis `add_sensor_factory(nom, func)` : la fabrique locale.
+    if isinstance(factory, ast.Name):
+        # La boucle qui contient l'appel d'abord : deux boucles peuvent réutiliser le même nom
+        # (`func` pour les capteurs en tension, puis en résistance).
+        scopes = [*family["loops"].values(), family["function"]]
+        for node in (n for scope in scopes for n in ast.walk(scope)):
+            if (isinstance(node, ast.Assign) and len(node.targets) == 1 and isinstance(node.targets[0], ast.Name)
+                    and node.targets[0].id == factory.id and isinstance(node.value, ast.Lambda)):
+                factory = node.value
+                break
+            if isinstance(node, ast.FunctionDef) and node.name == factory.id and node is not family["function"]:
+                return [(module, node, 0)]
     if isinstance(factory, ast.Name):
         for loop in family["loops"].values():
             target = loop.target
@@ -313,6 +379,8 @@ def generate(firmware):
     families = sensor_families(project, defaults)
     analyzer = Analyzer(project, {})
     analyzer.hooks = {("toolhead", "load_kinematics"): kin_hook, ("extras.heaters", "sensor_factories"): sensor_hook(families)}
+    for callee, (option, tables) in REGISTRIES.get(firmware, {}).items():
+        analyzer.hooks[callee] = registry_hook(project, option, tables)
 
     # Points d'entrée : les objets du cœur (klippy.py `_read_config`), puis chaque module extras
     # chargé par `load_object` : `load_config` pour [module], `load_config_prefix` pour [module nom].
@@ -338,7 +406,14 @@ def generate(firmware):
         function = module.classes[class_name]["methods"][method]
         heaters = sorted({label for (label, when), rule in analyzer.reads.rules.items() if "heater_pin" in rule["options"]})
         for label in heaters if entry["labels"] == "heaters" else [entry["labels"]]:
-            analyzer.walk(module, function, entry["param"], label, ())
+            if entry.get("list"):
+                # Paramètre recevant une LISTE de sections (`DisplayGroup(config, nom, data_configs)`).
+                analyzer.walk(module, function, "__list__", label, (), lists={entry["param"]: [label]})
+            else:
+                analyzer.walk(module, function, entry["param"], label, ())
+            # Section propre au point d'entrée ([pid_profile …]) : lue par le firmware, donc connue.
+            if entry["labels"] != "heaters":
+                analyzer.reads.accessed.add(label)
 
     curated = json.loads((HERE / "curated.json").read_text(encoding="utf8"))
     changes_file = klippy.parent / "docs" / "Config_Changes.md"
@@ -371,6 +446,9 @@ def generate(firmware):
     schema = {
         "firmware": firmware,
         "commit": commit,
+        **({"interpolation": True} if FIRMWARES[firmware].get("interpolation") else {}),
+        # Sections dont une partie des lectures échappe à l'analyse (menus) : pas d'« option inconnue ».
+        "openSections": sorted(label_regex(label) for label in analyzer.reads.open),
         "kinematics": kinds,
         "sensorFamilies": [
             {"names": f["names"], **({"sectionPrefix": f["custom"]} if f["custom"] else {}), "module": f["module"].name}

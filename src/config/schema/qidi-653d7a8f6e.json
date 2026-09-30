@@ -1,6 +1,9 @@
 {
  "firmware": "qidi",
  "commit": "653d7a8f6ec4700ec02c2319888ad98a92c1a0c3",
+ "openSections": [
+  "^menu\\ .+$"
+ ],
  "kinematics": [
   "cartesian",
   "corexy",
@@ -536,6 +539,11 @@
     "sensor_type": {
      "type": "choice",
      "required": "always",
+     "choices": [
+      "a1333",
+      "as5047d",
+      "tle5012b"
+     ],
      "sources": [
       "extras.angle:425"
      ]
@@ -764,6 +772,121 @@
      "required": "never",
      "default": null,
      "count": 2
+    }
+   }
+  },
+  {
+   "label": "bed_mesh{*}",
+   "regex": "^bed_mesh.+$",
+   "options": {
+    "algo": {
+     "type": "mixed",
+     "required": "conditional",
+     "sources": [
+      "extras.bed_mesh:1129",
+      "extras.bed_mesh:1131",
+      "extras.bed_mesh:1133"
+     ]
+    },
+    "max_x": {
+     "type": "mixed",
+     "required": "conditional",
+     "sources": [
+      "extras.bed_mesh:1129",
+      "extras.bed_mesh:1131",
+      "extras.bed_mesh:1133"
+     ]
+    },
+    "max_y": {
+     "type": "mixed",
+     "required": "conditional",
+     "sources": [
+      "extras.bed_mesh:1129",
+      "extras.bed_mesh:1131",
+      "extras.bed_mesh:1133"
+     ]
+    },
+    "mesh_x_pps": {
+     "type": "mixed",
+     "required": "conditional",
+     "sources": [
+      "extras.bed_mesh:1129",
+      "extras.bed_mesh:1131",
+      "extras.bed_mesh:1133"
+     ]
+    },
+    "mesh_y_pps": {
+     "type": "mixed",
+     "required": "conditional",
+     "sources": [
+      "extras.bed_mesh:1129",
+      "extras.bed_mesh:1131",
+      "extras.bed_mesh:1133"
+     ]
+    },
+    "min_x": {
+     "type": "mixed",
+     "required": "conditional",
+     "sources": [
+      "extras.bed_mesh:1129",
+      "extras.bed_mesh:1131",
+      "extras.bed_mesh:1133"
+     ]
+    },
+    "min_y": {
+     "type": "mixed",
+     "required": "conditional",
+     "sources": [
+      "extras.bed_mesh:1129",
+      "extras.bed_mesh:1131",
+      "extras.bed_mesh:1133"
+     ]
+    },
+    "points": {
+     "type": "lists",
+     "required": "conditional",
+     "seps": [
+      ",",
+      "\n"
+     ],
+     "sources": [
+      "extras.bed_mesh:1123"
+     ]
+    },
+    "tension": {
+     "type": "mixed",
+     "required": "conditional",
+     "sources": [
+      "extras.bed_mesh:1129",
+      "extras.bed_mesh:1131",
+      "extras.bed_mesh:1133"
+     ]
+    },
+    "version": {
+     "type": "int",
+     "required": "never",
+     "default": 0,
+     "sources": [
+      "extras.bed_mesh:1114"
+     ]
+    },
+    "x_count": {
+     "type": "mixed",
+     "required": "conditional",
+     "sources": [
+      "extras.bed_mesh:1129",
+      "extras.bed_mesh:1131",
+      "extras.bed_mesh:1133"
+     ]
+    },
+    "y_count": {
+     "type": "mixed",
+     "required": "conditional",
+     "sources": [
+      "extras.bed_mesh:1129",
+      "extras.bed_mesh:1131",
+      "extras.bed_mesh:1133"
+     ]
     }
    }
   },
@@ -1056,6 +1179,18 @@
    "label": "board_pins",
    "regex": "^board_pins$",
    "options": {
+    "aliases": {
+     "type": "lists",
+     "required": "conditional",
+     "count": 2,
+     "seps": [
+      "=",
+      ","
+     ],
+     "sources": [
+      "extras.board_pins:14"
+     ]
+    },
     "mcu": {
      "type": "list",
      "required": "never",
@@ -1077,6 +1212,18 @@
    "label": "board_pins {*}",
    "regex": "^board_pins\\ .+$",
    "options": {
+    "aliases": {
+     "type": "lists",
+     "required": "conditional",
+     "count": 2,
+     "seps": [
+      "=",
+      ","
+     ],
+     "sources": [
+      "extras.board_pins:14"
+     ]
+    },
     "mcu": {
      "type": "list",
      "required": "never",
@@ -1415,6 +1562,590 @@
   {
    "label": "display",
    "regex": "^display$",
+   "when": [
+    {
+     "section": "self",
+     "option": "lcd_type",
+     "values": [
+      "emulated_st7920"
+     ]
+    }
+   ],
+   "options": {
+    "en_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.display.st7920:227"
+     ]
+    },
+    "spi_speed": {
+     "type": "int",
+     "required": "never",
+     "default": 1000000,
+     "minval": 100000,
+     "sources": [
+      "extras.display.st7920:224"
+     ]
+    }
+   },
+   "patterns": {
+    "spi_software_.+_pin": {
+     "type": "string",
+     "source": "extras.display.st7920:215",
+     "required": "conditional"
+    }
+   }
+  },
+  {
+   "label": "display",
+   "regex": "^display$",
+   "when": [
+    {
+     "section": "self",
+     "option": "lcd_type",
+     "values": [
+      "hd44780"
+     ]
+    }
+   ],
+   "options": {
+    "d4_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.display.hd44780:22"
+     ]
+    },
+    "d5_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.display.hd44780:22"
+     ]
+    },
+    "d6_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.display.hd44780:22"
+     ]
+    },
+    "d7_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.display.hd44780:22"
+     ]
+    },
+    "e_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.display.hd44780:22"
+     ]
+    },
+    "hd44780_protocol_init": {
+     "type": "boolean",
+     "required": "never",
+     "default": true,
+     "sources": [
+      "extras.display.hd44780:24"
+     ]
+    },
+    "line_length": {
+     "type": "choice",
+     "required": "never",
+     "default": 20,
+     "choices": [
+      "16",
+      "20"
+     ],
+     "sources": [
+      "extras.display.hd44780:26"
+     ]
+    },
+    "rs_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.display.hd44780:22"
+     ]
+    }
+   }
+  },
+  {
+   "label": "display",
+   "regex": "^display$",
+   "when": [
+    {
+     "section": "self",
+     "option": "lcd_type",
+     "values": [
+      "hd44780_spi"
+     ]
+    }
+   ],
+   "options": {
+    "hd44780_protocol_init": {
+     "type": "boolean",
+     "required": "never",
+     "default": true,
+     "sources": [
+      "extras.display.hd44780_spi:21"
+     ]
+    },
+    "latch_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.bus:112"
+     ]
+    },
+    "line_length": {
+     "type": "choice",
+     "required": "never",
+     "default": 20,
+     "choices": [
+      "16",
+      "20"
+     ],
+     "sources": [
+      "extras.display.hd44780_spi:33"
+     ]
+    },
+    "spi_bus": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:133"
+     ]
+    },
+    "spi_software_sclk_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:121"
+     ]
+    },
+    "spi_speed": {
+     "type": "int",
+     "required": "never",
+     "default": "calculée",
+     "minval": 100000,
+     "sources": [
+      "extras.bus:120"
+     ]
+    }
+   },
+   "patterns": {
+    "spi_software_.+_pin": {
+     "type": "string",
+     "source": "extras.bus:124",
+     "required": "conditional"
+    }
+   }
+  },
+  {
+   "label": "display",
+   "regex": "^display$",
+   "when": [
+    {
+     "section": "self",
+     "option": "lcd_type",
+     "values": [
+      "sh1106"
+     ]
+    }
+   ],
+   "options": {
+    "contrast": {
+     "type": "int",
+     "required": "never",
+     "default": 239,
+     "minval": 0,
+     "maxval": 255,
+     "sources": [
+      "extras.display.uc1701:209"
+     ]
+    },
+    "cs_pin": {
+     "type": "string",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "extras.bus:112",
+      "extras.display.uc1701:200"
+     ]
+    },
+    "dc_pin": {
+     "type": "string",
+     "required": "conditional",
+     "sources": [
+      "extras.display.uc1701:121"
+     ]
+    },
+    "i2c_address": {
+     "type": "int",
+     "required": "conditional",
+     "default": "calculée",
+     "minval": 0,
+     "maxval": 127,
+     "sources": [
+      "extras.bus:207",
+      "extras.bus:209"
+     ]
+    },
+    "i2c_bus": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:205"
+     ]
+    },
+    "i2c_mcu": {
+     "type": "string",
+     "required": "never",
+     "default": "mcu",
+     "sources": [
+      "extras.bus:203"
+     ]
+    },
+    "i2c_speed": {
+     "type": "int",
+     "required": "never",
+     "default": "calculée",
+     "minval": 100000,
+     "sources": [
+      "extras.bus:204"
+     ]
+    },
+    "invert": {
+     "type": "boolean",
+     "required": "never",
+     "default": false,
+     "sources": [
+      "extras.display.uc1701:211"
+     ]
+    },
+    "reset_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.display.uc1701:207"
+     ]
+    },
+    "spi_bus": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:133"
+     ]
+    },
+    "spi_software_sclk_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:121"
+     ]
+    },
+    "spi_speed": {
+     "type": "int",
+     "required": "never",
+     "default": "calculée",
+     "minval": 100000,
+     "sources": [
+      "extras.bus:120"
+     ]
+    },
+    "vcomh": {
+     "type": "int",
+     "required": "never",
+     "default": 0,
+     "minval": 0,
+     "maxval": 63,
+     "sources": [
+      "extras.display.uc1701:210"
+     ]
+    },
+    "x_offset": {
+     "type": "int",
+     "required": "never",
+     "default": 0,
+     "minval": 0,
+     "maxval": 3,
+     "sources": [
+      "extras.display.uc1701:239"
+     ]
+    }
+   },
+   "patterns": {
+    "spi_software_.+_pin": {
+     "type": "string",
+     "source": "extras.bus:124",
+     "required": "conditional"
+    }
+   }
+  },
+  {
+   "label": "display",
+   "regex": "^display$",
+   "when": [
+    {
+     "section": "self",
+     "option": "lcd_type",
+     "values": [
+      "ssd1306"
+     ]
+    }
+   ],
+   "options": {
+    "contrast": {
+     "type": "int",
+     "required": "never",
+     "default": 239,
+     "minval": 0,
+     "maxval": 255,
+     "sources": [
+      "extras.display.uc1701:209"
+     ]
+    },
+    "cs_pin": {
+     "type": "string",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "extras.bus:112",
+      "extras.display.uc1701:200"
+     ]
+    },
+    "dc_pin": {
+     "type": "string",
+     "required": "conditional",
+     "sources": [
+      "extras.display.uc1701:121"
+     ]
+    },
+    "i2c_address": {
+     "type": "int",
+     "required": "conditional",
+     "default": "calculée",
+     "minval": 0,
+     "maxval": 127,
+     "sources": [
+      "extras.bus:207",
+      "extras.bus:209"
+     ]
+    },
+    "i2c_bus": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:205"
+     ]
+    },
+    "i2c_mcu": {
+     "type": "string",
+     "required": "never",
+     "default": "mcu",
+     "sources": [
+      "extras.bus:203"
+     ]
+    },
+    "i2c_speed": {
+     "type": "int",
+     "required": "never",
+     "default": "calculée",
+     "minval": 100000,
+     "sources": [
+      "extras.bus:204"
+     ]
+    },
+    "invert": {
+     "type": "boolean",
+     "required": "never",
+     "default": false,
+     "sources": [
+      "extras.display.uc1701:211"
+     ]
+    },
+    "reset_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.display.uc1701:207"
+     ]
+    },
+    "spi_bus": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:133"
+     ]
+    },
+    "spi_software_sclk_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:121"
+     ]
+    },
+    "spi_speed": {
+     "type": "int",
+     "required": "never",
+     "default": "calculée",
+     "minval": 100000,
+     "sources": [
+      "extras.bus:120"
+     ]
+    },
+    "vcomh": {
+     "type": "int",
+     "required": "never",
+     "default": 0,
+     "minval": 0,
+     "maxval": 63,
+     "sources": [
+      "extras.display.uc1701:210"
+     ]
+    }
+   },
+   "patterns": {
+    "spi_software_.+_pin": {
+     "type": "string",
+     "source": "extras.bus:124",
+     "required": "conditional"
+    }
+   }
+  },
+  {
+   "label": "display",
+   "regex": "^display$",
+   "when": [
+    {
+     "section": "self",
+     "option": "lcd_type",
+     "values": [
+      "st7920"
+     ]
+    }
+   ],
+   "options": {
+    "cs_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.display.st7920:145"
+     ]
+    },
+    "sclk_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.display.st7920:145"
+     ]
+    },
+    "sid_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.display.st7920:145"
+     ]
+    }
+   }
+  },
+  {
+   "label": "display",
+   "regex": "^display$",
+   "when": [
+    {
+     "section": "self",
+     "option": "lcd_type",
+     "values": [
+      "uc1701"
+     ]
+    }
+   ],
+   "options": {
+    "a0_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.display.uc1701:121"
+     ]
+    },
+    "contrast": {
+     "type": "int",
+     "required": "never",
+     "default": 40,
+     "minval": 0,
+     "maxval": 63,
+     "sources": [
+      "extras.display.uc1701:171"
+     ]
+    },
+    "cs_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.bus:112"
+     ]
+    },
+    "rst_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.display.uc1701:172"
+     ]
+    },
+    "spi_bus": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:133"
+     ]
+    },
+    "spi_software_sclk_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:121"
+     ]
+    },
+    "spi_speed": {
+     "type": "int",
+     "required": "never",
+     "default": "calculée",
+     "minval": 100000,
+     "sources": [
+      "extras.bus:120"
+     ]
+    }
+   },
+   "patterns": {
+    "spi_software_.+_pin": {
+     "type": "string",
+     "source": "extras.bus:124",
+     "required": "conditional"
+    }
+   }
+  },
+  {
+   "label": "display",
+   "regex": "^display$",
    "options": {
     "analog_pullup_resistor": {
      "type": "float",
@@ -1528,7 +2259,10 @@
      "type": "choice",
      "required": "never",
      "default": 4,
-     "choices": [],
+     "choices": [
+      "2",
+      "4"
+     ],
      "sources": [
       "extras.display.menu_keys:20"
      ]
@@ -1588,6 +2322,590 @@
      "sources": [
       "extras.display.menu_keys:46"
      ]
+    }
+   }
+  },
+  {
+   "label": "display {*}",
+   "regex": "^display\\ .+$",
+   "when": [
+    {
+     "section": "self",
+     "option": "lcd_type",
+     "values": [
+      "emulated_st7920"
+     ]
+    }
+   ],
+   "options": {
+    "en_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.display.st7920:227"
+     ]
+    },
+    "spi_speed": {
+     "type": "int",
+     "required": "never",
+     "default": 1000000,
+     "minval": 100000,
+     "sources": [
+      "extras.display.st7920:224"
+     ]
+    }
+   },
+   "patterns": {
+    "spi_software_.+_pin": {
+     "type": "string",
+     "source": "extras.display.st7920:215",
+     "required": "conditional"
+    }
+   }
+  },
+  {
+   "label": "display {*}",
+   "regex": "^display\\ .+$",
+   "when": [
+    {
+     "section": "self",
+     "option": "lcd_type",
+     "values": [
+      "hd44780"
+     ]
+    }
+   ],
+   "options": {
+    "d4_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.display.hd44780:22"
+     ]
+    },
+    "d5_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.display.hd44780:22"
+     ]
+    },
+    "d6_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.display.hd44780:22"
+     ]
+    },
+    "d7_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.display.hd44780:22"
+     ]
+    },
+    "e_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.display.hd44780:22"
+     ]
+    },
+    "hd44780_protocol_init": {
+     "type": "boolean",
+     "required": "never",
+     "default": true,
+     "sources": [
+      "extras.display.hd44780:24"
+     ]
+    },
+    "line_length": {
+     "type": "choice",
+     "required": "never",
+     "default": 20,
+     "choices": [
+      "16",
+      "20"
+     ],
+     "sources": [
+      "extras.display.hd44780:26"
+     ]
+    },
+    "rs_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.display.hd44780:22"
+     ]
+    }
+   }
+  },
+  {
+   "label": "display {*}",
+   "regex": "^display\\ .+$",
+   "when": [
+    {
+     "section": "self",
+     "option": "lcd_type",
+     "values": [
+      "hd44780_spi"
+     ]
+    }
+   ],
+   "options": {
+    "hd44780_protocol_init": {
+     "type": "boolean",
+     "required": "never",
+     "default": true,
+     "sources": [
+      "extras.display.hd44780_spi:21"
+     ]
+    },
+    "latch_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.bus:112"
+     ]
+    },
+    "line_length": {
+     "type": "choice",
+     "required": "never",
+     "default": 20,
+     "choices": [
+      "16",
+      "20"
+     ],
+     "sources": [
+      "extras.display.hd44780_spi:33"
+     ]
+    },
+    "spi_bus": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:133"
+     ]
+    },
+    "spi_software_sclk_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:121"
+     ]
+    },
+    "spi_speed": {
+     "type": "int",
+     "required": "never",
+     "default": "calculée",
+     "minval": 100000,
+     "sources": [
+      "extras.bus:120"
+     ]
+    }
+   },
+   "patterns": {
+    "spi_software_.+_pin": {
+     "type": "string",
+     "source": "extras.bus:124",
+     "required": "conditional"
+    }
+   }
+  },
+  {
+   "label": "display {*}",
+   "regex": "^display\\ .+$",
+   "when": [
+    {
+     "section": "self",
+     "option": "lcd_type",
+     "values": [
+      "sh1106"
+     ]
+    }
+   ],
+   "options": {
+    "contrast": {
+     "type": "int",
+     "required": "never",
+     "default": 239,
+     "minval": 0,
+     "maxval": 255,
+     "sources": [
+      "extras.display.uc1701:209"
+     ]
+    },
+    "cs_pin": {
+     "type": "string",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "extras.bus:112",
+      "extras.display.uc1701:200"
+     ]
+    },
+    "dc_pin": {
+     "type": "string",
+     "required": "conditional",
+     "sources": [
+      "extras.display.uc1701:121"
+     ]
+    },
+    "i2c_address": {
+     "type": "int",
+     "required": "conditional",
+     "default": "calculée",
+     "minval": 0,
+     "maxval": 127,
+     "sources": [
+      "extras.bus:207",
+      "extras.bus:209"
+     ]
+    },
+    "i2c_bus": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:205"
+     ]
+    },
+    "i2c_mcu": {
+     "type": "string",
+     "required": "never",
+     "default": "mcu",
+     "sources": [
+      "extras.bus:203"
+     ]
+    },
+    "i2c_speed": {
+     "type": "int",
+     "required": "never",
+     "default": "calculée",
+     "minval": 100000,
+     "sources": [
+      "extras.bus:204"
+     ]
+    },
+    "invert": {
+     "type": "boolean",
+     "required": "never",
+     "default": false,
+     "sources": [
+      "extras.display.uc1701:211"
+     ]
+    },
+    "reset_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.display.uc1701:207"
+     ]
+    },
+    "spi_bus": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:133"
+     ]
+    },
+    "spi_software_sclk_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:121"
+     ]
+    },
+    "spi_speed": {
+     "type": "int",
+     "required": "never",
+     "default": "calculée",
+     "minval": 100000,
+     "sources": [
+      "extras.bus:120"
+     ]
+    },
+    "vcomh": {
+     "type": "int",
+     "required": "never",
+     "default": 0,
+     "minval": 0,
+     "maxval": 63,
+     "sources": [
+      "extras.display.uc1701:210"
+     ]
+    },
+    "x_offset": {
+     "type": "int",
+     "required": "never",
+     "default": 0,
+     "minval": 0,
+     "maxval": 3,
+     "sources": [
+      "extras.display.uc1701:239"
+     ]
+    }
+   },
+   "patterns": {
+    "spi_software_.+_pin": {
+     "type": "string",
+     "source": "extras.bus:124",
+     "required": "conditional"
+    }
+   }
+  },
+  {
+   "label": "display {*}",
+   "regex": "^display\\ .+$",
+   "when": [
+    {
+     "section": "self",
+     "option": "lcd_type",
+     "values": [
+      "ssd1306"
+     ]
+    }
+   ],
+   "options": {
+    "contrast": {
+     "type": "int",
+     "required": "never",
+     "default": 239,
+     "minval": 0,
+     "maxval": 255,
+     "sources": [
+      "extras.display.uc1701:209"
+     ]
+    },
+    "cs_pin": {
+     "type": "string",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "extras.bus:112",
+      "extras.display.uc1701:200"
+     ]
+    },
+    "dc_pin": {
+     "type": "string",
+     "required": "conditional",
+     "sources": [
+      "extras.display.uc1701:121"
+     ]
+    },
+    "i2c_address": {
+     "type": "int",
+     "required": "conditional",
+     "default": "calculée",
+     "minval": 0,
+     "maxval": 127,
+     "sources": [
+      "extras.bus:207",
+      "extras.bus:209"
+     ]
+    },
+    "i2c_bus": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:205"
+     ]
+    },
+    "i2c_mcu": {
+     "type": "string",
+     "required": "never",
+     "default": "mcu",
+     "sources": [
+      "extras.bus:203"
+     ]
+    },
+    "i2c_speed": {
+     "type": "int",
+     "required": "never",
+     "default": "calculée",
+     "minval": 100000,
+     "sources": [
+      "extras.bus:204"
+     ]
+    },
+    "invert": {
+     "type": "boolean",
+     "required": "never",
+     "default": false,
+     "sources": [
+      "extras.display.uc1701:211"
+     ]
+    },
+    "reset_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.display.uc1701:207"
+     ]
+    },
+    "spi_bus": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:133"
+     ]
+    },
+    "spi_software_sclk_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:121"
+     ]
+    },
+    "spi_speed": {
+     "type": "int",
+     "required": "never",
+     "default": "calculée",
+     "minval": 100000,
+     "sources": [
+      "extras.bus:120"
+     ]
+    },
+    "vcomh": {
+     "type": "int",
+     "required": "never",
+     "default": 0,
+     "minval": 0,
+     "maxval": 63,
+     "sources": [
+      "extras.display.uc1701:210"
+     ]
+    }
+   },
+   "patterns": {
+    "spi_software_.+_pin": {
+     "type": "string",
+     "source": "extras.bus:124",
+     "required": "conditional"
+    }
+   }
+  },
+  {
+   "label": "display {*}",
+   "regex": "^display\\ .+$",
+   "when": [
+    {
+     "section": "self",
+     "option": "lcd_type",
+     "values": [
+      "st7920"
+     ]
+    }
+   ],
+   "options": {
+    "cs_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.display.st7920:145"
+     ]
+    },
+    "sclk_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.display.st7920:145"
+     ]
+    },
+    "sid_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.display.st7920:145"
+     ]
+    }
+   }
+  },
+  {
+   "label": "display {*}",
+   "regex": "^display\\ .+$",
+   "when": [
+    {
+     "section": "self",
+     "option": "lcd_type",
+     "values": [
+      "uc1701"
+     ]
+    }
+   ],
+   "options": {
+    "a0_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.display.uc1701:121"
+     ]
+    },
+    "contrast": {
+     "type": "int",
+     "required": "never",
+     "default": 40,
+     "minval": 0,
+     "maxval": 63,
+     "sources": [
+      "extras.display.uc1701:171"
+     ]
+    },
+    "cs_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.bus:112"
+     ]
+    },
+    "rst_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.display.uc1701:172"
+     ]
+    },
+    "spi_bus": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:133"
+     ]
+    },
+    "spi_software_sclk_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:121"
+     ]
+    },
+    "spi_speed": {
+     "type": "int",
+     "required": "never",
+     "default": "calculée",
+     "minval": 100000,
+     "sources": [
+      "extras.bus:120"
+     ]
+    }
+   },
+   "patterns": {
+    "spi_software_.+_pin": {
+     "type": "string",
+     "source": "extras.bus:124",
+     "required": "conditional"
     }
    }
   },
@@ -1707,7 +3025,10 @@
      "type": "choice",
      "required": "never",
      "default": 4,
-     "choices": [],
+     "choices": [
+      "2",
+      "4"
+     ],
      "sources": [
       "extras.display.menu_keys:20"
      ]
@@ -1767,6 +3088,58 @@
      "sources": [
       "extras.display.menu_keys:46"
      ]
+    }
+   }
+  },
+  {
+   "label": "display_glyph {*}",
+   "regex": "^display_glyph\\ .+$",
+   "options": {
+    "data": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.display.display:155"
+     ]
+    },
+    "hd44780_data": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.display.display:161"
+     ]
+    },
+    "hd44780_slot": {
+     "type": "int",
+     "required": "conditional",
+     "minval": 0,
+     "maxval": 7,
+     "sources": [
+      "extras.display.display:163"
+     ]
+    }
+   }
+  },
+  {
+   "label": "display_template {*}",
+   "regex": "^display_template\\ .+$",
+   "options": {
+    "text": {
+     "type": "string",
+     "required": "conditional",
+     "default": "calculée",
+     "template": true,
+     "sources": [
+      "extras.gcode_macro:78",
+      "extras.gcode_macro:80"
+     ]
+    }
+   },
+   "patterns": {
+    "param_.+": {
+     "source": "extras.display.display:33"
     }
    }
   },
@@ -2582,6 +3955,51 @@
      "section": "self",
      "option": "sensor_type",
      "values": [
+      "AD595",
+      "AD597",
+      "AD8494",
+      "AD8495",
+      "AD8496",
+      "AD8497",
+      "PT100 INA826"
+     ]
+    }
+   ],
+   "options": {
+    "adc_voltage": {
+     "type": "float",
+     "required": "never",
+     "default": 5.0,
+     "above": 0.0,
+     "sources": [
+      "extras.adc_temperature:92"
+     ]
+    },
+    "sensor_pin": {
+     "type": "string",
+     "required": "conditional",
+     "sources": [
+      "extras.adc_temperature:23"
+     ]
+    },
+    "voltage_offset": {
+     "type": "float",
+     "required": "never",
+     "default": 0.0,
+     "sources": [
+      "extras.adc_temperature:93"
+     ]
+    }
+   }
+  },
+  {
+   "label": "extruder",
+   "regex": "^extruder$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
       "ATC Semitec 104GT-2",
       "ATC Semitec 104NT-4-R025H42G",
       "EPCOS 100K B57560G104F",
@@ -2906,7 +4324,13 @@
      "type": "choice",
      "required": "never",
      "default": 1,
-     "choices": [],
+     "choices": [
+      "1",
+      "16",
+      "2",
+      "4",
+      "8"
+     ],
      "sources": [
       "extras.spi_temperature:176"
      ]
@@ -2943,6 +4367,37 @@
      "type": "string",
      "source": "extras.bus:124",
      "required": "conditional"
+    }
+   }
+  },
+  {
+   "label": "extruder",
+   "regex": "^extruder$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
+      "PT1000"
+     ]
+    }
+   ],
+   "options": {
+    "pullup_resistor": {
+     "type": "float",
+     "required": "never",
+     "default": 4700.0,
+     "above": 0.0,
+     "sources": [
+      "extras.adc_temperature:133"
+     ]
+    },
+    "sensor_pin": {
+     "type": "string",
+     "required": "conditional",
+     "sources": [
+      "extras.adc_temperature:23"
+     ]
     }
    }
   },
@@ -3556,6 +5011,51 @@
      "section": "self",
      "option": "sensor_type",
      "values": [
+      "AD595",
+      "AD597",
+      "AD8494",
+      "AD8495",
+      "AD8496",
+      "AD8497",
+      "PT100 INA826"
+     ]
+    }
+   ],
+   "options": {
+    "adc_voltage": {
+     "type": "float",
+     "required": "never",
+     "default": 5.0,
+     "above": 0.0,
+     "sources": [
+      "extras.adc_temperature:92"
+     ]
+    },
+    "sensor_pin": {
+     "type": "string",
+     "required": "conditional",
+     "sources": [
+      "extras.adc_temperature:23"
+     ]
+    },
+    "voltage_offset": {
+     "type": "float",
+     "required": "never",
+     "default": 0.0,
+     "sources": [
+      "extras.adc_temperature:93"
+     ]
+    }
+   }
+  },
+  {
+   "label": "extruder{n}",
+   "regex": "^extruder\\d+$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
       "ATC Semitec 104GT-2",
       "ATC Semitec 104NT-4-R025H42G",
       "EPCOS 100K B57560G104F",
@@ -3880,7 +5380,13 @@
      "type": "choice",
      "required": "never",
      "default": 1,
-     "choices": [],
+     "choices": [
+      "1",
+      "16",
+      "2",
+      "4",
+      "8"
+     ],
      "sources": [
       "extras.spi_temperature:176"
      ]
@@ -3917,6 +5423,37 @@
      "type": "string",
      "source": "extras.bus:124",
      "required": "conditional"
+    }
+   }
+  },
+  {
+   "label": "extruder{n}",
+   "regex": "^extruder\\d+$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
+      "PT1000"
+     ]
+    }
+   ],
+   "options": {
+    "pullup_resistor": {
+     "type": "float",
+     "required": "never",
+     "default": 4700.0,
+     "above": 0.0,
+     "sources": [
+      "extras.adc_temperature:133"
+     ]
+    },
+    "sensor_pin": {
+     "type": "string",
+     "required": "conditional",
+     "sources": [
+      "extras.adc_temperature:23"
+     ]
     }
    }
   },
@@ -5096,6 +6633,51 @@
      "section": "self",
      "option": "sensor_type",
      "values": [
+      "AD595",
+      "AD597",
+      "AD8494",
+      "AD8495",
+      "AD8496",
+      "AD8497",
+      "PT100 INA826"
+     ]
+    }
+   ],
+   "options": {
+    "adc_voltage": {
+     "type": "float",
+     "required": "never",
+     "default": 5.0,
+     "above": 0.0,
+     "sources": [
+      "extras.adc_temperature:92"
+     ]
+    },
+    "sensor_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.adc_temperature:23"
+     ]
+    },
+    "voltage_offset": {
+     "type": "float",
+     "required": "never",
+     "default": 0.0,
+     "sources": [
+      "extras.adc_temperature:93"
+     ]
+    }
+   }
+  },
+  {
+   "label": "heater_bed",
+   "regex": "^heater_bed$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
       "ATC Semitec 104GT-2",
       "ATC Semitec 104NT-4-R025H42G",
       "EPCOS 100K B57560G104F",
@@ -5420,7 +7002,13 @@
      "type": "choice",
      "required": "never",
      "default": 1,
-     "choices": [],
+     "choices": [
+      "1",
+      "16",
+      "2",
+      "4",
+      "8"
+     ],
      "sources": [
       "extras.spi_temperature:176"
      ]
@@ -5457,6 +7045,37 @@
      "type": "string",
      "source": "extras.bus:124",
      "required": "conditional"
+    }
+   }
+  },
+  {
+   "label": "heater_bed",
+   "regex": "^heater_bed$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
+      "PT1000"
+     ]
+    }
+   ],
+   "options": {
+    "pullup_resistor": {
+     "type": "float",
+     "required": "never",
+     "default": 4700.0,
+     "above": 0.0,
+     "sources": [
+      "extras.adc_temperature:133"
+     ]
+    },
+    "sensor_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.adc_temperature:23"
+     ]
     }
    }
   },
@@ -5940,6 +7559,51 @@
      "section": "self",
      "option": "sensor_type",
      "values": [
+      "AD595",
+      "AD597",
+      "AD8494",
+      "AD8495",
+      "AD8496",
+      "AD8497",
+      "PT100 INA826"
+     ]
+    }
+   ],
+   "options": {
+    "adc_voltage": {
+     "type": "float",
+     "required": "never",
+     "default": 5.0,
+     "above": 0.0,
+     "sources": [
+      "extras.adc_temperature:92"
+     ]
+    },
+    "sensor_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.adc_temperature:23"
+     ]
+    },
+    "voltage_offset": {
+     "type": "float",
+     "required": "never",
+     "default": 0.0,
+     "sources": [
+      "extras.adc_temperature:93"
+     ]
+    }
+   }
+  },
+  {
+   "label": "heater_generic {*}",
+   "regex": "^heater_generic\\ .+$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
       "ATC Semitec 104GT-2",
       "ATC Semitec 104NT-4-R025H42G",
       "EPCOS 100K B57560G104F",
@@ -6264,7 +7928,13 @@
      "type": "choice",
      "required": "never",
      "default": 1,
-     "choices": [],
+     "choices": [
+      "1",
+      "16",
+      "2",
+      "4",
+      "8"
+     ],
      "sources": [
       "extras.spi_temperature:176"
      ]
@@ -6301,6 +7971,37 @@
      "type": "string",
      "source": "extras.bus:124",
      "required": "conditional"
+    }
+   }
+  },
+  {
+   "label": "heater_generic {*}",
+   "regex": "^heater_generic\\ .+$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
+      "PT1000"
+     ]
+    }
+   ],
+   "options": {
+    "pullup_resistor": {
+     "type": "float",
+     "required": "never",
+     "default": 4700.0,
+     "above": 0.0,
+     "sources": [
+      "extras.adc_temperature:133"
+     ]
+    },
+    "sensor_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.adc_temperature:23"
+     ]
     }
    }
   },
@@ -6760,6 +8461,14 @@
    "label": "led {*}",
    "regex": "^led\\ .+$",
    "options": {
+    "blue_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.led:196"
+     ]
+    },
     "cycle_time": {
      "type": "float",
      "required": "never",
@@ -6768,6 +8477,14 @@
      "maxval": 5.0,
      "sources": [
       "extras.led:191"
+     ]
+    },
+    "green_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.led:196"
      ]
     },
     "hardware_pwm": {
@@ -6816,6 +8533,22 @@
      "maxval": 1.0,
      "sources": [
       "extras.led:23"
+     ]
+    },
+    "red_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.led:196"
+     ]
+    },
+    "white_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.led:196"
      ]
     }
    }
@@ -8771,6 +10504,14 @@
      "type": "choice",
      "required": "never",
      "default": "CW-M3",
+     "choices": [
+      "CCW-M3",
+      "CCW-M4",
+      "CCW-M5",
+      "CW-M3",
+      "CW-M4",
+      "CW-M5"
+     ],
      "sources": [
       "extras.screws_tilt_adjust:30"
      ]
@@ -14610,6 +16351,51 @@
      "section": "self",
      "option": "sensor_type",
      "values": [
+      "AD595",
+      "AD597",
+      "AD8494",
+      "AD8495",
+      "AD8496",
+      "AD8497",
+      "PT100 INA826"
+     ]
+    }
+   ],
+   "options": {
+    "adc_voltage": {
+     "type": "float",
+     "required": "never",
+     "default": 5.0,
+     "above": 0.0,
+     "sources": [
+      "extras.adc_temperature:92"
+     ]
+    },
+    "sensor_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.adc_temperature:23"
+     ]
+    },
+    "voltage_offset": {
+     "type": "float",
+     "required": "never",
+     "default": 0.0,
+     "sources": [
+      "extras.adc_temperature:93"
+     ]
+    }
+   }
+  },
+  {
+   "label": "temperature_fan {*}",
+   "regex": "^temperature_fan\\ .+$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
       "ATC Semitec 104GT-2",
       "ATC Semitec 104NT-4-R025H42G",
       "EPCOS 100K B57560G104F",
@@ -14934,7 +16720,13 @@
      "type": "choice",
      "required": "never",
      "default": 1,
-     "choices": [],
+     "choices": [
+      "1",
+      "16",
+      "2",
+      "4",
+      "8"
+     ],
      "sources": [
       "extras.spi_temperature:176"
      ]
@@ -14971,6 +16763,37 @@
      "type": "string",
      "source": "extras.bus:124",
      "required": "conditional"
+    }
+   }
+  },
+  {
+   "label": "temperature_fan {*}",
+   "regex": "^temperature_fan\\ .+$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
+      "PT1000"
+     ]
+    }
+   ],
+   "options": {
+    "pullup_resistor": {
+     "type": "float",
+     "required": "never",
+     "default": 4700.0,
+     "above": 0.0,
+     "sources": [
+      "extras.adc_temperature:133"
+     ]
+    },
+    "sensor_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.adc_temperature:23"
+     ]
     }
    }
   },
@@ -15414,6 +17237,51 @@
      "section": "self",
      "option": "sensor_type",
      "values": [
+      "AD595",
+      "AD597",
+      "AD8494",
+      "AD8495",
+      "AD8496",
+      "AD8497",
+      "PT100 INA826"
+     ]
+    }
+   ],
+   "options": {
+    "adc_voltage": {
+     "type": "float",
+     "required": "never",
+     "default": 5.0,
+     "above": 0.0,
+     "sources": [
+      "extras.adc_temperature:92"
+     ]
+    },
+    "sensor_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.adc_temperature:23"
+     ]
+    },
+    "voltage_offset": {
+     "type": "float",
+     "required": "never",
+     "default": 0.0,
+     "sources": [
+      "extras.adc_temperature:93"
+     ]
+    }
+   }
+  },
+  {
+   "label": "temperature_sensor {*}",
+   "regex": "^temperature_sensor\\ .+$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
       "ATC Semitec 104GT-2",
       "ATC Semitec 104NT-4-R025H42G",
       "EPCOS 100K B57560G104F",
@@ -15738,7 +17606,13 @@
      "type": "choice",
      "required": "never",
      "default": 1,
-     "choices": [],
+     "choices": [
+      "1",
+      "16",
+      "2",
+      "4",
+      "8"
+     ],
      "sources": [
       "extras.spi_temperature:176"
      ]
@@ -15775,6 +17649,37 @@
      "type": "string",
      "source": "extras.bus:124",
      "required": "conditional"
+    }
+   }
+  },
+  {
+   "label": "temperature_sensor {*}",
+   "regex": "^temperature_sensor\\ .+$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
+      "PT1000"
+     ]
+    }
+   ],
+   "options": {
+    "pullup_resistor": {
+     "type": "float",
+     "required": "never",
+     "default": 4700.0,
+     "above": 0.0,
+     "sources": [
+      "extras.adc_temperature:133"
+     ]
+    },
+    "sensor_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.adc_temperature:23"
+     ]
     }
    }
   },
@@ -18373,6 +20278,21 @@
       "position_endstop_reverse",
       "homing_speed_reverse",
       "homing_positive_dir_reverse"
+     ]
+    },
+    {
+     "sectionRegex": "^(extruder\\d*|heater_bed|heater_generic .+)$",
+     "names": [
+      "target_min_temp",
+      "target_max_temp",
+      "heat_with_heater_bed",
+      "heat_with_heater_bed_tem_add"
+     ]
+    },
+    {
+     "sectionRegex": "^verify_heater .+$",
+     "names": [
+      "position_z"
      ]
     }
    ]

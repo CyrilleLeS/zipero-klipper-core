@@ -76,6 +76,16 @@ export interface SchemaCommands {
 export interface ConfigSchema {
   readonly firmware: string;
   readonly commit: string;
+  /**
+   * Kalico : références `${section.option}` dans les valeurs et section [constants] (noms libres,
+   * une constante inutilisée n'est qu'un avertissement du firmware).
+   */
+  readonly interpolation?: boolean;
+  /**
+   * Sections dont une partie des lectures échappe à l'analyse (menus : options selon le type
+   * d'élément) : aucune option n'y est dite inconnue.
+   */
+  readonly openSections?: readonly string[];
   readonly commands?: SchemaCommands;
   readonly kinematics: readonly string[];
   readonly sensorFamilies: readonly {
@@ -104,19 +114,14 @@ export interface ConfigSchema {
   }[];
 }
 
-/** Sections dont les options inconnues sont signalées (parcours principal, EP-06.03). */
-export const COVERED_SECTIONS = [
-  /^printer$/,
-  /^stepper_[a-z]+\d*$/,
-  /^extruder\d*$/,
-  /^heater_bed$/,
-  /^bed_mesh$/,
-  /^probe$/,
-  /^bltouch$/,
-  /^safe_z_home$/,
-  /^screws_tilt_adjust$/,
-  /^gcode_macro \S/,
-] as const;
+/**
+ * Sections dont les options inconnues et obligatoires absentes sont signalées : TOUTES depuis
+ * EP-06.15, le schéma de chaque section de la référence ayant été confronté au vrai Klipper (et
+ * à Kalico) en mode batch, cas par cas (tooling/corpus-tests, src/sections.test.ts). Seules les
+ * sections dont le schéma est « indécidable » (variante inconnue) restent sans ces contrôles.
+ * Au départ (EP-06.03) : printer, moteurs, extrudeurs, plateau, maillage, sonde, macros.
+ */
+export const COVERED_SECTIONS = [/./] as const;
 
 export const VALIDATION_CODES = [
   "config.unknown-section",
@@ -266,6 +271,7 @@ export function validateConfig(
   const rules = rulesOf(schema);
   const byName = new Map(sections.map((s) => [s.name, s]));
   const accessed = schema.accessedSections.map((regex) => new RegExp(regex));
+  const open = (schema.openSections ?? []).map((regex) => new RegExp(regex));
   const removed = schema.removed.map((r) => ({
     ...r,
     pattern: new RegExp(r.sectionRegex),
@@ -273,6 +279,19 @@ export function validateConfig(
   }));
   const optionValue = (section: string, option: string) =>
     byName.get(section)?.options.get(option)?.value;
+  // Valeur d'un discriminant connue du firmware sans variante propre (`kinematics: winch`,
+  // `sensor_type: a1333` n'ajoutent aucune option) : la section reste décidable (EP-06.15).
+  const sensorNames = new Set(schema.sensorFamilies.flatMap((f) => f.names));
+  const knownValue = (condition: SchemaCondition, value: string, sectionName: string) => {
+    if (condition.option === "kinematics" && schema.kinematics.includes(value)) return true;
+    if (condition.option === "sensor_type" && sensorNames.has(value)) return true;
+    const owner = condition.section === "self" ? sectionName : condition.section;
+    return rules.some(
+      (rule) =>
+        rule.pattern.test(owner) &&
+        rule.options[condition.option]?.choices?.includes(value) === true,
+    );
+  };
   const issues: ValidationIssue[] = [];
 
   for (const section of sections) {
@@ -285,6 +304,8 @@ export function validateConfig(
     // 1. Section chargée par Klipper (load_object ou lecture par un autre module) ?
     const parts = section.name.split(/\s+/);
     const module = parts[0] ?? "";
+    // [constants] (Kalico) : noms libres, rien à vérifier.
+    if (schema.interpolation && section.name === "constants") continue;
     const known =
       (parts.length === 1 && schema.modules.exact.includes(module)) ||
       (parts.length > 1 && schema.modules.prefix.includes(module)) ||
@@ -334,7 +355,17 @@ export function validateConfig(
         );
       });
     });
-    if (applicable.length === 0) continue;
+    // Aucune règle pour ce nom : module qui ne lit aucune option ([exclude_object]…) ; toute
+    // option y est refusée. Sinon (variantes sans correspondance, section lue ailleurs) : on ne
+    // sait pas.
+    const isModule =
+      (parts.length === 1 && schema.modules.exact.includes(module)) ||
+      (parts.length > 1 && schema.modules.prefix.includes(module));
+    if (
+      applicable.length === 0 &&
+      (!isModule || rules.some((rule) => rule.pattern.test(section.name)))
+    )
+      continue;
     const knownOptions = new Map<string, SchemaOption>();
     for (const rule of applicable) {
       for (const [name, info] of Object.entries(rule.options)) {
@@ -370,11 +401,14 @@ export function validateConfig(
                   (c.sectionPrefix !== undefined && byName.has(`${c.sectionPrefix} ${value}`))),
             ),
         );
-        if (value !== undefined && !matchedSomewhere) undecidable = true;
+        if (value !== undefined && !matchedSomewhere && !knownValue(condition, value, section.name))
+          undecidable = true;
       }
     }
     const patterns = applicable.flatMap((rule) => rule.optionPatterns);
     const isCovered = covered.some((pattern) => pattern.test(section.name));
+    // Section « ouverte » : options inconnues non signalées ; les obligatoires connues, si.
+    const isOpen = open.some((pattern) => pattern.test(section.name));
 
     // 3. Options présentes.
     for (const option of section.options.values()) {
@@ -413,7 +447,7 @@ export function validateConfig(
         continue;
       }
       if (!info) {
-        if (isCovered && !undecidable) {
+        if (isCovered && !isOpen && !undecidable) {
           const suggestion = [...knownOptions.keys()]
             .map((name) => ({ name, d: distance(option.name, name) }))
             .filter(({ d }) => d <= 2)
@@ -435,7 +469,9 @@ export function validateConfig(
           params: { option: option.name },
         });
       }
-      if (info.type && info.type !== "mixed") {
+      // Kalico : valeur construite par `${section.option}`, connue seulement du firmware.
+      const interpolated = schema.interpolation && option.value.includes("${");
+      if (info.type && info.type !== "mixed" && !interpolated) {
         const problem = checkValue(option, { sources: [], ...info });
         if (problem)
           issues.push({

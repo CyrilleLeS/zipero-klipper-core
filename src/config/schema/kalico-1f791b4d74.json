@@ -1,6 +1,11 @@
 {
  "firmware": "kalico",
  "commit": "1f791b4d74b44bd72b22c0b2528617aa96ed4959",
+ "interpolation": true,
+ "openSections": [
+  "^load_cell_probe$",
+  "^menu\\ .+$"
+ ],
  "kinematics": [
   "cartesian",
   "corexy",
@@ -324,6 +329,7 @@
   "^mcu$",
   "^mcu\\ .+$",
   "^menu\\ .+$",
+  "^pid_profile\\ .+$",
   "^printer$",
   "^stepper_[a-z]$",
   "^stepper_a$",
@@ -603,6 +609,29 @@
   {
    "label": "angle {*}",
    "regex": "^angle\\ .+$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
+      "mt6826s"
+     ]
+    }
+   ],
+   "options": {
+    "stepper": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.angle:556"
+     ]
+    }
+   }
+  },
+  {
+   "label": "angle {*}",
+   "regex": "^angle\\ .+$",
    "options": {
     "calibrate": {
      "type": "string",
@@ -631,6 +660,13 @@
     "sensor_type": {
      "type": "choice",
      "required": "always",
+     "choices": [
+      "a1333",
+      "as5047d",
+      "mt6816",
+      "mt6826s",
+      "tle5012b"
+     ],
      "sources": [
       "extras.angle:746"
      ]
@@ -841,6 +877,12 @@
      "type": "choice",
      "required": "never",
      "default": "calculée",
+     "choices": [
+      "circle",
+      "fail",
+      "ignore",
+      "retry"
+     ],
      "sources": [
       "extras.probe:52"
      ]
@@ -1106,6 +1148,121 @@
    }
   },
   {
+   "label": "bed_mesh{*}",
+   "regex": "^bed_mesh.+$",
+   "options": {
+    "algo": {
+     "type": "mixed",
+     "required": "conditional",
+     "sources": [
+      "extras.bed_mesh:1624",
+      "extras.bed_mesh:1626",
+      "extras.bed_mesh:1628"
+     ]
+    },
+    "max_x": {
+     "type": "mixed",
+     "required": "conditional",
+     "sources": [
+      "extras.bed_mesh:1624",
+      "extras.bed_mesh:1626",
+      "extras.bed_mesh:1628"
+     ]
+    },
+    "max_y": {
+     "type": "mixed",
+     "required": "conditional",
+     "sources": [
+      "extras.bed_mesh:1624",
+      "extras.bed_mesh:1626",
+      "extras.bed_mesh:1628"
+     ]
+    },
+    "mesh_x_pps": {
+     "type": "mixed",
+     "required": "conditional",
+     "sources": [
+      "extras.bed_mesh:1624",
+      "extras.bed_mesh:1626",
+      "extras.bed_mesh:1628"
+     ]
+    },
+    "mesh_y_pps": {
+     "type": "mixed",
+     "required": "conditional",
+     "sources": [
+      "extras.bed_mesh:1624",
+      "extras.bed_mesh:1626",
+      "extras.bed_mesh:1628"
+     ]
+    },
+    "min_x": {
+     "type": "mixed",
+     "required": "conditional",
+     "sources": [
+      "extras.bed_mesh:1624",
+      "extras.bed_mesh:1626",
+      "extras.bed_mesh:1628"
+     ]
+    },
+    "min_y": {
+     "type": "mixed",
+     "required": "conditional",
+     "sources": [
+      "extras.bed_mesh:1624",
+      "extras.bed_mesh:1626",
+      "extras.bed_mesh:1628"
+     ]
+    },
+    "points": {
+     "type": "lists",
+     "required": "conditional",
+     "seps": [
+      ",",
+      "\n"
+     ],
+     "sources": [
+      "extras.bed_mesh:1617"
+     ]
+    },
+    "tension": {
+     "type": "mixed",
+     "required": "conditional",
+     "sources": [
+      "extras.bed_mesh:1624",
+      "extras.bed_mesh:1626",
+      "extras.bed_mesh:1628"
+     ]
+    },
+    "version": {
+     "type": "int",
+     "required": "never",
+     "default": 0,
+     "sources": [
+      "extras.bed_mesh:1607"
+     ]
+    },
+    "x_count": {
+     "type": "mixed",
+     "required": "conditional",
+     "sources": [
+      "extras.bed_mesh:1624",
+      "extras.bed_mesh:1626",
+      "extras.bed_mesh:1628"
+     ]
+    },
+    "y_count": {
+     "type": "mixed",
+     "required": "conditional",
+     "sources": [
+      "extras.bed_mesh:1624",
+      "extras.bed_mesh:1626",
+      "extras.bed_mesh:1628"
+     ]
+    }
+   }
+  },
+  {
    "label": "bed_screws",
    "regex": "^bed_screws$",
    "options": {
@@ -1198,6 +1355,12 @@
      "type": "choice",
      "required": "never",
      "default": "calculée",
+     "choices": [
+      "circle",
+      "fail",
+      "ignore",
+      "retry"
+     ],
      "sources": [
       "extras.probe:52"
      ]
@@ -1362,6 +1525,10 @@
     "extruder_type": {
      "type": "choice",
      "required": "always",
+     "choices": [
+      "extruder_stepper",
+      "trad_rack"
+     ],
      "sources": [
       "extras.belay:17"
      ]
@@ -1411,6 +1578,12 @@
      "type": "choice",
      "required": "never",
      "default": "calculée",
+     "choices": [
+      "circle",
+      "fail",
+      "ignore",
+      "retry"
+     ],
      "sources": [
       "extras.probe:52"
      ]
@@ -1523,6 +1696,10 @@
      "type": "choice",
      "required": "never",
      "default": "average",
+     "choices": [
+      "average",
+      "median"
+     ],
      "sources": [
       "extras.probe:333"
      ]
@@ -1565,6 +1742,10 @@
      "type": "choice",
      "required": "never",
      "default": null,
+     "choices": [
+      "5V",
+      "OD"
+     ],
      "sources": [
       "extras.bltouch:67"
      ]
@@ -1617,6 +1798,18 @@
    "label": "board_pins",
    "regex": "^board_pins$",
    "options": {
+    "aliases": {
+     "type": "lists",
+     "required": "conditional",
+     "count": 2,
+     "seps": [
+      "=",
+      ","
+     ],
+     "sources": [
+      "extras.board_pins:15"
+     ]
+    },
     "mcu": {
      "type": "list",
      "required": "never",
@@ -1638,6 +1831,18 @@
    "label": "board_pins {*}",
    "regex": "^board_pins\\ .+$",
    "options": {
+    "aliases": {
+     "type": "lists",
+     "required": "conditional",
+     "count": 2,
+     "seps": [
+      "=",
+      ","
+     ],
+     "sources": [
+      "extras.board_pins:15"
+     ]
+    },
     "mcu": {
      "type": "list",
      "required": "never",
@@ -2166,6 +2371,12 @@
      "type": "choice",
      "required": "never",
      "default": "calculée",
+     "choices": [
+      "circle",
+      "fail",
+      "ignore",
+      "retry"
+     ],
      "sources": [
       "extras.probe:52"
      ]
@@ -2330,6 +2541,682 @@
      "source": "extras.delta_calibrate:21",
      "required": "conditional",
      "count": 3
+    }
+   }
+  },
+  {
+   "label": "display",
+   "regex": "^display$",
+   "when": [
+    {
+     "section": "self",
+     "option": "lcd_type",
+     "values": [
+      "aip31068_spi"
+     ]
+    }
+   ],
+   "options": {
+    "latch_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.bus:165"
+     ]
+    },
+    "line_length": {
+     "type": "choice",
+     "required": "never",
+     "default": 20,
+     "choices": [
+      "16",
+      "20"
+     ],
+     "sources": [
+      "extras.display.aip31068_spi:98"
+     ]
+    },
+    "spi_bus": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:190"
+     ]
+    },
+    "spi_software_sclk_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:174"
+     ]
+    },
+    "spi_speed": {
+     "type": "int",
+     "required": "never",
+     "default": "calculée",
+     "minval": 100000,
+     "sources": [
+      "extras.bus:173"
+     ]
+    }
+   },
+   "patterns": {
+    "spi_software_.+_pin": {
+     "type": "string",
+     "source": "extras.bus:179",
+     "required": "conditional"
+    }
+   }
+  },
+  {
+   "label": "display",
+   "regex": "^display$",
+   "when": [
+    {
+     "section": "self",
+     "option": "lcd_type",
+     "values": [
+      "emulated_st7920"
+     ]
+    }
+   ],
+   "options": {
+    "en_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.display.st7920:265"
+     ]
+    },
+    "spi_speed": {
+     "type": "int",
+     "required": "never",
+     "default": 1000000,
+     "minval": 100000,
+     "sources": [
+      "extras.display.st7920:261"
+     ]
+    }
+   },
+   "patterns": {
+    "spi_software_.+_pin": {
+     "type": "string",
+     "source": "extras.display.st7920:250",
+     "required": "conditional"
+    }
+   }
+  },
+  {
+   "label": "display",
+   "regex": "^display$",
+   "when": [
+    {
+     "section": "self",
+     "option": "lcd_type",
+     "values": [
+      "hd44780"
+     ]
+    }
+   ],
+   "options": {
+    "d4_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.display.hd44780:23"
+     ]
+    },
+    "d5_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.display.hd44780:23"
+     ]
+    },
+    "d6_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.display.hd44780:23"
+     ]
+    },
+    "d7_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.display.hd44780:23"
+     ]
+    },
+    "e_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.display.hd44780:23"
+     ]
+    },
+    "hd44780_protocol_init": {
+     "type": "boolean",
+     "required": "never",
+     "default": true,
+     "sources": [
+      "extras.display.hd44780:26"
+     ]
+    },
+    "line_length": {
+     "type": "choice",
+     "required": "never",
+     "default": 20,
+     "choices": [
+      "16",
+      "20"
+     ],
+     "sources": [
+      "extras.display.hd44780:29"
+     ]
+    },
+    "rs_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.display.hd44780:23"
+     ]
+    }
+   }
+  },
+  {
+   "label": "display",
+   "regex": "^display$",
+   "when": [
+    {
+     "section": "self",
+     "option": "lcd_type",
+     "values": [
+      "hd44780_spi"
+     ]
+    }
+   ],
+   "options": {
+    "hd44780_protocol_init": {
+     "type": "boolean",
+     "required": "never",
+     "default": true,
+     "sources": [
+      "extras.display.hd44780_spi:21"
+     ]
+    },
+    "latch_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.bus:165"
+     ]
+    },
+    "line_length": {
+     "type": "choice",
+     "required": "never",
+     "default": 20,
+     "choices": [
+      "16",
+      "20"
+     ],
+     "sources": [
+      "extras.display.hd44780_spi:33"
+     ]
+    },
+    "spi_bus": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:190"
+     ]
+    },
+    "spi_software_sclk_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:174"
+     ]
+    },
+    "spi_speed": {
+     "type": "int",
+     "required": "never",
+     "default": "calculée",
+     "minval": 100000,
+     "sources": [
+      "extras.bus:173"
+     ]
+    }
+   },
+   "patterns": {
+    "spi_software_.+_pin": {
+     "type": "string",
+     "source": "extras.bus:179",
+     "required": "conditional"
+    }
+   }
+  },
+  {
+   "label": "display",
+   "regex": "^display$",
+   "when": [
+    {
+     "section": "self",
+     "option": "lcd_type",
+     "values": [
+      "sh1106"
+     ]
+    }
+   ],
+   "options": {
+    "contrast": {
+     "type": "int",
+     "required": "never",
+     "default": 239,
+     "minval": 0,
+     "maxval": 255,
+     "sources": [
+      "extras.display.uc1701:239"
+     ]
+    },
+    "cs_pin": {
+     "type": "string",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "extras.bus:165",
+      "extras.display.uc1701:229"
+     ]
+    },
+    "dc_pin": {
+     "type": "string",
+     "required": "conditional",
+     "sources": [
+      "extras.display.uc1701:135"
+     ]
+    },
+    "i2c_address": {
+     "type": "int",
+     "required": "conditional",
+     "default": "calculée",
+     "minval": 0,
+     "maxval": 127,
+     "sources": [
+      "extras.bus:309",
+      "extras.bus:311"
+     ]
+    },
+    "i2c_bus": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:325"
+     ]
+    },
+    "i2c_mcu": {
+     "type": "string",
+     "required": "never",
+     "default": "mcu",
+     "sources": [
+      "extras.bus:306"
+     ]
+    },
+    "i2c_software_scl_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:314"
+     ]
+    },
+    "i2c_speed": {
+     "type": "int",
+     "required": "never",
+     "default": "calculée",
+     "minval": 100000,
+     "sources": [
+      "extras.bus:307"
+     ]
+    },
+    "invert": {
+     "type": "boolean",
+     "required": "never",
+     "default": false,
+     "sources": [
+      "extras.display.uc1701:241"
+     ]
+    },
+    "reset_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.display.uc1701:237"
+     ]
+    },
+    "spi_bus": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:190"
+     ]
+    },
+    "spi_software_sclk_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:174"
+     ]
+    },
+    "spi_speed": {
+     "type": "int",
+     "required": "never",
+     "default": "calculée",
+     "minval": 100000,
+     "sources": [
+      "extras.bus:173"
+     ]
+    },
+    "vcomh": {
+     "type": "int",
+     "required": "never",
+     "default": 0,
+     "minval": 0,
+     "maxval": 63,
+     "sources": [
+      "extras.display.uc1701:240"
+     ]
+    },
+    "x_offset": {
+     "type": "int",
+     "required": "never",
+     "default": 0,
+     "minval": 0,
+     "maxval": 3,
+     "sources": [
+      "extras.display.uc1701:280"
+     ]
+    }
+   },
+   "patterns": {
+    "i2c_software_.+_pin": {
+     "type": "string",
+     "source": "extras.bus:319",
+     "required": "conditional"
+    },
+    "spi_software_.+_pin": {
+     "type": "string",
+     "source": "extras.bus:179",
+     "required": "conditional"
+    }
+   }
+  },
+  {
+   "label": "display",
+   "regex": "^display$",
+   "when": [
+    {
+     "section": "self",
+     "option": "lcd_type",
+     "values": [
+      "ssd1306"
+     ]
+    }
+   ],
+   "options": {
+    "contrast": {
+     "type": "int",
+     "required": "never",
+     "default": 239,
+     "minval": 0,
+     "maxval": 255,
+     "sources": [
+      "extras.display.uc1701:239"
+     ]
+    },
+    "cs_pin": {
+     "type": "string",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "extras.bus:165",
+      "extras.display.uc1701:229"
+     ]
+    },
+    "dc_pin": {
+     "type": "string",
+     "required": "conditional",
+     "sources": [
+      "extras.display.uc1701:135"
+     ]
+    },
+    "i2c_address": {
+     "type": "int",
+     "required": "conditional",
+     "default": "calculée",
+     "minval": 0,
+     "maxval": 127,
+     "sources": [
+      "extras.bus:309",
+      "extras.bus:311"
+     ]
+    },
+    "i2c_bus": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:325"
+     ]
+    },
+    "i2c_mcu": {
+     "type": "string",
+     "required": "never",
+     "default": "mcu",
+     "sources": [
+      "extras.bus:306"
+     ]
+    },
+    "i2c_software_scl_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:314"
+     ]
+    },
+    "i2c_speed": {
+     "type": "int",
+     "required": "never",
+     "default": "calculée",
+     "minval": 100000,
+     "sources": [
+      "extras.bus:307"
+     ]
+    },
+    "invert": {
+     "type": "boolean",
+     "required": "never",
+     "default": false,
+     "sources": [
+      "extras.display.uc1701:241"
+     ]
+    },
+    "reset_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.display.uc1701:237"
+     ]
+    },
+    "spi_bus": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:190"
+     ]
+    },
+    "spi_software_sclk_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:174"
+     ]
+    },
+    "spi_speed": {
+     "type": "int",
+     "required": "never",
+     "default": "calculée",
+     "minval": 100000,
+     "sources": [
+      "extras.bus:173"
+     ]
+    },
+    "vcomh": {
+     "type": "int",
+     "required": "never",
+     "default": 0,
+     "minval": 0,
+     "maxval": 63,
+     "sources": [
+      "extras.display.uc1701:240"
+     ]
+    }
+   },
+   "patterns": {
+    "i2c_software_.+_pin": {
+     "type": "string",
+     "source": "extras.bus:319",
+     "required": "conditional"
+    },
+    "spi_software_.+_pin": {
+     "type": "string",
+     "source": "extras.bus:179",
+     "required": "conditional"
+    }
+   }
+  },
+  {
+   "label": "display",
+   "regex": "^display$",
+   "when": [
+    {
+     "section": "self",
+     "option": "lcd_type",
+     "values": [
+      "st7920"
+     ]
+    }
+   ],
+   "options": {
+    "cs_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.display.st7920:163"
+     ]
+    },
+    "sclk_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.display.st7920:163"
+     ]
+    },
+    "sid_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.display.st7920:163"
+     ]
+    }
+   }
+  },
+  {
+   "label": "display",
+   "regex": "^display$",
+   "when": [
+    {
+     "section": "self",
+     "option": "lcd_type",
+     "values": [
+      "uc1701"
+     ]
+    }
+   ],
+   "options": {
+    "a0_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.display.uc1701:135"
+     ]
+    },
+    "contrast": {
+     "type": "int",
+     "required": "never",
+     "default": 40,
+     "minval": 0,
+     "maxval": 63,
+     "sources": [
+      "extras.display.uc1701:196"
+     ]
+    },
+    "cs_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.bus:165"
+     ]
+    },
+    "rst_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.display.uc1701:197"
+     ]
+    },
+    "spi_bus": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:190"
+     ]
+    },
+    "spi_software_sclk_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:174"
+     ]
+    },
+    "spi_speed": {
+     "type": "int",
+     "required": "never",
+     "default": "calculée",
+     "minval": 100000,
+     "sources": [
+      "extras.bus:173"
+     ]
+    }
+   },
+   "patterns": {
+    "spi_software_.+_pin": {
+     "type": "string",
+     "source": "extras.bus:179",
+     "required": "conditional"
     }
    }
   },
@@ -2519,6 +3406,682 @@
   {
    "label": "display {*}",
    "regex": "^display\\ .+$",
+   "when": [
+    {
+     "section": "self",
+     "option": "lcd_type",
+     "values": [
+      "aip31068_spi"
+     ]
+    }
+   ],
+   "options": {
+    "latch_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.bus:165"
+     ]
+    },
+    "line_length": {
+     "type": "choice",
+     "required": "never",
+     "default": 20,
+     "choices": [
+      "16",
+      "20"
+     ],
+     "sources": [
+      "extras.display.aip31068_spi:98"
+     ]
+    },
+    "spi_bus": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:190"
+     ]
+    },
+    "spi_software_sclk_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:174"
+     ]
+    },
+    "spi_speed": {
+     "type": "int",
+     "required": "never",
+     "default": "calculée",
+     "minval": 100000,
+     "sources": [
+      "extras.bus:173"
+     ]
+    }
+   },
+   "patterns": {
+    "spi_software_.+_pin": {
+     "type": "string",
+     "source": "extras.bus:179",
+     "required": "conditional"
+    }
+   }
+  },
+  {
+   "label": "display {*}",
+   "regex": "^display\\ .+$",
+   "when": [
+    {
+     "section": "self",
+     "option": "lcd_type",
+     "values": [
+      "emulated_st7920"
+     ]
+    }
+   ],
+   "options": {
+    "en_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.display.st7920:265"
+     ]
+    },
+    "spi_speed": {
+     "type": "int",
+     "required": "never",
+     "default": 1000000,
+     "minval": 100000,
+     "sources": [
+      "extras.display.st7920:261"
+     ]
+    }
+   },
+   "patterns": {
+    "spi_software_.+_pin": {
+     "type": "string",
+     "source": "extras.display.st7920:250",
+     "required": "conditional"
+    }
+   }
+  },
+  {
+   "label": "display {*}",
+   "regex": "^display\\ .+$",
+   "when": [
+    {
+     "section": "self",
+     "option": "lcd_type",
+     "values": [
+      "hd44780"
+     ]
+    }
+   ],
+   "options": {
+    "d4_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.display.hd44780:23"
+     ]
+    },
+    "d5_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.display.hd44780:23"
+     ]
+    },
+    "d6_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.display.hd44780:23"
+     ]
+    },
+    "d7_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.display.hd44780:23"
+     ]
+    },
+    "e_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.display.hd44780:23"
+     ]
+    },
+    "hd44780_protocol_init": {
+     "type": "boolean",
+     "required": "never",
+     "default": true,
+     "sources": [
+      "extras.display.hd44780:26"
+     ]
+    },
+    "line_length": {
+     "type": "choice",
+     "required": "never",
+     "default": 20,
+     "choices": [
+      "16",
+      "20"
+     ],
+     "sources": [
+      "extras.display.hd44780:29"
+     ]
+    },
+    "rs_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.display.hd44780:23"
+     ]
+    }
+   }
+  },
+  {
+   "label": "display {*}",
+   "regex": "^display\\ .+$",
+   "when": [
+    {
+     "section": "self",
+     "option": "lcd_type",
+     "values": [
+      "hd44780_spi"
+     ]
+    }
+   ],
+   "options": {
+    "hd44780_protocol_init": {
+     "type": "boolean",
+     "required": "never",
+     "default": true,
+     "sources": [
+      "extras.display.hd44780_spi:21"
+     ]
+    },
+    "latch_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.bus:165"
+     ]
+    },
+    "line_length": {
+     "type": "choice",
+     "required": "never",
+     "default": 20,
+     "choices": [
+      "16",
+      "20"
+     ],
+     "sources": [
+      "extras.display.hd44780_spi:33"
+     ]
+    },
+    "spi_bus": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:190"
+     ]
+    },
+    "spi_software_sclk_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:174"
+     ]
+    },
+    "spi_speed": {
+     "type": "int",
+     "required": "never",
+     "default": "calculée",
+     "minval": 100000,
+     "sources": [
+      "extras.bus:173"
+     ]
+    }
+   },
+   "patterns": {
+    "spi_software_.+_pin": {
+     "type": "string",
+     "source": "extras.bus:179",
+     "required": "conditional"
+    }
+   }
+  },
+  {
+   "label": "display {*}",
+   "regex": "^display\\ .+$",
+   "when": [
+    {
+     "section": "self",
+     "option": "lcd_type",
+     "values": [
+      "sh1106"
+     ]
+    }
+   ],
+   "options": {
+    "contrast": {
+     "type": "int",
+     "required": "never",
+     "default": 239,
+     "minval": 0,
+     "maxval": 255,
+     "sources": [
+      "extras.display.uc1701:239"
+     ]
+    },
+    "cs_pin": {
+     "type": "string",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "extras.bus:165",
+      "extras.display.uc1701:229"
+     ]
+    },
+    "dc_pin": {
+     "type": "string",
+     "required": "conditional",
+     "sources": [
+      "extras.display.uc1701:135"
+     ]
+    },
+    "i2c_address": {
+     "type": "int",
+     "required": "conditional",
+     "default": "calculée",
+     "minval": 0,
+     "maxval": 127,
+     "sources": [
+      "extras.bus:309",
+      "extras.bus:311"
+     ]
+    },
+    "i2c_bus": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:325"
+     ]
+    },
+    "i2c_mcu": {
+     "type": "string",
+     "required": "never",
+     "default": "mcu",
+     "sources": [
+      "extras.bus:306"
+     ]
+    },
+    "i2c_software_scl_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:314"
+     ]
+    },
+    "i2c_speed": {
+     "type": "int",
+     "required": "never",
+     "default": "calculée",
+     "minval": 100000,
+     "sources": [
+      "extras.bus:307"
+     ]
+    },
+    "invert": {
+     "type": "boolean",
+     "required": "never",
+     "default": false,
+     "sources": [
+      "extras.display.uc1701:241"
+     ]
+    },
+    "reset_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.display.uc1701:237"
+     ]
+    },
+    "spi_bus": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:190"
+     ]
+    },
+    "spi_software_sclk_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:174"
+     ]
+    },
+    "spi_speed": {
+     "type": "int",
+     "required": "never",
+     "default": "calculée",
+     "minval": 100000,
+     "sources": [
+      "extras.bus:173"
+     ]
+    },
+    "vcomh": {
+     "type": "int",
+     "required": "never",
+     "default": 0,
+     "minval": 0,
+     "maxval": 63,
+     "sources": [
+      "extras.display.uc1701:240"
+     ]
+    },
+    "x_offset": {
+     "type": "int",
+     "required": "never",
+     "default": 0,
+     "minval": 0,
+     "maxval": 3,
+     "sources": [
+      "extras.display.uc1701:280"
+     ]
+    }
+   },
+   "patterns": {
+    "i2c_software_.+_pin": {
+     "type": "string",
+     "source": "extras.bus:319",
+     "required": "conditional"
+    },
+    "spi_software_.+_pin": {
+     "type": "string",
+     "source": "extras.bus:179",
+     "required": "conditional"
+    }
+   }
+  },
+  {
+   "label": "display {*}",
+   "regex": "^display\\ .+$",
+   "when": [
+    {
+     "section": "self",
+     "option": "lcd_type",
+     "values": [
+      "ssd1306"
+     ]
+    }
+   ],
+   "options": {
+    "contrast": {
+     "type": "int",
+     "required": "never",
+     "default": 239,
+     "minval": 0,
+     "maxval": 255,
+     "sources": [
+      "extras.display.uc1701:239"
+     ]
+    },
+    "cs_pin": {
+     "type": "string",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "extras.bus:165",
+      "extras.display.uc1701:229"
+     ]
+    },
+    "dc_pin": {
+     "type": "string",
+     "required": "conditional",
+     "sources": [
+      "extras.display.uc1701:135"
+     ]
+    },
+    "i2c_address": {
+     "type": "int",
+     "required": "conditional",
+     "default": "calculée",
+     "minval": 0,
+     "maxval": 127,
+     "sources": [
+      "extras.bus:309",
+      "extras.bus:311"
+     ]
+    },
+    "i2c_bus": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:325"
+     ]
+    },
+    "i2c_mcu": {
+     "type": "string",
+     "required": "never",
+     "default": "mcu",
+     "sources": [
+      "extras.bus:306"
+     ]
+    },
+    "i2c_software_scl_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:314"
+     ]
+    },
+    "i2c_speed": {
+     "type": "int",
+     "required": "never",
+     "default": "calculée",
+     "minval": 100000,
+     "sources": [
+      "extras.bus:307"
+     ]
+    },
+    "invert": {
+     "type": "boolean",
+     "required": "never",
+     "default": false,
+     "sources": [
+      "extras.display.uc1701:241"
+     ]
+    },
+    "reset_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.display.uc1701:237"
+     ]
+    },
+    "spi_bus": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:190"
+     ]
+    },
+    "spi_software_sclk_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:174"
+     ]
+    },
+    "spi_speed": {
+     "type": "int",
+     "required": "never",
+     "default": "calculée",
+     "minval": 100000,
+     "sources": [
+      "extras.bus:173"
+     ]
+    },
+    "vcomh": {
+     "type": "int",
+     "required": "never",
+     "default": 0,
+     "minval": 0,
+     "maxval": 63,
+     "sources": [
+      "extras.display.uc1701:240"
+     ]
+    }
+   },
+   "patterns": {
+    "i2c_software_.+_pin": {
+     "type": "string",
+     "source": "extras.bus:319",
+     "required": "conditional"
+    },
+    "spi_software_.+_pin": {
+     "type": "string",
+     "source": "extras.bus:179",
+     "required": "conditional"
+    }
+   }
+  },
+  {
+   "label": "display {*}",
+   "regex": "^display\\ .+$",
+   "when": [
+    {
+     "section": "self",
+     "option": "lcd_type",
+     "values": [
+      "st7920"
+     ]
+    }
+   ],
+   "options": {
+    "cs_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.display.st7920:163"
+     ]
+    },
+    "sclk_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.display.st7920:163"
+     ]
+    },
+    "sid_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.display.st7920:163"
+     ]
+    }
+   }
+  },
+  {
+   "label": "display {*}",
+   "regex": "^display\\ .+$",
+   "when": [
+    {
+     "section": "self",
+     "option": "lcd_type",
+     "values": [
+      "uc1701"
+     ]
+    }
+   ],
+   "options": {
+    "a0_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.display.uc1701:135"
+     ]
+    },
+    "contrast": {
+     "type": "int",
+     "required": "never",
+     "default": 40,
+     "minval": 0,
+     "maxval": 63,
+     "sources": [
+      "extras.display.uc1701:196"
+     ]
+    },
+    "cs_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.bus:165"
+     ]
+    },
+    "rst_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.display.uc1701:197"
+     ]
+    },
+    "spi_bus": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:190"
+     ]
+    },
+    "spi_software_sclk_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:174"
+     ]
+    },
+    "spi_speed": {
+     "type": "int",
+     "required": "never",
+     "default": "calculée",
+     "minval": 100000,
+     "sources": [
+      "extras.bus:173"
+     ]
+    }
+   },
+   "patterns": {
+    "spi_software_.+_pin": {
+     "type": "string",
+     "source": "extras.bus:179",
+     "required": "conditional"
+    }
+   }
+  },
+  {
+   "label": "display {*}",
+   "regex": "^display\\ .+$",
    "options": {
     "analog_pullup_resistor": {
      "type": "float",
@@ -2700,6 +4263,82 @@
    }
   },
   {
+   "label": "display_data {*}",
+   "regex": "^display_data\\ .+$",
+   "options": {
+    "position": {
+     "type": "string",
+     "required": "conditional",
+     "sources": [
+      "extras.display.display:74"
+     ]
+    },
+    "text": {
+     "type": "string",
+     "required": "conditional",
+     "default": "calculée",
+     "template": true,
+     "sources": [
+      "extras.display.display:90",
+      "extras.gcode_macro:336",
+      "extras.gcode_macro:338"
+     ]
+    }
+   }
+  },
+  {
+   "label": "display_glyph {*}",
+   "regex": "^display_glyph\\ .+$",
+   "options": {
+    "data": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.display.display:191"
+     ]
+    },
+    "hd44780_data": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.display.display:197"
+     ]
+    },
+    "hd44780_slot": {
+     "type": "int",
+     "required": "conditional",
+     "minval": 0,
+     "maxval": 7,
+     "sources": [
+      "extras.display.display:199"
+     ]
+    }
+   }
+  },
+  {
+   "label": "display_template {*}",
+   "regex": "^display_template\\ .+$",
+   "options": {
+    "text": {
+     "type": "string",
+     "required": "conditional",
+     "default": "calculée",
+     "template": true,
+     "sources": [
+      "extras.gcode_macro:336",
+      "extras.gcode_macro:338"
+     ]
+    }
+   },
+   "patterns": {
+    "param_.+": {
+     "source": "extras.display.display:42"
+    }
+   }
+  },
+  {
    "label": "dockable_probe",
    "regex": "^dockable_probe$",
    "options": {
@@ -2752,6 +4391,12 @@
      "type": "choice",
      "required": "never",
      "default": "calculée",
+     "choices": [
+      "circle",
+      "fail",
+      "ignore",
+      "retry"
+     ],
      "sources": [
       "extras.probe:52"
      ]
@@ -2992,6 +4637,10 @@
      "type": "choice",
      "required": "never",
      "default": "average",
+     "choices": [
+      "average",
+      "median"
+     ],
      "sources": [
       "extras.probe:333"
      ]
@@ -3789,6 +5438,219 @@
    }
   },
   {
+   "label": "dual_carriage",
+   "regex": "^dual_carriage$",
+   "when": [
+    {
+     "section": "printer",
+     "option": "kinematics",
+     "values": [
+      "limited_cartesian"
+     ]
+    }
+   ],
+   "options": {
+    "axis": {
+     "type": "choice",
+     "required": "conditional",
+     "choices": [
+      "x",
+      "y"
+     ],
+     "sources": [
+      "kinematics.cartesian:30"
+     ]
+    },
+    "dir_pin": {
+     "type": "string",
+     "required": "conditional",
+     "sources": [
+      "stepper:336"
+     ]
+    },
+    "enable_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.stepper_enable:105"
+     ]
+    },
+    "endstop_pin": {
+     "type": "string",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "stepper:441",
+      "stepper:564",
+      "stepper:568"
+     ]
+    },
+    "full_steps_per_rotation": {
+     "type": "int",
+     "required": "never",
+     "default": 200,
+     "minval": 1,
+     "sources": [
+      "stepper:393"
+     ]
+    },
+    "gear_ratio": {
+     "type": "lists",
+     "required": "conditional",
+     "default": null,
+     "count": 2,
+     "seps": [
+      ":",
+      ","
+     ],
+     "sources": [
+      "stepper:362",
+      "stepper:382",
+      "stepper:386"
+     ]
+    },
+    "homing_accel": {
+     "type": "float",
+     "required": "never",
+     "default": null,
+     "above": 0.0,
+     "sources": [
+      "stepper:492"
+     ]
+    },
+    "homing_positive_dir": {
+     "type": "boolean",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "stepper:484",
+      "stepper:505"
+     ]
+    },
+    "homing_retract_dist": {
+     "type": "float",
+     "required": "never",
+     "default": 5.0,
+     "minval": 0.0,
+     "sources": [
+      "stepper:481"
+     ]
+    },
+    "homing_retract_speed": {
+     "type": "float",
+     "required": "never",
+     "default": "calculée",
+     "above": 0.0,
+     "sources": [
+      "stepper:478"
+     ]
+    },
+    "homing_speed": {
+     "type": "float",
+     "required": "never",
+     "default": 5.0,
+     "above": 0.0,
+     "sources": [
+      "stepper:469"
+     ]
+    },
+    "microsteps": {
+     "type": "int",
+     "required": "conditional",
+     "minval": 1,
+     "sources": [
+      "stepper:392"
+     ]
+    },
+    "min_home_dist": {
+     "type": "float",
+     "required": "never",
+     "default": "calculée",
+     "minval": 0.0,
+     "sources": [
+      "stepper:488"
+     ]
+    },
+    "position_endstop": {
+     "type": "float",
+     "required": "conditional",
+     "default": "calculée",
+     "sources": [
+      "stepper:436",
+      "stepper:438"
+     ]
+    },
+    "position_max": {
+     "type": "float",
+     "required": "conditional",
+     "sources": [
+      "stepper:450"
+     ]
+    },
+    "position_min": {
+     "type": "float",
+     "required": "never",
+     "default": 0.0,
+     "sources": [
+      "stepper:449"
+     ]
+    },
+    "rotation_distance": {
+     "type": "float",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "stepper:381",
+      "stepper:388"
+     ]
+    },
+    "safe_distance": {
+     "type": "float",
+     "required": "never",
+     "default": null,
+     "minval": 0.0,
+     "sources": [
+      "kinematics.idex_modes:25"
+     ]
+    },
+    "second_homing_speed": {
+     "type": "float",
+     "required": "never",
+     "default": "calculée",
+     "above": 0.0,
+     "sources": [
+      "stepper:475"
+     ]
+    },
+    "step_pin": {
+     "type": "string",
+     "required": "conditional",
+     "sources": [
+      "stepper:334"
+     ]
+    },
+    "step_pulse_duration": {
+     "type": "float",
+     "required": "never",
+     "default": null,
+     "minval": 0.0,
+     "maxval": 0.001,
+     "sources": [
+      "stepper:341"
+     ]
+    },
+    "use_sensorless_homing": {
+     "type": "boolean",
+     "required": "never",
+     "default": "calculée",
+     "sources": [
+      "stepper:465"
+     ]
+    }
+   }
+  },
+  {
    "label": "dual_carriage{n}",
    "regex": "^dual_carriage\\d+$",
    "when": [
@@ -4080,6 +5942,103 @@
    }
   },
   {
+   "label": "dual_carriage{n}",
+   "regex": "^dual_carriage\\d+$",
+   "when": [
+    {
+     "section": "printer",
+     "option": "kinematics",
+     "values": [
+      "limited_cartesian"
+     ]
+    }
+   ],
+   "options": {
+    "dir_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "stepper:336"
+     ]
+    },
+    "enable_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.stepper_enable:105"
+     ]
+    },
+    "endstop_pin": {
+     "type": "string",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "stepper:564",
+      "stepper:568"
+     ]
+    },
+    "full_steps_per_rotation": {
+     "type": "int",
+     "required": "never",
+     "default": 200,
+     "minval": 1,
+     "sources": [
+      "stepper:393"
+     ]
+    },
+    "gear_ratio": {
+     "type": "lists",
+     "required": "conditional",
+     "default": null,
+     "count": 2,
+     "seps": [
+      ":",
+      ","
+     ],
+     "sources": [
+      "stepper:362",
+      "stepper:382",
+      "stepper:386"
+     ]
+    },
+    "microsteps": {
+     "type": "int",
+     "required": "always",
+     "minval": 1,
+     "sources": [
+      "stepper:392"
+     ]
+    },
+    "rotation_distance": {
+     "type": "float",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "stepper:381",
+      "stepper:388"
+     ]
+    },
+    "step_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "stepper:334"
+     ]
+    },
+    "step_pulse_duration": {
+     "type": "float",
+     "required": "never",
+     "default": null,
+     "minval": 0.0,
+     "maxval": 0.001,
+     "sources": [
+      "stepper:341"
+     ]
+    }
+   }
+  },
+  {
    "label": "duplicate_pin_override",
    "regex": "^duplicate_pin_override$",
    "options": {
@@ -4149,6 +6108,51 @@
      "default": true,
      "sources": [
       "extras.exclude_object:18"
+     ]
+    }
+   }
+  },
+  {
+   "label": "extruder",
+   "regex": "^extruder$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
+      "AD595",
+      "AD597",
+      "AD8494",
+      "AD8495",
+      "AD8496",
+      "AD8497",
+      "PT100 INA826"
+     ]
+    }
+   ],
+   "options": {
+    "adc_voltage": {
+     "type": "float",
+     "required": "never",
+     "default": 5.0,
+     "above": 0.0,
+     "sources": [
+      "extras.adc_temperature:115"
+     ]
+    },
+    "sensor_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.adc_temperature:26"
+     ]
+    },
+    "voltage_offset": {
+     "type": "float",
+     "required": "never",
+     "default": 0.0,
+     "sources": [
+      "extras.adc_temperature:116"
      ]
     }
    }
@@ -4814,7 +6818,13 @@
      "type": "choice",
      "required": "never",
      "default": 1,
-     "choices": [],
+     "choices": [
+      "1",
+      "16",
+      "2",
+      "4",
+      "8"
+     ],
      "sources": [
       "extras.spi_temperature:222"
      ]
@@ -4851,6 +6861,46 @@
      "type": "string",
      "source": "extras.bus:179",
      "required": "conditional"
+    }
+   }
+  },
+  {
+   "label": "extruder",
+   "regex": "^extruder$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
+      "PT1000"
+     ]
+    }
+   ],
+   "options": {
+    "inline_resistor": {
+     "type": "float",
+     "required": "never",
+     "default": 0.0,
+     "minval": 0.0,
+     "sources": [
+      "extras.adc_temperature:165"
+     ]
+    },
+    "pullup_resistor": {
+     "type": "float",
+     "required": "never",
+     "default": 4700.0,
+     "above": 0.0,
+     "sources": [
+      "extras.adc_temperature:164"
+     ]
+    },
+    "sensor_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.adc_temperature:26"
+     ]
     }
    }
   },
@@ -5989,6 +8039,51 @@
      "section": "self",
      "option": "sensor_type",
      "values": [
+      "AD595",
+      "AD597",
+      "AD8494",
+      "AD8495",
+      "AD8496",
+      "AD8497",
+      "PT100 INA826"
+     ]
+    }
+   ],
+   "options": {
+    "adc_voltage": {
+     "type": "float",
+     "required": "never",
+     "default": 5.0,
+     "above": 0.0,
+     "sources": [
+      "extras.adc_temperature:115"
+     ]
+    },
+    "sensor_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.adc_temperature:26"
+     ]
+    },
+    "voltage_offset": {
+     "type": "float",
+     "required": "never",
+     "default": 0.0,
+     "sources": [
+      "extras.adc_temperature:116"
+     ]
+    }
+   }
+  },
+  {
+   "label": "extruder{n}",
+   "regex": "^extruder\\d+$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
       "AHT10"
      ]
     }
@@ -6642,7 +8737,13 @@
      "type": "choice",
      "required": "never",
      "default": 1,
-     "choices": [],
+     "choices": [
+      "1",
+      "16",
+      "2",
+      "4",
+      "8"
+     ],
      "sources": [
       "extras.spi_temperature:222"
      ]
@@ -6679,6 +8780,46 @@
      "type": "string",
      "source": "extras.bus:179",
      "required": "conditional"
+    }
+   }
+  },
+  {
+   "label": "extruder{n}",
+   "regex": "^extruder\\d+$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
+      "PT1000"
+     ]
+    }
+   ],
+   "options": {
+    "inline_resistor": {
+     "type": "float",
+     "required": "never",
+     "default": 0.0,
+     "minval": 0.0,
+     "sources": [
+      "extras.adc_temperature:165"
+     ]
+    },
+    "pullup_resistor": {
+     "type": "float",
+     "required": "never",
+     "default": 4700.0,
+     "above": 0.0,
+     "sources": [
+      "extras.adc_temperature:164"
+     ]
+    },
+    "sensor_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.adc_temperature:26"
+     ]
     }
    }
   },
@@ -8155,6 +10296,65 @@
    }
   },
   {
+   "label": "firmware_retraction",
+   "regex": "^firmware_retraction$",
+   "options": {
+    "clear_zhop_on_z_moves": {
+     "type": "boolean",
+     "required": "never",
+     "default": false,
+     "sources": [
+      "extras.firmware_retraction:84"
+     ]
+    },
+    "retract_length": {
+     "type": "float",
+     "required": "never",
+     "default": 0.0,
+     "minval": 0.0,
+     "sources": [
+      "extras.firmware_retraction:69"
+     ]
+    },
+    "retract_speed": {
+     "type": "float",
+     "required": "never",
+     "default": 20.0,
+     "minval": 1,
+     "sources": [
+      "extras.firmware_retraction:72"
+     ]
+    },
+    "unretract_extra_length": {
+     "type": "float",
+     "required": "never",
+     "default": 0.0,
+     "minval": 0.0,
+     "sources": [
+      "extras.firmware_retraction:75"
+     ]
+    },
+    "unretract_speed": {
+     "type": "float",
+     "required": "never",
+     "default": 10.0,
+     "minval": 1,
+     "sources": [
+      "extras.firmware_retraction:78"
+     ]
+    },
+    "z_hop_height": {
+     "type": "float",
+     "required": "never",
+     "default": 0.0,
+     "minval": 0.0,
+     "sources": [
+      "extras.firmware_retraction:81"
+     ]
+    }
+   }
+  },
+  {
    "label": "force_move",
    "regex": "^force_move$",
    "options": {
@@ -8523,6 +10723,51 @@
      "default": false,
      "sources": [
       "extras.hall_filament_width_sensor:44"
+     ]
+    }
+   }
+  },
+  {
+   "label": "heated_fan",
+   "regex": "^heated_fan$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
+      "AD595",
+      "AD597",
+      "AD8494",
+      "AD8495",
+      "AD8496",
+      "AD8497",
+      "PT100 INA826"
+     ]
+    }
+   ],
+   "options": {
+    "adc_voltage": {
+     "type": "float",
+     "required": "never",
+     "default": 5.0,
+     "above": 0.0,
+     "sources": [
+      "extras.adc_temperature:115"
+     ]
+    },
+    "sensor_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.adc_temperature:26"
+     ]
+    },
+    "voltage_offset": {
+     "type": "float",
+     "required": "never",
+     "default": 0.0,
+     "sources": [
+      "extras.adc_temperature:116"
      ]
     }
    }
@@ -9188,7 +11433,13 @@
      "type": "choice",
      "required": "never",
      "default": 1,
-     "choices": [],
+     "choices": [
+      "1",
+      "16",
+      "2",
+      "4",
+      "8"
+     ],
      "sources": [
       "extras.spi_temperature:222"
      ]
@@ -9225,6 +11476,46 @@
      "type": "string",
      "source": "extras.bus:179",
      "required": "conditional"
+    }
+   }
+  },
+  {
+   "label": "heated_fan",
+   "regex": "^heated_fan$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
+      "PT1000"
+     ]
+    }
+   ],
+   "options": {
+    "inline_resistor": {
+     "type": "float",
+     "required": "never",
+     "default": 0.0,
+     "minval": 0.0,
+     "sources": [
+      "extras.adc_temperature:165"
+     ]
+    },
+    "pullup_resistor": {
+     "type": "float",
+     "required": "never",
+     "default": 4700.0,
+     "above": 0.0,
+     "sources": [
+      "extras.adc_temperature:164"
+     ]
+    },
+    "sensor_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.adc_temperature:26"
+     ]
     }
    }
   },
@@ -10231,6 +12522,51 @@
      "section": "self",
      "option": "sensor_type",
      "values": [
+      "AD595",
+      "AD597",
+      "AD8494",
+      "AD8495",
+      "AD8496",
+      "AD8497",
+      "PT100 INA826"
+     ]
+    }
+   ],
+   "options": {
+    "adc_voltage": {
+     "type": "float",
+     "required": "never",
+     "default": 5.0,
+     "above": 0.0,
+     "sources": [
+      "extras.adc_temperature:115"
+     ]
+    },
+    "sensor_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.adc_temperature:26"
+     ]
+    },
+    "voltage_offset": {
+     "type": "float",
+     "required": "never",
+     "default": 0.0,
+     "sources": [
+      "extras.adc_temperature:116"
+     ]
+    }
+   }
+  },
+  {
+   "label": "heater_bed",
+   "regex": "^heater_bed$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
       "AHT10"
      ]
     }
@@ -10884,7 +13220,13 @@
      "type": "choice",
      "required": "never",
      "default": 1,
-     "choices": [],
+     "choices": [
+      "1",
+      "16",
+      "2",
+      "4",
+      "8"
+     ],
      "sources": [
       "extras.spi_temperature:222"
      ]
@@ -10921,6 +13263,46 @@
      "type": "string",
      "source": "extras.bus:179",
      "required": "conditional"
+    }
+   }
+  },
+  {
+   "label": "heater_bed",
+   "regex": "^heater_bed$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
+      "PT1000"
+     ]
+    }
+   ],
+   "options": {
+    "inline_resistor": {
+     "type": "float",
+     "required": "never",
+     "default": 0.0,
+     "minval": 0.0,
+     "sources": [
+      "extras.adc_temperature:165"
+     ]
+    },
+    "pullup_resistor": {
+     "type": "float",
+     "required": "never",
+     "default": 4700.0,
+     "above": 0.0,
+     "sources": [
+      "extras.adc_temperature:164"
+     ]
+    },
+    "sensor_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.adc_temperature:26"
+     ]
     }
    }
   },
@@ -11943,6 +14325,51 @@
      "section": "self",
      "option": "sensor_type",
      "values": [
+      "AD595",
+      "AD597",
+      "AD8494",
+      "AD8495",
+      "AD8496",
+      "AD8497",
+      "PT100 INA826"
+     ]
+    }
+   ],
+   "options": {
+    "adc_voltage": {
+     "type": "float",
+     "required": "never",
+     "default": 5.0,
+     "above": 0.0,
+     "sources": [
+      "extras.adc_temperature:115"
+     ]
+    },
+    "sensor_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.adc_temperature:26"
+     ]
+    },
+    "voltage_offset": {
+     "type": "float",
+     "required": "never",
+     "default": 0.0,
+     "sources": [
+      "extras.adc_temperature:116"
+     ]
+    }
+   }
+  },
+  {
+   "label": "heater_generic {*}",
+   "regex": "^heater_generic\\ .+$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
       "AHT10"
      ]
     }
@@ -12596,7 +15023,13 @@
      "type": "choice",
      "required": "never",
      "default": 1,
-     "choices": [],
+     "choices": [
+      "1",
+      "16",
+      "2",
+      "4",
+      "8"
+     ],
      "sources": [
       "extras.spi_temperature:222"
      ]
@@ -12633,6 +15066,46 @@
      "type": "string",
      "source": "extras.bus:179",
      "required": "conditional"
+    }
+   }
+  },
+  {
+   "label": "heater_generic {*}",
+   "regex": "^heater_generic\\ .+$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
+      "PT1000"
+     ]
+    }
+   ],
+   "options": {
+    "inline_resistor": {
+     "type": "float",
+     "required": "never",
+     "default": 0.0,
+     "minval": 0.0,
+     "sources": [
+      "extras.adc_temperature:165"
+     ]
+    },
+    "pullup_resistor": {
+     "type": "float",
+     "required": "never",
+     "default": 4700.0,
+     "above": 0.0,
+     "sources": [
+      "extras.adc_temperature:164"
+     ]
+    },
+    "sensor_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.adc_temperature:26"
+     ]
     }
    }
   },
@@ -14077,6 +16550,14 @@
    "label": "led {*}",
    "regex": "^led\\ .+$",
    "options": {
+    "blue_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.led:142"
+     ]
+    },
     "cycle_time": {
      "type": "float",
      "required": "never",
@@ -14085,6 +16566,14 @@
      "maxval": 5.0,
      "sources": [
       "extras.led:136"
+     ]
+    },
+    "green_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.led:142"
      ]
     },
     "hardware_pwm": {
@@ -14133,6 +16622,22 @@
      "maxval": 1.0,
      "sources": [
       "extras.led:23"
+     ]
+    },
+    "red_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.led:142"
+     ]
+    },
+    "white_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.led:142"
      ]
     }
    }
@@ -14576,6 +17081,433 @@
   {
    "label": "load_cell",
    "regex": "^load_cell$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
+      "ads1220"
+     ]
+    }
+   ],
+   "options": {
+    "cs_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.bus:165"
+     ]
+    },
+    "data_ready_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.load_cell.ads1220:137"
+     ]
+    },
+    "gain": {
+     "type": "choice",
+     "required": "never",
+     "default": "128",
+     "choices": [
+      "1",
+      "128",
+      "16",
+      "2",
+      "32",
+      "4",
+      "64",
+      "8"
+     ],
+     "sources": [
+      "extras.load_cell.ads1220:53"
+     ]
+    },
+    "input_mux": {
+     "type": "choice",
+     "required": "never",
+     "default": "AIN0_AIN1",
+     "choices": [
+      "AIN0_AIN1",
+      "AIN0_AIN2",
+      "AIN0_AIN3",
+      "AIN0_AVSS",
+      "AIN1_AIN0",
+      "AIN1_AIN2",
+      "AIN1_AIN3",
+      "AIN1_AVSS",
+      "AIN2_AIN3",
+      "AIN2_AVSS",
+      "AIN3_AIN2",
+      "AIN3_AVSS"
+     ],
+     "sources": [
+      "extras.load_cell.ads1220:94"
+     ]
+    },
+    "pga_bypass": {
+     "type": "boolean",
+     "required": "never",
+     "default": false,
+     "sources": [
+      "extras.load_cell.ads1220:98"
+     ]
+    },
+    "sample_rate": {
+     "type": "choice",
+     "required": "never",
+     "default": "660",
+     "sources": [
+      "extras.load_cell.ads1220:75"
+     ]
+    },
+    "spi_bus": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:190"
+     ]
+    },
+    "spi_software_sclk_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:174"
+     ]
+    },
+    "spi_speed": {
+     "type": "int",
+     "required": "never",
+     "default": "calculée",
+     "minval": 100000,
+     "sources": [
+      "extras.bus:173"
+     ]
+    },
+    "vref": {
+     "type": "choice",
+     "required": "never",
+     "default": "internal",
+     "choices": [
+      "REF0",
+      "REF1",
+      "analog_supply",
+      "internal"
+     ],
+     "sources": [
+      "extras.load_cell.ads1220:109"
+     ]
+    }
+   },
+   "patterns": {
+    "spi_software_.+_pin": {
+     "type": "string",
+     "source": "extras.bus:179",
+     "required": "conditional"
+    }
+   }
+  },
+  {
+   "label": "load_cell",
+   "regex": "^load_cell$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
+      "ads131m02"
+     ]
+    }
+   ],
+   "options": {
+    "channels": {
+     "type": "int_list",
+     "required": "never",
+     "default": [
+      0
+     ],
+     "sources": [
+      "extras.load_cell.ads131m0x:182"
+     ]
+    },
+    "cs_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.bus:165"
+     ]
+    },
+    "data_ready_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.load_cell.ads131m0x:132"
+     ]
+    },
+    "enable_global_chop": {
+     "type": "boolean",
+     "required": "never",
+     "default": false,
+     "sources": [
+      "extras.load_cell.ads131m0x:119"
+     ]
+    },
+    "gain": {
+     "type": "choice",
+     "required": "never",
+     "default": 128,
+     "sources": [
+      "extras.load_cell.ads131m0x:118"
+     ]
+    },
+    "global_chop_delay": {
+     "type": "choice",
+     "required": "never",
+     "default": 16,
+     "sources": [
+      "extras.load_cell.ads131m0x:122"
+     ]
+    },
+    "sample_rate": {
+     "type": "choice",
+     "required": "never",
+     "default": "calculée",
+     "sources": [
+      "extras.load_cell.ads131m0x:113"
+     ]
+    },
+    "spi_bus": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:190"
+     ]
+    },
+    "spi_software_sclk_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:174"
+     ]
+    },
+    "spi_speed": {
+     "type": "int",
+     "required": "never",
+     "default": "calculée",
+     "minval": 100000,
+     "sources": [
+      "extras.bus:173"
+     ]
+    }
+   },
+   "patterns": {
+    "spi_software_.+_pin": {
+     "type": "string",
+     "source": "extras.bus:179",
+     "required": "conditional"
+    }
+   }
+  },
+  {
+   "label": "load_cell",
+   "regex": "^load_cell$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
+      "ads131m04"
+     ]
+    }
+   ],
+   "options": {
+    "channels": {
+     "type": "int_list",
+     "required": "never",
+     "default": [
+      0
+     ],
+     "sources": [
+      "extras.load_cell.ads131m0x:182"
+     ]
+    },
+    "cs_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.bus:165"
+     ]
+    },
+    "data_ready_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.load_cell.ads131m0x:132"
+     ]
+    },
+    "enable_global_chop": {
+     "type": "boolean",
+     "required": "never",
+     "default": false,
+     "sources": [
+      "extras.load_cell.ads131m0x:119"
+     ]
+    },
+    "gain": {
+     "type": "choice",
+     "required": "never",
+     "default": 128,
+     "sources": [
+      "extras.load_cell.ads131m0x:118"
+     ]
+    },
+    "global_chop_delay": {
+     "type": "choice",
+     "required": "never",
+     "default": 16,
+     "sources": [
+      "extras.load_cell.ads131m0x:122"
+     ]
+    },
+    "sample_rate": {
+     "type": "choice",
+     "required": "never",
+     "default": "calculée",
+     "sources": [
+      "extras.load_cell.ads131m0x:113"
+     ]
+    },
+    "spi_bus": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:190"
+     ]
+    },
+    "spi_software_sclk_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:174"
+     ]
+    },
+    "spi_speed": {
+     "type": "int",
+     "required": "never",
+     "default": "calculée",
+     "minval": 100000,
+     "sources": [
+      "extras.bus:173"
+     ]
+    }
+   },
+   "patterns": {
+    "spi_software_.+_pin": {
+     "type": "string",
+     "source": "extras.bus:179",
+     "required": "conditional"
+    }
+   }
+  },
+  {
+   "label": "load_cell",
+   "regex": "^load_cell$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
+      "hx711"
+     ]
+    }
+   ],
+   "options": {
+    "dout_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.load_cell.hx71x:38"
+     ]
+    },
+    "gain": {
+     "type": "choice",
+     "required": "never",
+     "default": "calculée",
+     "sources": [
+      "extras.load_cell.hx71x:59"
+     ]
+    },
+    "sample_rate": {
+     "type": "choice",
+     "required": "never",
+     "default": "calculée",
+     "sources": [
+      "extras.load_cell.hx71x:54"
+     ]
+    },
+    "sclk_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.load_cell.hx71x:39"
+     ]
+    }
+   }
+  },
+  {
+   "label": "load_cell",
+   "regex": "^load_cell$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
+      "hx717"
+     ]
+    }
+   ],
+   "options": {
+    "dout_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.load_cell.hx71x:38"
+     ]
+    },
+    "gain": {
+     "type": "choice",
+     "required": "never",
+     "default": "calculée",
+     "sources": [
+      "extras.load_cell.hx71x:59"
+     ]
+    },
+    "sample_rate": {
+     "type": "choice",
+     "required": "never",
+     "default": "calculée",
+     "sources": [
+      "extras.load_cell.hx71x:54"
+     ]
+    },
+    "sclk_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.load_cell.hx71x:39"
+     ]
+    }
+   }
+  },
+  {
+   "label": "load_cell",
+   "regex": "^load_cell$",
    "options": {
     "counts_per_gram": {
      "type": "float",
@@ -14611,6 +17543,433 @@
      "required": "always",
      "sources": [
       "extras.load_cell:27"
+     ]
+    }
+   }
+  },
+  {
+   "label": "load_cell {*}",
+   "regex": "^load_cell\\ .+$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
+      "ads1220"
+     ]
+    }
+   ],
+   "options": {
+    "cs_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.bus:165"
+     ]
+    },
+    "data_ready_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.load_cell.ads1220:137"
+     ]
+    },
+    "gain": {
+     "type": "choice",
+     "required": "never",
+     "default": "128",
+     "choices": [
+      "1",
+      "128",
+      "16",
+      "2",
+      "32",
+      "4",
+      "64",
+      "8"
+     ],
+     "sources": [
+      "extras.load_cell.ads1220:53"
+     ]
+    },
+    "input_mux": {
+     "type": "choice",
+     "required": "never",
+     "default": "AIN0_AIN1",
+     "choices": [
+      "AIN0_AIN1",
+      "AIN0_AIN2",
+      "AIN0_AIN3",
+      "AIN0_AVSS",
+      "AIN1_AIN0",
+      "AIN1_AIN2",
+      "AIN1_AIN3",
+      "AIN1_AVSS",
+      "AIN2_AIN3",
+      "AIN2_AVSS",
+      "AIN3_AIN2",
+      "AIN3_AVSS"
+     ],
+     "sources": [
+      "extras.load_cell.ads1220:94"
+     ]
+    },
+    "pga_bypass": {
+     "type": "boolean",
+     "required": "never",
+     "default": false,
+     "sources": [
+      "extras.load_cell.ads1220:98"
+     ]
+    },
+    "sample_rate": {
+     "type": "choice",
+     "required": "never",
+     "default": "660",
+     "sources": [
+      "extras.load_cell.ads1220:75"
+     ]
+    },
+    "spi_bus": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:190"
+     ]
+    },
+    "spi_software_sclk_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:174"
+     ]
+    },
+    "spi_speed": {
+     "type": "int",
+     "required": "never",
+     "default": "calculée",
+     "minval": 100000,
+     "sources": [
+      "extras.bus:173"
+     ]
+    },
+    "vref": {
+     "type": "choice",
+     "required": "never",
+     "default": "internal",
+     "choices": [
+      "REF0",
+      "REF1",
+      "analog_supply",
+      "internal"
+     ],
+     "sources": [
+      "extras.load_cell.ads1220:109"
+     ]
+    }
+   },
+   "patterns": {
+    "spi_software_.+_pin": {
+     "type": "string",
+     "source": "extras.bus:179",
+     "required": "conditional"
+    }
+   }
+  },
+  {
+   "label": "load_cell {*}",
+   "regex": "^load_cell\\ .+$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
+      "ads131m02"
+     ]
+    }
+   ],
+   "options": {
+    "channels": {
+     "type": "int_list",
+     "required": "never",
+     "default": [
+      0
+     ],
+     "sources": [
+      "extras.load_cell.ads131m0x:182"
+     ]
+    },
+    "cs_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.bus:165"
+     ]
+    },
+    "data_ready_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.load_cell.ads131m0x:132"
+     ]
+    },
+    "enable_global_chop": {
+     "type": "boolean",
+     "required": "never",
+     "default": false,
+     "sources": [
+      "extras.load_cell.ads131m0x:119"
+     ]
+    },
+    "gain": {
+     "type": "choice",
+     "required": "never",
+     "default": 128,
+     "sources": [
+      "extras.load_cell.ads131m0x:118"
+     ]
+    },
+    "global_chop_delay": {
+     "type": "choice",
+     "required": "never",
+     "default": 16,
+     "sources": [
+      "extras.load_cell.ads131m0x:122"
+     ]
+    },
+    "sample_rate": {
+     "type": "choice",
+     "required": "never",
+     "default": "calculée",
+     "sources": [
+      "extras.load_cell.ads131m0x:113"
+     ]
+    },
+    "spi_bus": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:190"
+     ]
+    },
+    "spi_software_sclk_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:174"
+     ]
+    },
+    "spi_speed": {
+     "type": "int",
+     "required": "never",
+     "default": "calculée",
+     "minval": 100000,
+     "sources": [
+      "extras.bus:173"
+     ]
+    }
+   },
+   "patterns": {
+    "spi_software_.+_pin": {
+     "type": "string",
+     "source": "extras.bus:179",
+     "required": "conditional"
+    }
+   }
+  },
+  {
+   "label": "load_cell {*}",
+   "regex": "^load_cell\\ .+$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
+      "ads131m04"
+     ]
+    }
+   ],
+   "options": {
+    "channels": {
+     "type": "int_list",
+     "required": "never",
+     "default": [
+      0
+     ],
+     "sources": [
+      "extras.load_cell.ads131m0x:182"
+     ]
+    },
+    "cs_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.bus:165"
+     ]
+    },
+    "data_ready_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.load_cell.ads131m0x:132"
+     ]
+    },
+    "enable_global_chop": {
+     "type": "boolean",
+     "required": "never",
+     "default": false,
+     "sources": [
+      "extras.load_cell.ads131m0x:119"
+     ]
+    },
+    "gain": {
+     "type": "choice",
+     "required": "never",
+     "default": 128,
+     "sources": [
+      "extras.load_cell.ads131m0x:118"
+     ]
+    },
+    "global_chop_delay": {
+     "type": "choice",
+     "required": "never",
+     "default": 16,
+     "sources": [
+      "extras.load_cell.ads131m0x:122"
+     ]
+    },
+    "sample_rate": {
+     "type": "choice",
+     "required": "never",
+     "default": "calculée",
+     "sources": [
+      "extras.load_cell.ads131m0x:113"
+     ]
+    },
+    "spi_bus": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:190"
+     ]
+    },
+    "spi_software_sclk_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:174"
+     ]
+    },
+    "spi_speed": {
+     "type": "int",
+     "required": "never",
+     "default": "calculée",
+     "minval": 100000,
+     "sources": [
+      "extras.bus:173"
+     ]
+    }
+   },
+   "patterns": {
+    "spi_software_.+_pin": {
+     "type": "string",
+     "source": "extras.bus:179",
+     "required": "conditional"
+    }
+   }
+  },
+  {
+   "label": "load_cell {*}",
+   "regex": "^load_cell\\ .+$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
+      "hx711"
+     ]
+    }
+   ],
+   "options": {
+    "dout_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.load_cell.hx71x:38"
+     ]
+    },
+    "gain": {
+     "type": "choice",
+     "required": "never",
+     "default": "calculée",
+     "sources": [
+      "extras.load_cell.hx71x:59"
+     ]
+    },
+    "sample_rate": {
+     "type": "choice",
+     "required": "never",
+     "default": "calculée",
+     "sources": [
+      "extras.load_cell.hx71x:54"
+     ]
+    },
+    "sclk_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.load_cell.hx71x:39"
+     ]
+    }
+   }
+  },
+  {
+   "label": "load_cell {*}",
+   "regex": "^load_cell\\ .+$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
+      "hx717"
+     ]
+    }
+   ],
+   "options": {
+    "dout_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.load_cell.hx71x:38"
+     ]
+    },
+    "gain": {
+     "type": "choice",
+     "required": "never",
+     "default": "calculée",
+     "sources": [
+      "extras.load_cell.hx71x:59"
+     ]
+    },
+    "sample_rate": {
+     "type": "choice",
+     "required": "never",
+     "default": "calculée",
+     "sources": [
+      "extras.load_cell.hx71x:54"
+     ]
+    },
+    "sclk_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.load_cell.hx71x:39"
      ]
     }
    }
@@ -14660,6 +18019,433 @@
   {
    "label": "load_cell_probe",
    "regex": "^load_cell_probe$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
+      "ads1220"
+     ]
+    }
+   ],
+   "options": {
+    "cs_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.bus:165"
+     ]
+    },
+    "data_ready_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.load_cell.ads1220:137"
+     ]
+    },
+    "gain": {
+     "type": "choice",
+     "required": "never",
+     "default": "128",
+     "choices": [
+      "1",
+      "128",
+      "16",
+      "2",
+      "32",
+      "4",
+      "64",
+      "8"
+     ],
+     "sources": [
+      "extras.load_cell.ads1220:53"
+     ]
+    },
+    "input_mux": {
+     "type": "choice",
+     "required": "never",
+     "default": "AIN0_AIN1",
+     "choices": [
+      "AIN0_AIN1",
+      "AIN0_AIN2",
+      "AIN0_AIN3",
+      "AIN0_AVSS",
+      "AIN1_AIN0",
+      "AIN1_AIN2",
+      "AIN1_AIN3",
+      "AIN1_AVSS",
+      "AIN2_AIN3",
+      "AIN2_AVSS",
+      "AIN3_AIN2",
+      "AIN3_AVSS"
+     ],
+     "sources": [
+      "extras.load_cell.ads1220:94"
+     ]
+    },
+    "pga_bypass": {
+     "type": "boolean",
+     "required": "never",
+     "default": false,
+     "sources": [
+      "extras.load_cell.ads1220:98"
+     ]
+    },
+    "sample_rate": {
+     "type": "choice",
+     "required": "never",
+     "default": "660",
+     "sources": [
+      "extras.load_cell.ads1220:75"
+     ]
+    },
+    "spi_bus": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:190"
+     ]
+    },
+    "spi_software_sclk_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:174"
+     ]
+    },
+    "spi_speed": {
+     "type": "int",
+     "required": "never",
+     "default": "calculée",
+     "minval": 100000,
+     "sources": [
+      "extras.bus:173"
+     ]
+    },
+    "vref": {
+     "type": "choice",
+     "required": "never",
+     "default": "internal",
+     "choices": [
+      "REF0",
+      "REF1",
+      "analog_supply",
+      "internal"
+     ],
+     "sources": [
+      "extras.load_cell.ads1220:109"
+     ]
+    }
+   },
+   "patterns": {
+    "spi_software_.+_pin": {
+     "type": "string",
+     "source": "extras.bus:179",
+     "required": "conditional"
+    }
+   }
+  },
+  {
+   "label": "load_cell_probe",
+   "regex": "^load_cell_probe$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
+      "ads131m02"
+     ]
+    }
+   ],
+   "options": {
+    "channels": {
+     "type": "int_list",
+     "required": "never",
+     "default": [
+      0
+     ],
+     "sources": [
+      "extras.load_cell.ads131m0x:182"
+     ]
+    },
+    "cs_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.bus:165"
+     ]
+    },
+    "data_ready_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.load_cell.ads131m0x:132"
+     ]
+    },
+    "enable_global_chop": {
+     "type": "boolean",
+     "required": "never",
+     "default": false,
+     "sources": [
+      "extras.load_cell.ads131m0x:119"
+     ]
+    },
+    "gain": {
+     "type": "choice",
+     "required": "never",
+     "default": 128,
+     "sources": [
+      "extras.load_cell.ads131m0x:118"
+     ]
+    },
+    "global_chop_delay": {
+     "type": "choice",
+     "required": "never",
+     "default": 16,
+     "sources": [
+      "extras.load_cell.ads131m0x:122"
+     ]
+    },
+    "sample_rate": {
+     "type": "choice",
+     "required": "never",
+     "default": "calculée",
+     "sources": [
+      "extras.load_cell.ads131m0x:113"
+     ]
+    },
+    "spi_bus": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:190"
+     ]
+    },
+    "spi_software_sclk_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:174"
+     ]
+    },
+    "spi_speed": {
+     "type": "int",
+     "required": "never",
+     "default": "calculée",
+     "minval": 100000,
+     "sources": [
+      "extras.bus:173"
+     ]
+    }
+   },
+   "patterns": {
+    "spi_software_.+_pin": {
+     "type": "string",
+     "source": "extras.bus:179",
+     "required": "conditional"
+    }
+   }
+  },
+  {
+   "label": "load_cell_probe",
+   "regex": "^load_cell_probe$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
+      "ads131m04"
+     ]
+    }
+   ],
+   "options": {
+    "channels": {
+     "type": "int_list",
+     "required": "never",
+     "default": [
+      0
+     ],
+     "sources": [
+      "extras.load_cell.ads131m0x:182"
+     ]
+    },
+    "cs_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.bus:165"
+     ]
+    },
+    "data_ready_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.load_cell.ads131m0x:132"
+     ]
+    },
+    "enable_global_chop": {
+     "type": "boolean",
+     "required": "never",
+     "default": false,
+     "sources": [
+      "extras.load_cell.ads131m0x:119"
+     ]
+    },
+    "gain": {
+     "type": "choice",
+     "required": "never",
+     "default": 128,
+     "sources": [
+      "extras.load_cell.ads131m0x:118"
+     ]
+    },
+    "global_chop_delay": {
+     "type": "choice",
+     "required": "never",
+     "default": 16,
+     "sources": [
+      "extras.load_cell.ads131m0x:122"
+     ]
+    },
+    "sample_rate": {
+     "type": "choice",
+     "required": "never",
+     "default": "calculée",
+     "sources": [
+      "extras.load_cell.ads131m0x:113"
+     ]
+    },
+    "spi_bus": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:190"
+     ]
+    },
+    "spi_software_sclk_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:174"
+     ]
+    },
+    "spi_speed": {
+     "type": "int",
+     "required": "never",
+     "default": "calculée",
+     "minval": 100000,
+     "sources": [
+      "extras.bus:173"
+     ]
+    }
+   },
+   "patterns": {
+    "spi_software_.+_pin": {
+     "type": "string",
+     "source": "extras.bus:179",
+     "required": "conditional"
+    }
+   }
+  },
+  {
+   "label": "load_cell_probe",
+   "regex": "^load_cell_probe$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
+      "hx711"
+     ]
+    }
+   ],
+   "options": {
+    "dout_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.load_cell.hx71x:38"
+     ]
+    },
+    "gain": {
+     "type": "choice",
+     "required": "never",
+     "default": "calculée",
+     "sources": [
+      "extras.load_cell.hx71x:59"
+     ]
+    },
+    "sample_rate": {
+     "type": "choice",
+     "required": "never",
+     "default": "calculée",
+     "sources": [
+      "extras.load_cell.hx71x:54"
+     ]
+    },
+    "sclk_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.load_cell.hx71x:39"
+     ]
+    }
+   }
+  },
+  {
+   "label": "load_cell_probe",
+   "regex": "^load_cell_probe$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
+      "hx717"
+     ]
+    }
+   ],
+   "options": {
+    "dout_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.load_cell.hx71x:38"
+     ]
+    },
+    "gain": {
+     "type": "choice",
+     "required": "never",
+     "default": "calculée",
+     "sources": [
+      "extras.load_cell.hx71x:59"
+     ]
+    },
+    "sample_rate": {
+     "type": "choice",
+     "required": "never",
+     "default": "calculée",
+     "sources": [
+      "extras.load_cell.hx71x:54"
+     ]
+    },
+    "sclk_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.load_cell.hx71x:39"
+     ]
+    }
+   }
+  },
+  {
+   "label": "load_cell_probe",
+   "regex": "^load_cell_probe$",
    "options": {
     "activate_gcode": {
      "type": "string",
@@ -14684,6 +18470,12 @@
      "type": "choice",
      "required": "never",
      "default": "calculée",
+     "choices": [
+      "circle",
+      "fail",
+      "ignore",
+      "retry"
+     ],
      "sources": [
       "extras.probe:52"
      ]
@@ -14791,6 +18583,10 @@
      "type": "choice",
      "required": "never",
      "default": "average",
+     "choices": [
+      "average",
+      "median"
+     ],
      "sources": [
       "extras.probe:333"
      ]
@@ -15371,6 +19167,12 @@
      "type": "choice",
      "required": "never",
      "default": null,
+     "choices": [
+      "arduino",
+      "cheetah",
+      "command",
+      "rpi_usb"
+     ],
      "sources": [
       "mcu:808"
      ]
@@ -15442,6 +19244,12 @@
      "type": "choice",
      "required": "never",
      "default": null,
+     "choices": [
+      "arduino",
+      "cheetah",
+      "command",
+      "rpi_usb"
+     ],
      "sources": [
       "mcu:808"
      ]
@@ -15748,6 +19556,12 @@
      "type": "choice",
      "required": "never",
      "default": "calculée",
+     "choices": [
+      "circle",
+      "fail",
+      "ignore",
+      "retry"
+     ],
      "sources": [
       "extras.probe:52"
      ]
@@ -16205,6 +20019,309 @@
    }
   },
   {
+   "label": "pid_profile {*}",
+   "regex": "^pid_profile\\ .+$",
+   "options": {
+    "ambient_temp_sensor": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.heaters:483"
+     ]
+    },
+    "ambient_transfer": {
+     "type": "float",
+     "required": "never",
+     "default": null,
+     "minval": 0.0,
+     "sources": [
+      "extras.heaters:429"
+     ]
+    },
+    "block_heat_capacity": {
+     "type": "float",
+     "required": "never",
+     "default": null,
+     "above": 0.0,
+     "sources": [
+      "extras.heaters:426"
+     ]
+    },
+    "control": {
+     "type": "mixed",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.heaters:574",
+      "extras.heaters:576",
+      "extras.heaters:578"
+     ]
+    },
+    "cooling_fan": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.heaters:505"
+     ]
+    },
+    "fan_ambient_transfer": {
+     "type": "float_list",
+     "required": "never",
+     "default": [],
+     "sources": [
+      "extras.heaters:531"
+     ]
+    },
+    "filament_density": {
+     "type": "float",
+     "required": "never",
+     "default": 1.2,
+     "above": 0.0,
+     "sources": [
+      "extras.heaters:453"
+     ]
+    },
+    "filament_diameter": {
+     "type": "float",
+     "required": "never",
+     "default": 1.75,
+     "above": 0.0,
+     "sources": [
+      "extras.heaters:450"
+     ]
+    },
+    "filament_heat_capacity": {
+     "type": "float",
+     "required": "never",
+     "default": 1.8,
+     "above": 0.0,
+     "sources": [
+      "extras.heaters:457"
+     ]
+    },
+    "filament_temperature_source": {
+     "type": "string",
+     "required": "never",
+     "default": "ambient",
+     "sources": [
+      "extras.heaters:465"
+     ]
+    },
+    "heater_power": {
+     "type": "float",
+     "required": "conditional",
+     "above": 0.0,
+     "sources": [
+      "extras.heaters:438"
+     ]
+    },
+    "inner_control": {
+     "type": "mixed",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.heaters:574",
+      "extras.heaters:576",
+      "extras.heaters:578"
+     ]
+    },
+    "inner_pid_kd": {
+     "type": "mixed",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.heaters:574",
+      "extras.heaters:576",
+      "extras.heaters:578"
+     ]
+    },
+    "inner_pid_ki": {
+     "type": "mixed",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.heaters:574",
+      "extras.heaters:576",
+      "extras.heaters:578"
+     ]
+    },
+    "inner_pid_kp": {
+     "type": "mixed",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.heaters:574",
+      "extras.heaters:576",
+      "extras.heaters:578"
+     ]
+    },
+    "inner_pid_target": {
+     "type": "mixed",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.heaters:574",
+      "extras.heaters:576",
+      "extras.heaters:578"
+     ]
+    },
+    "inner_pid_tolerance": {
+     "type": "mixed",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.heaters:574",
+      "extras.heaters:576",
+      "extras.heaters:578"
+     ]
+    },
+    "inner_smooth_time": {
+     "type": "mixed",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.heaters:574",
+      "extras.heaters:576",
+      "extras.heaters:578"
+     ]
+    },
+    "max_delta": {
+     "type": "float",
+     "required": "never",
+     "default": 2.0,
+     "above": 0.0,
+     "sources": [
+      "extras.heaters:422"
+     ]
+    },
+    "maximum_retract": {
+     "type": "float",
+     "required": "never",
+     "default": 2.0,
+     "above": 0.0,
+     "sources": [
+      "extras.heaters:461"
+     ]
+    },
+    "min_ambient_change": {
+     "type": "float",
+     "required": "never",
+     "default": 1.0,
+     "above": 0.0,
+     "sources": [
+      "extras.heaters:444"
+     ]
+    },
+    "pid_kd": {
+     "type": "mixed",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.heaters:574",
+      "extras.heaters:576",
+      "extras.heaters:578"
+     ]
+    },
+    "pid_ki": {
+     "type": "mixed",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.heaters:574",
+      "extras.heaters:576",
+      "extras.heaters:578"
+     ]
+    },
+    "pid_kp": {
+     "type": "mixed",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.heaters:574",
+      "extras.heaters:576",
+      "extras.heaters:578"
+     ]
+    },
+    "pid_target": {
+     "type": "mixed",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.heaters:574",
+      "extras.heaters:576",
+      "extras.heaters:578"
+     ]
+    },
+    "pid_tolerance": {
+     "type": "mixed",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.heaters:574",
+      "extras.heaters:576",
+      "extras.heaters:578"
+     ]
+    },
+    "pid_version": {
+     "type": "int",
+     "required": "never",
+     "default": 1,
+     "sources": [
+      "extras.heaters:407"
+     ]
+    },
+    "sensor_responsiveness": {
+     "type": "float",
+     "required": "never",
+     "default": null,
+     "above": 0.0,
+     "sources": [
+      "extras.heaters:441"
+     ]
+    },
+    "smooth_time": {
+     "type": "mixed",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.heaters:574",
+      "extras.heaters:576",
+      "extras.heaters:578"
+     ]
+    },
+    "smoothing": {
+     "type": "float",
+     "required": "never",
+     "default": 0.83,
+     "above": 0.0,
+     "maxval": 1.0,
+     "sources": [
+      "extras.heaters:435"
+     ]
+    },
+    "steady_state_rate": {
+     "type": "float",
+     "required": "never",
+     "default": 0.5,
+     "above": 0.0,
+     "sources": [
+      "extras.heaters:447"
+     ]
+    },
+    "target_reach_time": {
+     "type": "float",
+     "required": "never",
+     "default": 2.0,
+     "above": 0.0,
+     "sources": [
+      "extras.heaters:432"
+     ]
+    }
+   }
+  },
+  {
    "label": "printer",
    "regex": "^printer$",
    "when": [
@@ -16525,6 +20642,62 @@
     }
    ],
    "options": {
+    "max_x_accel": {
+     "type": "float",
+     "required": "never",
+     "default": "calculée",
+     "above": 0.0,
+     "sources": [
+      "kinematics.limited_cartesian:77"
+     ]
+    },
+    "max_x_velocity": {
+     "type": "float",
+     "required": "never",
+     "default": "calculée",
+     "above": 0.0,
+     "sources": [
+      "kinematics.limited_cartesian:68"
+     ]
+    },
+    "max_y_accel": {
+     "type": "float",
+     "required": "never",
+     "default": "calculée",
+     "above": 0.0,
+     "sources": [
+      "kinematics.limited_cartesian:77"
+     ]
+    },
+    "max_y_velocity": {
+     "type": "float",
+     "required": "never",
+     "default": "calculée",
+     "above": 0.0,
+     "sources": [
+      "kinematics.limited_cartesian:68"
+     ]
+    },
+    "max_z_accel": {
+     "type": "float",
+     "required": "never",
+     "default": "calculée",
+     "above": 0.0,
+     "sources": [
+      "kinematics.cartesian:56",
+      "kinematics.limited_cartesian:77"
+     ]
+    },
+    "max_z_velocity": {
+     "type": "float",
+     "required": "never",
+     "default": "calculée",
+     "above": 0.0,
+     "sources": [
+      "kinematics.cartesian:53",
+      "kinematics.limited_cartesian:68"
+     ]
+    },
     "scale_xy_accel": {
      "type": "boolean",
      "required": "never",
@@ -16566,6 +20739,24 @@
       "kinematics.limited_corexy:44"
      ]
     },
+    "max_z_accel": {
+     "type": "float",
+     "required": "never",
+     "default": "calculée",
+     "above": 0.0,
+     "sources": [
+      "kinematics.corexy:31"
+     ]
+    },
+    "max_z_velocity": {
+     "type": "float",
+     "required": "never",
+     "default": "calculée",
+     "above": 0.0,
+     "sources": [
+      "kinematics.corexy:28"
+     ]
+    },
     "scale_xy_accel": {
      "type": "boolean",
      "required": "never",
@@ -16589,6 +20780,24 @@
     }
    ],
    "options": {
+    "max_z_accel": {
+     "type": "float",
+     "required": "never",
+     "default": "calculée",
+     "above": 0.0,
+     "sources": [
+      "kinematics.corexz:31"
+     ]
+    },
+    "max_z_velocity": {
+     "type": "float",
+     "required": "never",
+     "default": "calculée",
+     "above": 0.0,
+     "sources": [
+      "kinematics.corexz:28"
+     ]
+    },
     "scale_xy_accel": {
      "type": "boolean",
      "required": "never",
@@ -16787,6 +20996,12 @@
      "type": "choice",
      "required": "never",
      "default": "calculée",
+     "choices": [
+      "circle",
+      "fail",
+      "ignore",
+      "retry"
+     ],
      "sources": [
       "extras.probe:52"
      ]
@@ -16884,6 +21099,10 @@
      "type": "choice",
      "required": "never",
      "default": "average",
+     "choices": [
+      "average",
+      "median"
+     ],
      "sources": [
       "extras.probe:333"
      ]
@@ -16954,6 +21173,99 @@
   {
    "label": "probe_eddy_current {*}",
    "regex": "^probe_eddy_current\\ .+$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
+      "ldc1612"
+     ]
+    }
+   ],
+   "options": {
+    "frequency": {
+     "type": "int",
+     "required": "never",
+     "default": 12000000,
+     "sources": [
+      "extras.ldc1612:103"
+     ]
+    },
+    "i2c_address": {
+     "type": "int",
+     "required": "conditional",
+     "default": "calculée",
+     "minval": 0,
+     "maxval": 127,
+     "sources": [
+      "extras.bus:309",
+      "extras.bus:311"
+     ]
+    },
+    "i2c_bus": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:325"
+     ]
+    },
+    "i2c_mcu": {
+     "type": "string",
+     "required": "never",
+     "default": "mcu",
+     "sources": [
+      "extras.bus:306"
+     ]
+    },
+    "i2c_software_scl_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.bus:314"
+     ]
+    },
+    "i2c_speed": {
+     "type": "int",
+     "required": "never",
+     "default": "calculée",
+     "minval": 100000,
+     "sources": [
+      "extras.bus:307"
+     ]
+    },
+    "intb_pin": {
+     "type": "string",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "extras.ldc1612:110",
+      "extras.ldc1612:112"
+     ]
+    },
+    "reg_drive_current": {
+     "type": "int",
+     "required": "never",
+     "default": 15,
+     "minval": 0,
+     "maxval": 31,
+     "sources": [
+      "extras.ldc1612:41"
+     ]
+    }
+   },
+   "patterns": {
+    "i2c_software_.+_pin": {
+     "type": "string",
+     "source": "extras.bus:319",
+     "required": "conditional"
+    }
+   }
+  },
+  {
+   "label": "probe_eddy_current {*}",
+   "regex": "^probe_eddy_current\\ .+$",
    "options": {
     "bad_probe_retries": {
      "type": "int",
@@ -16968,6 +21280,12 @@
      "type": "choice",
      "required": "never",
      "default": "calculée",
+     "choices": [
+      "circle",
+      "fail",
+      "ignore",
+      "retry"
+     ],
      "sources": [
       "extras.probe:52"
      ]
@@ -17048,6 +21366,10 @@
      "type": "choice",
      "required": "never",
      "default": "average",
+     "choices": [
+      "average",
+      "median"
+     ],
      "sources": [
       "extras.probe:333"
      ]
@@ -17082,6 +21404,9 @@
     "sensor_type": {
      "type": "choice",
      "required": "always",
+     "choices": [
+      "ldc1612"
+     ],
      "sources": [
       "extras.probe_eddy_current:380"
      ]
@@ -17270,6 +21595,12 @@
      "type": "choice",
      "required": "never",
      "default": "calculée",
+     "choices": [
+      "circle",
+      "fail",
+      "ignore",
+      "retry"
+     ],
      "sources": [
       "extras.probe:52"
      ]
@@ -17456,6 +21787,9 @@
     "revision": {
      "type": "choice",
      "required": "always",
+     "choices": [
+      "B3"
+     ],
      "sources": [
       "extras.replicape:207"
      ]
@@ -17810,6 +22144,12 @@
      "type": "choice",
      "required": "never",
      "default": "calculée",
+     "choices": [
+      "circle",
+      "fail",
+      "ignore",
+      "retry"
+     ],
      "sources": [
       "extras.probe:52"
      ]
@@ -17892,6 +22232,18 @@
      "type": "choice",
      "required": "never",
      "default": "CW-M3",
+     "choices": [
+      "CCW-M3",
+      "CCW-M4",
+      "CCW-M5",
+      "CCW-M6",
+      "CCW-M8",
+      "CW-M3",
+      "CW-M4",
+      "CW-M5",
+      "CW-M6",
+      "CW-M8"
+     ],
      "sources": [
       "extras.screws_tilt_adjust:45"
      ]
@@ -18033,6 +22385,12 @@
      "type": "choice",
      "required": "never",
      "default": "calculée",
+     "choices": [
+      "circle",
+      "fail",
+      "ignore",
+      "retry"
+     ],
      "sources": [
       "extras.probe:52"
      ]
@@ -18156,6 +22514,10 @@
      "type": "choice",
      "required": "never",
      "default": "average",
+     "choices": [
+      "average",
+      "median"
+     ],
      "sources": [
       "extras.probe:333"
      ]
@@ -21543,6 +25905,585 @@
    }
   },
   {
+   "label": "stepper_x",
+   "regex": "^stepper_x$",
+   "when": [
+    {
+     "section": "printer",
+     "option": "kinematics",
+     "values": [
+      "limited_cartesian"
+     ]
+    }
+   ],
+   "options": {
+    "dir_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "stepper:336"
+     ]
+    },
+    "enable_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.stepper_enable:105"
+     ]
+    },
+    "endstop_pin": {
+     "type": "string",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "stepper:441",
+      "stepper:564",
+      "stepper:568"
+     ]
+    },
+    "full_steps_per_rotation": {
+     "type": "int",
+     "required": "never",
+     "default": 200,
+     "minval": 1,
+     "sources": [
+      "stepper:393"
+     ]
+    },
+    "gear_ratio": {
+     "type": "lists",
+     "required": "conditional",
+     "default": null,
+     "count": 2,
+     "seps": [
+      ":",
+      ","
+     ],
+     "sources": [
+      "stepper:362",
+      "stepper:382",
+      "stepper:386"
+     ]
+    },
+    "homing_accel": {
+     "type": "float",
+     "required": "never",
+     "default": null,
+     "above": 0.0,
+     "sources": [
+      "stepper:492"
+     ]
+    },
+    "homing_positive_dir": {
+     "type": "boolean",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "stepper:484",
+      "stepper:505"
+     ]
+    },
+    "homing_retract_dist": {
+     "type": "float",
+     "required": "never",
+     "default": 5.0,
+     "minval": 0.0,
+     "sources": [
+      "stepper:481"
+     ]
+    },
+    "homing_retract_speed": {
+     "type": "float",
+     "required": "never",
+     "default": "calculée",
+     "above": 0.0,
+     "sources": [
+      "stepper:478"
+     ]
+    },
+    "homing_speed": {
+     "type": "float",
+     "required": "never",
+     "default": 5.0,
+     "above": 0.0,
+     "sources": [
+      "stepper:469"
+     ]
+    },
+    "microsteps": {
+     "type": "int",
+     "required": "always",
+     "minval": 1,
+     "sources": [
+      "stepper:392"
+     ]
+    },
+    "min_home_dist": {
+     "type": "float",
+     "required": "never",
+     "default": "calculée",
+     "minval": 0.0,
+     "sources": [
+      "stepper:488"
+     ]
+    },
+    "position_endstop": {
+     "type": "float",
+     "required": "conditional",
+     "default": "calculée",
+     "sources": [
+      "stepper:436",
+      "stepper:438"
+     ]
+    },
+    "position_max": {
+     "type": "float",
+     "required": "conditional",
+     "sources": [
+      "stepper:450"
+     ]
+    },
+    "position_min": {
+     "type": "float",
+     "required": "never",
+     "default": 0.0,
+     "sources": [
+      "stepper:449"
+     ]
+    },
+    "rotation_distance": {
+     "type": "float",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "stepper:381",
+      "stepper:388"
+     ]
+    },
+    "second_homing_speed": {
+     "type": "float",
+     "required": "never",
+     "default": "calculée",
+     "above": 0.0,
+     "sources": [
+      "stepper:475"
+     ]
+    },
+    "step_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "stepper:334"
+     ]
+    },
+    "step_pulse_duration": {
+     "type": "float",
+     "required": "never",
+     "default": null,
+     "minval": 0.0,
+     "maxval": 0.001,
+     "sources": [
+      "stepper:341"
+     ]
+    },
+    "use_sensorless_homing": {
+     "type": "boolean",
+     "required": "never",
+     "default": "calculée",
+     "sources": [
+      "stepper:465"
+     ]
+    }
+   }
+  },
+  {
+   "label": "stepper_x",
+   "regex": "^stepper_x$",
+   "when": [
+    {
+     "section": "printer",
+     "option": "kinematics",
+     "values": [
+      "limited_corexy"
+     ]
+    }
+   ],
+   "options": {
+    "dir_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "stepper:336"
+     ]
+    },
+    "enable_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.stepper_enable:105"
+     ]
+    },
+    "endstop_pin": {
+     "type": "string",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "stepper:441",
+      "stepper:564",
+      "stepper:568"
+     ]
+    },
+    "full_steps_per_rotation": {
+     "type": "int",
+     "required": "never",
+     "default": 200,
+     "minval": 1,
+     "sources": [
+      "stepper:393"
+     ]
+    },
+    "gear_ratio": {
+     "type": "lists",
+     "required": "conditional",
+     "default": null,
+     "count": 2,
+     "seps": [
+      ":",
+      ","
+     ],
+     "sources": [
+      "stepper:362",
+      "stepper:382",
+      "stepper:386"
+     ]
+    },
+    "homing_accel": {
+     "type": "float",
+     "required": "never",
+     "default": null,
+     "above": 0.0,
+     "sources": [
+      "stepper:492"
+     ]
+    },
+    "homing_positive_dir": {
+     "type": "boolean",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "stepper:484",
+      "stepper:505"
+     ]
+    },
+    "homing_retract_dist": {
+     "type": "float",
+     "required": "never",
+     "default": 5.0,
+     "minval": 0.0,
+     "sources": [
+      "stepper:481"
+     ]
+    },
+    "homing_retract_speed": {
+     "type": "float",
+     "required": "never",
+     "default": "calculée",
+     "above": 0.0,
+     "sources": [
+      "stepper:478"
+     ]
+    },
+    "homing_speed": {
+     "type": "float",
+     "required": "never",
+     "default": 5.0,
+     "above": 0.0,
+     "sources": [
+      "stepper:469"
+     ]
+    },
+    "microsteps": {
+     "type": "int",
+     "required": "always",
+     "minval": 1,
+     "sources": [
+      "stepper:392"
+     ]
+    },
+    "min_home_dist": {
+     "type": "float",
+     "required": "never",
+     "default": "calculée",
+     "minval": 0.0,
+     "sources": [
+      "stepper:488"
+     ]
+    },
+    "position_endstop": {
+     "type": "float",
+     "required": "conditional",
+     "default": "calculée",
+     "sources": [
+      "stepper:436",
+      "stepper:438"
+     ]
+    },
+    "position_max": {
+     "type": "float",
+     "required": "conditional",
+     "sources": [
+      "stepper:450"
+     ]
+    },
+    "position_min": {
+     "type": "float",
+     "required": "never",
+     "default": 0.0,
+     "sources": [
+      "stepper:449"
+     ]
+    },
+    "rotation_distance": {
+     "type": "float",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "stepper:381",
+      "stepper:388"
+     ]
+    },
+    "second_homing_speed": {
+     "type": "float",
+     "required": "never",
+     "default": "calculée",
+     "above": 0.0,
+     "sources": [
+      "stepper:475"
+     ]
+    },
+    "step_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "stepper:334"
+     ]
+    },
+    "step_pulse_duration": {
+     "type": "float",
+     "required": "never",
+     "default": null,
+     "minval": 0.0,
+     "maxval": 0.001,
+     "sources": [
+      "stepper:341"
+     ]
+    },
+    "use_sensorless_homing": {
+     "type": "boolean",
+     "required": "never",
+     "default": "calculée",
+     "sources": [
+      "stepper:465"
+     ]
+    }
+   }
+  },
+  {
+   "label": "stepper_x",
+   "regex": "^stepper_x$",
+   "when": [
+    {
+     "section": "printer",
+     "option": "kinematics",
+     "values": [
+      "limited_corexz"
+     ]
+    }
+   ],
+   "options": {
+    "dir_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "stepper:336"
+     ]
+    },
+    "enable_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.stepper_enable:105"
+     ]
+    },
+    "endstop_pin": {
+     "type": "string",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "stepper:441",
+      "stepper:564",
+      "stepper:568"
+     ]
+    },
+    "full_steps_per_rotation": {
+     "type": "int",
+     "required": "never",
+     "default": 200,
+     "minval": 1,
+     "sources": [
+      "stepper:393"
+     ]
+    },
+    "gear_ratio": {
+     "type": "lists",
+     "required": "conditional",
+     "default": null,
+     "count": 2,
+     "seps": [
+      ":",
+      ","
+     ],
+     "sources": [
+      "stepper:362",
+      "stepper:382",
+      "stepper:386"
+     ]
+    },
+    "homing_accel": {
+     "type": "float",
+     "required": "never",
+     "default": null,
+     "above": 0.0,
+     "sources": [
+      "stepper:492"
+     ]
+    },
+    "homing_positive_dir": {
+     "type": "boolean",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "stepper:484",
+      "stepper:505"
+     ]
+    },
+    "homing_retract_dist": {
+     "type": "float",
+     "required": "never",
+     "default": 5.0,
+     "minval": 0.0,
+     "sources": [
+      "stepper:481"
+     ]
+    },
+    "homing_retract_speed": {
+     "type": "float",
+     "required": "never",
+     "default": "calculée",
+     "above": 0.0,
+     "sources": [
+      "stepper:478"
+     ]
+    },
+    "homing_speed": {
+     "type": "float",
+     "required": "never",
+     "default": 5.0,
+     "above": 0.0,
+     "sources": [
+      "stepper:469"
+     ]
+    },
+    "microsteps": {
+     "type": "int",
+     "required": "always",
+     "minval": 1,
+     "sources": [
+      "stepper:392"
+     ]
+    },
+    "min_home_dist": {
+     "type": "float",
+     "required": "never",
+     "default": "calculée",
+     "minval": 0.0,
+     "sources": [
+      "stepper:488"
+     ]
+    },
+    "position_endstop": {
+     "type": "float",
+     "required": "conditional",
+     "default": "calculée",
+     "sources": [
+      "stepper:436",
+      "stepper:438"
+     ]
+    },
+    "position_max": {
+     "type": "float",
+     "required": "conditional",
+     "sources": [
+      "stepper:450"
+     ]
+    },
+    "position_min": {
+     "type": "float",
+     "required": "never",
+     "default": 0.0,
+     "sources": [
+      "stepper:449"
+     ]
+    },
+    "rotation_distance": {
+     "type": "float",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "stepper:381",
+      "stepper:388"
+     ]
+    },
+    "second_homing_speed": {
+     "type": "float",
+     "required": "never",
+     "default": "calculée",
+     "above": 0.0,
+     "sources": [
+      "stepper:475"
+     ]
+    },
+    "step_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "stepper:334"
+     ]
+    },
+    "step_pulse_duration": {
+     "type": "float",
+     "required": "never",
+     "default": null,
+     "minval": 0.0,
+     "maxval": 0.001,
+     "sources": [
+      "stepper:341"
+     ]
+    },
+    "use_sensorless_homing": {
+     "type": "boolean",
+     "required": "never",
+     "default": "calculée",
+     "sources": [
+      "stepper:465"
+     ]
+    }
+   }
+  },
+  {
    "label": "stepper_x{n}",
    "regex": "^stepper_x\\d+$",
    "when": [
@@ -21939,6 +26880,297 @@
      "option": "kinematics",
      "values": [
       "hybrid_corexz"
+     ]
+    }
+   ],
+   "options": {
+    "dir_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "stepper:336"
+     ]
+    },
+    "enable_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.stepper_enable:105"
+     ]
+    },
+    "endstop_pin": {
+     "type": "string",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "stepper:564",
+      "stepper:568"
+     ]
+    },
+    "full_steps_per_rotation": {
+     "type": "int",
+     "required": "never",
+     "default": 200,
+     "minval": 1,
+     "sources": [
+      "stepper:393"
+     ]
+    },
+    "gear_ratio": {
+     "type": "lists",
+     "required": "conditional",
+     "default": null,
+     "count": 2,
+     "seps": [
+      ":",
+      ","
+     ],
+     "sources": [
+      "stepper:362",
+      "stepper:382",
+      "stepper:386"
+     ]
+    },
+    "microsteps": {
+     "type": "int",
+     "required": "always",
+     "minval": 1,
+     "sources": [
+      "stepper:392"
+     ]
+    },
+    "rotation_distance": {
+     "type": "float",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "stepper:381",
+      "stepper:388"
+     ]
+    },
+    "step_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "stepper:334"
+     ]
+    },
+    "step_pulse_duration": {
+     "type": "float",
+     "required": "never",
+     "default": null,
+     "minval": 0.0,
+     "maxval": 0.001,
+     "sources": [
+      "stepper:341"
+     ]
+    }
+   }
+  },
+  {
+   "label": "stepper_x{n}",
+   "regex": "^stepper_x\\d+$",
+   "when": [
+    {
+     "section": "printer",
+     "option": "kinematics",
+     "values": [
+      "limited_cartesian"
+     ]
+    }
+   ],
+   "options": {
+    "dir_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "stepper:336"
+     ]
+    },
+    "enable_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.stepper_enable:105"
+     ]
+    },
+    "endstop_pin": {
+     "type": "string",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "stepper:564",
+      "stepper:568"
+     ]
+    },
+    "full_steps_per_rotation": {
+     "type": "int",
+     "required": "never",
+     "default": 200,
+     "minval": 1,
+     "sources": [
+      "stepper:393"
+     ]
+    },
+    "gear_ratio": {
+     "type": "lists",
+     "required": "conditional",
+     "default": null,
+     "count": 2,
+     "seps": [
+      ":",
+      ","
+     ],
+     "sources": [
+      "stepper:362",
+      "stepper:382",
+      "stepper:386"
+     ]
+    },
+    "microsteps": {
+     "type": "int",
+     "required": "always",
+     "minval": 1,
+     "sources": [
+      "stepper:392"
+     ]
+    },
+    "rotation_distance": {
+     "type": "float",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "stepper:381",
+      "stepper:388"
+     ]
+    },
+    "step_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "stepper:334"
+     ]
+    },
+    "step_pulse_duration": {
+     "type": "float",
+     "required": "never",
+     "default": null,
+     "minval": 0.0,
+     "maxval": 0.001,
+     "sources": [
+      "stepper:341"
+     ]
+    }
+   }
+  },
+  {
+   "label": "stepper_x{n}",
+   "regex": "^stepper_x\\d+$",
+   "when": [
+    {
+     "section": "printer",
+     "option": "kinematics",
+     "values": [
+      "limited_corexy"
+     ]
+    }
+   ],
+   "options": {
+    "dir_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "stepper:336"
+     ]
+    },
+    "enable_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.stepper_enable:105"
+     ]
+    },
+    "endstop_pin": {
+     "type": "string",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "stepper:564",
+      "stepper:568"
+     ]
+    },
+    "full_steps_per_rotation": {
+     "type": "int",
+     "required": "never",
+     "default": 200,
+     "minval": 1,
+     "sources": [
+      "stepper:393"
+     ]
+    },
+    "gear_ratio": {
+     "type": "lists",
+     "required": "conditional",
+     "default": null,
+     "count": 2,
+     "seps": [
+      ":",
+      ","
+     ],
+     "sources": [
+      "stepper:362",
+      "stepper:382",
+      "stepper:386"
+     ]
+    },
+    "microsteps": {
+     "type": "int",
+     "required": "always",
+     "minval": 1,
+     "sources": [
+      "stepper:392"
+     ]
+    },
+    "rotation_distance": {
+     "type": "float",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "stepper:381",
+      "stepper:388"
+     ]
+    },
+    "step_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "stepper:334"
+     ]
+    },
+    "step_pulse_duration": {
+     "type": "float",
+     "required": "never",
+     "default": null,
+     "minval": 0.0,
+     "maxval": 0.001,
+     "sources": [
+      "stepper:341"
+     ]
+    }
+   }
+  },
+  {
+   "label": "stepper_x{n}",
+   "regex": "^stepper_x\\d+$",
+   "when": [
+    {
+     "section": "printer",
+     "option": "kinematics",
+     "values": [
+      "limited_corexz"
      ]
     }
    ],
@@ -23186,6 +28418,585 @@
    }
   },
   {
+   "label": "stepper_y",
+   "regex": "^stepper_y$",
+   "when": [
+    {
+     "section": "printer",
+     "option": "kinematics",
+     "values": [
+      "limited_cartesian"
+     ]
+    }
+   ],
+   "options": {
+    "dir_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "stepper:336"
+     ]
+    },
+    "enable_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.stepper_enable:105"
+     ]
+    },
+    "endstop_pin": {
+     "type": "string",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "stepper:441",
+      "stepper:564",
+      "stepper:568"
+     ]
+    },
+    "full_steps_per_rotation": {
+     "type": "int",
+     "required": "never",
+     "default": 200,
+     "minval": 1,
+     "sources": [
+      "stepper:393"
+     ]
+    },
+    "gear_ratio": {
+     "type": "lists",
+     "required": "conditional",
+     "default": null,
+     "count": 2,
+     "seps": [
+      ":",
+      ","
+     ],
+     "sources": [
+      "stepper:362",
+      "stepper:382",
+      "stepper:386"
+     ]
+    },
+    "homing_accel": {
+     "type": "float",
+     "required": "never",
+     "default": null,
+     "above": 0.0,
+     "sources": [
+      "stepper:492"
+     ]
+    },
+    "homing_positive_dir": {
+     "type": "boolean",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "stepper:484",
+      "stepper:505"
+     ]
+    },
+    "homing_retract_dist": {
+     "type": "float",
+     "required": "never",
+     "default": 5.0,
+     "minval": 0.0,
+     "sources": [
+      "stepper:481"
+     ]
+    },
+    "homing_retract_speed": {
+     "type": "float",
+     "required": "never",
+     "default": "calculée",
+     "above": 0.0,
+     "sources": [
+      "stepper:478"
+     ]
+    },
+    "homing_speed": {
+     "type": "float",
+     "required": "never",
+     "default": 5.0,
+     "above": 0.0,
+     "sources": [
+      "stepper:469"
+     ]
+    },
+    "microsteps": {
+     "type": "int",
+     "required": "always",
+     "minval": 1,
+     "sources": [
+      "stepper:392"
+     ]
+    },
+    "min_home_dist": {
+     "type": "float",
+     "required": "never",
+     "default": "calculée",
+     "minval": 0.0,
+     "sources": [
+      "stepper:488"
+     ]
+    },
+    "position_endstop": {
+     "type": "float",
+     "required": "conditional",
+     "default": "calculée",
+     "sources": [
+      "stepper:436",
+      "stepper:438"
+     ]
+    },
+    "position_max": {
+     "type": "float",
+     "required": "conditional",
+     "sources": [
+      "stepper:450"
+     ]
+    },
+    "position_min": {
+     "type": "float",
+     "required": "never",
+     "default": 0.0,
+     "sources": [
+      "stepper:449"
+     ]
+    },
+    "rotation_distance": {
+     "type": "float",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "stepper:381",
+      "stepper:388"
+     ]
+    },
+    "second_homing_speed": {
+     "type": "float",
+     "required": "never",
+     "default": "calculée",
+     "above": 0.0,
+     "sources": [
+      "stepper:475"
+     ]
+    },
+    "step_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "stepper:334"
+     ]
+    },
+    "step_pulse_duration": {
+     "type": "float",
+     "required": "never",
+     "default": null,
+     "minval": 0.0,
+     "maxval": 0.001,
+     "sources": [
+      "stepper:341"
+     ]
+    },
+    "use_sensorless_homing": {
+     "type": "boolean",
+     "required": "never",
+     "default": "calculée",
+     "sources": [
+      "stepper:465"
+     ]
+    }
+   }
+  },
+  {
+   "label": "stepper_y",
+   "regex": "^stepper_y$",
+   "when": [
+    {
+     "section": "printer",
+     "option": "kinematics",
+     "values": [
+      "limited_corexy"
+     ]
+    }
+   ],
+   "options": {
+    "dir_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "stepper:336"
+     ]
+    },
+    "enable_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.stepper_enable:105"
+     ]
+    },
+    "endstop_pin": {
+     "type": "string",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "stepper:441",
+      "stepper:564",
+      "stepper:568"
+     ]
+    },
+    "full_steps_per_rotation": {
+     "type": "int",
+     "required": "never",
+     "default": 200,
+     "minval": 1,
+     "sources": [
+      "stepper:393"
+     ]
+    },
+    "gear_ratio": {
+     "type": "lists",
+     "required": "conditional",
+     "default": null,
+     "count": 2,
+     "seps": [
+      ":",
+      ","
+     ],
+     "sources": [
+      "stepper:362",
+      "stepper:382",
+      "stepper:386"
+     ]
+    },
+    "homing_accel": {
+     "type": "float",
+     "required": "never",
+     "default": null,
+     "above": 0.0,
+     "sources": [
+      "stepper:492"
+     ]
+    },
+    "homing_positive_dir": {
+     "type": "boolean",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "stepper:484",
+      "stepper:505"
+     ]
+    },
+    "homing_retract_dist": {
+     "type": "float",
+     "required": "never",
+     "default": 5.0,
+     "minval": 0.0,
+     "sources": [
+      "stepper:481"
+     ]
+    },
+    "homing_retract_speed": {
+     "type": "float",
+     "required": "never",
+     "default": "calculée",
+     "above": 0.0,
+     "sources": [
+      "stepper:478"
+     ]
+    },
+    "homing_speed": {
+     "type": "float",
+     "required": "never",
+     "default": 5.0,
+     "above": 0.0,
+     "sources": [
+      "stepper:469"
+     ]
+    },
+    "microsteps": {
+     "type": "int",
+     "required": "always",
+     "minval": 1,
+     "sources": [
+      "stepper:392"
+     ]
+    },
+    "min_home_dist": {
+     "type": "float",
+     "required": "never",
+     "default": "calculée",
+     "minval": 0.0,
+     "sources": [
+      "stepper:488"
+     ]
+    },
+    "position_endstop": {
+     "type": "float",
+     "required": "conditional",
+     "default": "calculée",
+     "sources": [
+      "stepper:436",
+      "stepper:438"
+     ]
+    },
+    "position_max": {
+     "type": "float",
+     "required": "conditional",
+     "sources": [
+      "stepper:450"
+     ]
+    },
+    "position_min": {
+     "type": "float",
+     "required": "never",
+     "default": 0.0,
+     "sources": [
+      "stepper:449"
+     ]
+    },
+    "rotation_distance": {
+     "type": "float",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "stepper:381",
+      "stepper:388"
+     ]
+    },
+    "second_homing_speed": {
+     "type": "float",
+     "required": "never",
+     "default": "calculée",
+     "above": 0.0,
+     "sources": [
+      "stepper:475"
+     ]
+    },
+    "step_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "stepper:334"
+     ]
+    },
+    "step_pulse_duration": {
+     "type": "float",
+     "required": "never",
+     "default": null,
+     "minval": 0.0,
+     "maxval": 0.001,
+     "sources": [
+      "stepper:341"
+     ]
+    },
+    "use_sensorless_homing": {
+     "type": "boolean",
+     "required": "never",
+     "default": "calculée",
+     "sources": [
+      "stepper:465"
+     ]
+    }
+   }
+  },
+  {
+   "label": "stepper_y",
+   "regex": "^stepper_y$",
+   "when": [
+    {
+     "section": "printer",
+     "option": "kinematics",
+     "values": [
+      "limited_corexz"
+     ]
+    }
+   ],
+   "options": {
+    "dir_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "stepper:336"
+     ]
+    },
+    "enable_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.stepper_enable:105"
+     ]
+    },
+    "endstop_pin": {
+     "type": "string",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "stepper:441",
+      "stepper:564",
+      "stepper:568"
+     ]
+    },
+    "full_steps_per_rotation": {
+     "type": "int",
+     "required": "never",
+     "default": 200,
+     "minval": 1,
+     "sources": [
+      "stepper:393"
+     ]
+    },
+    "gear_ratio": {
+     "type": "lists",
+     "required": "conditional",
+     "default": null,
+     "count": 2,
+     "seps": [
+      ":",
+      ","
+     ],
+     "sources": [
+      "stepper:362",
+      "stepper:382",
+      "stepper:386"
+     ]
+    },
+    "homing_accel": {
+     "type": "float",
+     "required": "never",
+     "default": null,
+     "above": 0.0,
+     "sources": [
+      "stepper:492"
+     ]
+    },
+    "homing_positive_dir": {
+     "type": "boolean",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "stepper:484",
+      "stepper:505"
+     ]
+    },
+    "homing_retract_dist": {
+     "type": "float",
+     "required": "never",
+     "default": 5.0,
+     "minval": 0.0,
+     "sources": [
+      "stepper:481"
+     ]
+    },
+    "homing_retract_speed": {
+     "type": "float",
+     "required": "never",
+     "default": "calculée",
+     "above": 0.0,
+     "sources": [
+      "stepper:478"
+     ]
+    },
+    "homing_speed": {
+     "type": "float",
+     "required": "never",
+     "default": 5.0,
+     "above": 0.0,
+     "sources": [
+      "stepper:469"
+     ]
+    },
+    "microsteps": {
+     "type": "int",
+     "required": "always",
+     "minval": 1,
+     "sources": [
+      "stepper:392"
+     ]
+    },
+    "min_home_dist": {
+     "type": "float",
+     "required": "never",
+     "default": "calculée",
+     "minval": 0.0,
+     "sources": [
+      "stepper:488"
+     ]
+    },
+    "position_endstop": {
+     "type": "float",
+     "required": "conditional",
+     "default": "calculée",
+     "sources": [
+      "stepper:436",
+      "stepper:438"
+     ]
+    },
+    "position_max": {
+     "type": "float",
+     "required": "conditional",
+     "sources": [
+      "stepper:450"
+     ]
+    },
+    "position_min": {
+     "type": "float",
+     "required": "never",
+     "default": 0.0,
+     "sources": [
+      "stepper:449"
+     ]
+    },
+    "rotation_distance": {
+     "type": "float",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "stepper:381",
+      "stepper:388"
+     ]
+    },
+    "second_homing_speed": {
+     "type": "float",
+     "required": "never",
+     "default": "calculée",
+     "above": 0.0,
+     "sources": [
+      "stepper:475"
+     ]
+    },
+    "step_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "stepper:334"
+     ]
+    },
+    "step_pulse_duration": {
+     "type": "float",
+     "required": "never",
+     "default": null,
+     "minval": 0.0,
+     "maxval": 0.001,
+     "sources": [
+      "stepper:341"
+     ]
+    },
+    "use_sensorless_homing": {
+     "type": "boolean",
+     "required": "never",
+     "default": "calculée",
+     "sources": [
+      "stepper:465"
+     ]
+    }
+   }
+  },
+  {
    "label": "stepper_y{n}",
    "regex": "^stepper_y\\d+$",
    "when": [
@@ -23768,6 +29579,297 @@
    }
   },
   {
+   "label": "stepper_y{n}",
+   "regex": "^stepper_y\\d+$",
+   "when": [
+    {
+     "section": "printer",
+     "option": "kinematics",
+     "values": [
+      "limited_cartesian"
+     ]
+    }
+   ],
+   "options": {
+    "dir_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "stepper:336"
+     ]
+    },
+    "enable_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.stepper_enable:105"
+     ]
+    },
+    "endstop_pin": {
+     "type": "string",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "stepper:564",
+      "stepper:568"
+     ]
+    },
+    "full_steps_per_rotation": {
+     "type": "int",
+     "required": "never",
+     "default": 200,
+     "minval": 1,
+     "sources": [
+      "stepper:393"
+     ]
+    },
+    "gear_ratio": {
+     "type": "lists",
+     "required": "conditional",
+     "default": null,
+     "count": 2,
+     "seps": [
+      ":",
+      ","
+     ],
+     "sources": [
+      "stepper:362",
+      "stepper:382",
+      "stepper:386"
+     ]
+    },
+    "microsteps": {
+     "type": "int",
+     "required": "always",
+     "minval": 1,
+     "sources": [
+      "stepper:392"
+     ]
+    },
+    "rotation_distance": {
+     "type": "float",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "stepper:381",
+      "stepper:388"
+     ]
+    },
+    "step_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "stepper:334"
+     ]
+    },
+    "step_pulse_duration": {
+     "type": "float",
+     "required": "never",
+     "default": null,
+     "minval": 0.0,
+     "maxval": 0.001,
+     "sources": [
+      "stepper:341"
+     ]
+    }
+   }
+  },
+  {
+   "label": "stepper_y{n}",
+   "regex": "^stepper_y\\d+$",
+   "when": [
+    {
+     "section": "printer",
+     "option": "kinematics",
+     "values": [
+      "limited_corexy"
+     ]
+    }
+   ],
+   "options": {
+    "dir_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "stepper:336"
+     ]
+    },
+    "enable_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.stepper_enable:105"
+     ]
+    },
+    "endstop_pin": {
+     "type": "string",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "stepper:564",
+      "stepper:568"
+     ]
+    },
+    "full_steps_per_rotation": {
+     "type": "int",
+     "required": "never",
+     "default": 200,
+     "minval": 1,
+     "sources": [
+      "stepper:393"
+     ]
+    },
+    "gear_ratio": {
+     "type": "lists",
+     "required": "conditional",
+     "default": null,
+     "count": 2,
+     "seps": [
+      ":",
+      ","
+     ],
+     "sources": [
+      "stepper:362",
+      "stepper:382",
+      "stepper:386"
+     ]
+    },
+    "microsteps": {
+     "type": "int",
+     "required": "always",
+     "minval": 1,
+     "sources": [
+      "stepper:392"
+     ]
+    },
+    "rotation_distance": {
+     "type": "float",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "stepper:381",
+      "stepper:388"
+     ]
+    },
+    "step_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "stepper:334"
+     ]
+    },
+    "step_pulse_duration": {
+     "type": "float",
+     "required": "never",
+     "default": null,
+     "minval": 0.0,
+     "maxval": 0.001,
+     "sources": [
+      "stepper:341"
+     ]
+    }
+   }
+  },
+  {
+   "label": "stepper_y{n}",
+   "regex": "^stepper_y\\d+$",
+   "when": [
+    {
+     "section": "printer",
+     "option": "kinematics",
+     "values": [
+      "limited_corexz"
+     ]
+    }
+   ],
+   "options": {
+    "dir_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "stepper:336"
+     ]
+    },
+    "enable_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.stepper_enable:105"
+     ]
+    },
+    "endstop_pin": {
+     "type": "string",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "stepper:564",
+      "stepper:568"
+     ]
+    },
+    "full_steps_per_rotation": {
+     "type": "int",
+     "required": "never",
+     "default": 200,
+     "minval": 1,
+     "sources": [
+      "stepper:393"
+     ]
+    },
+    "gear_ratio": {
+     "type": "lists",
+     "required": "conditional",
+     "default": null,
+     "count": 2,
+     "seps": [
+      ":",
+      ","
+     ],
+     "sources": [
+      "stepper:362",
+      "stepper:382",
+      "stepper:386"
+     ]
+    },
+    "microsteps": {
+     "type": "int",
+     "required": "always",
+     "minval": 1,
+     "sources": [
+      "stepper:392"
+     ]
+    },
+    "rotation_distance": {
+     "type": "float",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "stepper:381",
+      "stepper:388"
+     ]
+    },
+    "step_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "stepper:334"
+     ]
+    },
+    "step_pulse_duration": {
+     "type": "float",
+     "required": "never",
+     "default": null,
+     "minval": 0.0,
+     "maxval": 0.001,
+     "sources": [
+      "stepper:341"
+     ]
+    }
+   }
+  },
+  {
    "label": "stepper_z",
    "regex": "^stepper_z$",
    "when": [
@@ -24548,6 +30650,585 @@
      "option": "kinematics",
      "values": [
       "hybrid_corexz"
+     ]
+    }
+   ],
+   "options": {
+    "dir_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "stepper:336"
+     ]
+    },
+    "enable_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.stepper_enable:105"
+     ]
+    },
+    "endstop_pin": {
+     "type": "string",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "stepper:441",
+      "stepper:564",
+      "stepper:568"
+     ]
+    },
+    "full_steps_per_rotation": {
+     "type": "int",
+     "required": "never",
+     "default": 200,
+     "minval": 1,
+     "sources": [
+      "stepper:393"
+     ]
+    },
+    "gear_ratio": {
+     "type": "lists",
+     "required": "conditional",
+     "default": null,
+     "count": 2,
+     "seps": [
+      ":",
+      ","
+     ],
+     "sources": [
+      "stepper:362",
+      "stepper:382",
+      "stepper:386"
+     ]
+    },
+    "homing_accel": {
+     "type": "float",
+     "required": "never",
+     "default": null,
+     "above": 0.0,
+     "sources": [
+      "stepper:492"
+     ]
+    },
+    "homing_positive_dir": {
+     "type": "boolean",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "stepper:484",
+      "stepper:505"
+     ]
+    },
+    "homing_retract_dist": {
+     "type": "float",
+     "required": "never",
+     "default": 5.0,
+     "minval": 0.0,
+     "sources": [
+      "stepper:481"
+     ]
+    },
+    "homing_retract_speed": {
+     "type": "float",
+     "required": "never",
+     "default": "calculée",
+     "above": 0.0,
+     "sources": [
+      "stepper:478"
+     ]
+    },
+    "homing_speed": {
+     "type": "float",
+     "required": "never",
+     "default": 5.0,
+     "above": 0.0,
+     "sources": [
+      "stepper:469"
+     ]
+    },
+    "microsteps": {
+     "type": "int",
+     "required": "always",
+     "minval": 1,
+     "sources": [
+      "stepper:392"
+     ]
+    },
+    "min_home_dist": {
+     "type": "float",
+     "required": "never",
+     "default": "calculée",
+     "minval": 0.0,
+     "sources": [
+      "stepper:488"
+     ]
+    },
+    "position_endstop": {
+     "type": "float",
+     "required": "conditional",
+     "default": "calculée",
+     "sources": [
+      "stepper:436",
+      "stepper:438"
+     ]
+    },
+    "position_max": {
+     "type": "float",
+     "required": "conditional",
+     "sources": [
+      "stepper:450"
+     ]
+    },
+    "position_min": {
+     "type": "float",
+     "required": "never",
+     "default": 0.0,
+     "sources": [
+      "stepper:449"
+     ]
+    },
+    "rotation_distance": {
+     "type": "float",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "stepper:381",
+      "stepper:388"
+     ]
+    },
+    "second_homing_speed": {
+     "type": "float",
+     "required": "never",
+     "default": "calculée",
+     "above": 0.0,
+     "sources": [
+      "stepper:475"
+     ]
+    },
+    "step_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "stepper:334"
+     ]
+    },
+    "step_pulse_duration": {
+     "type": "float",
+     "required": "never",
+     "default": null,
+     "minval": 0.0,
+     "maxval": 0.001,
+     "sources": [
+      "stepper:341"
+     ]
+    },
+    "use_sensorless_homing": {
+     "type": "boolean",
+     "required": "never",
+     "default": "calculée",
+     "sources": [
+      "stepper:465"
+     ]
+    }
+   }
+  },
+  {
+   "label": "stepper_z",
+   "regex": "^stepper_z$",
+   "when": [
+    {
+     "section": "printer",
+     "option": "kinematics",
+     "values": [
+      "limited_cartesian"
+     ]
+    }
+   ],
+   "options": {
+    "dir_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "stepper:336"
+     ]
+    },
+    "enable_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.stepper_enable:105"
+     ]
+    },
+    "endstop_pin": {
+     "type": "string",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "stepper:441",
+      "stepper:564",
+      "stepper:568"
+     ]
+    },
+    "full_steps_per_rotation": {
+     "type": "int",
+     "required": "never",
+     "default": 200,
+     "minval": 1,
+     "sources": [
+      "stepper:393"
+     ]
+    },
+    "gear_ratio": {
+     "type": "lists",
+     "required": "conditional",
+     "default": null,
+     "count": 2,
+     "seps": [
+      ":",
+      ","
+     ],
+     "sources": [
+      "stepper:362",
+      "stepper:382",
+      "stepper:386"
+     ]
+    },
+    "homing_accel": {
+     "type": "float",
+     "required": "never",
+     "default": null,
+     "above": 0.0,
+     "sources": [
+      "stepper:492"
+     ]
+    },
+    "homing_positive_dir": {
+     "type": "boolean",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "stepper:484",
+      "stepper:505"
+     ]
+    },
+    "homing_retract_dist": {
+     "type": "float",
+     "required": "never",
+     "default": 5.0,
+     "minval": 0.0,
+     "sources": [
+      "stepper:481"
+     ]
+    },
+    "homing_retract_speed": {
+     "type": "float",
+     "required": "never",
+     "default": "calculée",
+     "above": 0.0,
+     "sources": [
+      "stepper:478"
+     ]
+    },
+    "homing_speed": {
+     "type": "float",
+     "required": "never",
+     "default": 5.0,
+     "above": 0.0,
+     "sources": [
+      "stepper:469"
+     ]
+    },
+    "microsteps": {
+     "type": "int",
+     "required": "always",
+     "minval": 1,
+     "sources": [
+      "stepper:392"
+     ]
+    },
+    "min_home_dist": {
+     "type": "float",
+     "required": "never",
+     "default": "calculée",
+     "minval": 0.0,
+     "sources": [
+      "stepper:488"
+     ]
+    },
+    "position_endstop": {
+     "type": "float",
+     "required": "conditional",
+     "default": "calculée",
+     "sources": [
+      "stepper:436",
+      "stepper:438"
+     ]
+    },
+    "position_max": {
+     "type": "float",
+     "required": "conditional",
+     "sources": [
+      "stepper:450"
+     ]
+    },
+    "position_min": {
+     "type": "float",
+     "required": "never",
+     "default": 0.0,
+     "sources": [
+      "stepper:449"
+     ]
+    },
+    "rotation_distance": {
+     "type": "float",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "stepper:381",
+      "stepper:388"
+     ]
+    },
+    "second_homing_speed": {
+     "type": "float",
+     "required": "never",
+     "default": "calculée",
+     "above": 0.0,
+     "sources": [
+      "stepper:475"
+     ]
+    },
+    "step_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "stepper:334"
+     ]
+    },
+    "step_pulse_duration": {
+     "type": "float",
+     "required": "never",
+     "default": null,
+     "minval": 0.0,
+     "maxval": 0.001,
+     "sources": [
+      "stepper:341"
+     ]
+    },
+    "use_sensorless_homing": {
+     "type": "boolean",
+     "required": "never",
+     "default": "calculée",
+     "sources": [
+      "stepper:465"
+     ]
+    }
+   }
+  },
+  {
+   "label": "stepper_z",
+   "regex": "^stepper_z$",
+   "when": [
+    {
+     "section": "printer",
+     "option": "kinematics",
+     "values": [
+      "limited_corexy"
+     ]
+    }
+   ],
+   "options": {
+    "dir_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "stepper:336"
+     ]
+    },
+    "enable_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.stepper_enable:105"
+     ]
+    },
+    "endstop_pin": {
+     "type": "string",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "stepper:441",
+      "stepper:564",
+      "stepper:568"
+     ]
+    },
+    "full_steps_per_rotation": {
+     "type": "int",
+     "required": "never",
+     "default": 200,
+     "minval": 1,
+     "sources": [
+      "stepper:393"
+     ]
+    },
+    "gear_ratio": {
+     "type": "lists",
+     "required": "conditional",
+     "default": null,
+     "count": 2,
+     "seps": [
+      ":",
+      ","
+     ],
+     "sources": [
+      "stepper:362",
+      "stepper:382",
+      "stepper:386"
+     ]
+    },
+    "homing_accel": {
+     "type": "float",
+     "required": "never",
+     "default": null,
+     "above": 0.0,
+     "sources": [
+      "stepper:492"
+     ]
+    },
+    "homing_positive_dir": {
+     "type": "boolean",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "stepper:484",
+      "stepper:505"
+     ]
+    },
+    "homing_retract_dist": {
+     "type": "float",
+     "required": "never",
+     "default": 5.0,
+     "minval": 0.0,
+     "sources": [
+      "stepper:481"
+     ]
+    },
+    "homing_retract_speed": {
+     "type": "float",
+     "required": "never",
+     "default": "calculée",
+     "above": 0.0,
+     "sources": [
+      "stepper:478"
+     ]
+    },
+    "homing_speed": {
+     "type": "float",
+     "required": "never",
+     "default": 5.0,
+     "above": 0.0,
+     "sources": [
+      "stepper:469"
+     ]
+    },
+    "microsteps": {
+     "type": "int",
+     "required": "always",
+     "minval": 1,
+     "sources": [
+      "stepper:392"
+     ]
+    },
+    "min_home_dist": {
+     "type": "float",
+     "required": "never",
+     "default": "calculée",
+     "minval": 0.0,
+     "sources": [
+      "stepper:488"
+     ]
+    },
+    "position_endstop": {
+     "type": "float",
+     "required": "conditional",
+     "default": "calculée",
+     "sources": [
+      "stepper:436",
+      "stepper:438"
+     ]
+    },
+    "position_max": {
+     "type": "float",
+     "required": "conditional",
+     "sources": [
+      "stepper:450"
+     ]
+    },
+    "position_min": {
+     "type": "float",
+     "required": "never",
+     "default": 0.0,
+     "sources": [
+      "stepper:449"
+     ]
+    },
+    "rotation_distance": {
+     "type": "float",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "stepper:381",
+      "stepper:388"
+     ]
+    },
+    "second_homing_speed": {
+     "type": "float",
+     "required": "never",
+     "default": "calculée",
+     "above": 0.0,
+     "sources": [
+      "stepper:475"
+     ]
+    },
+    "step_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "stepper:334"
+     ]
+    },
+    "step_pulse_duration": {
+     "type": "float",
+     "required": "never",
+     "default": null,
+     "minval": 0.0,
+     "maxval": 0.001,
+     "sources": [
+      "stepper:341"
+     ]
+    },
+    "use_sensorless_homing": {
+     "type": "boolean",
+     "required": "never",
+     "default": "calculée",
+     "sources": [
+      "stepper:465"
+     ]
+    }
+   }
+  },
+  {
+   "label": "stepper_z",
+   "regex": "^stepper_z$",
+   "when": [
+    {
+     "section": "printer",
+     "option": "kinematics",
+     "values": [
+      "limited_corexz"
      ]
     }
    ],
@@ -25447,6 +32128,297 @@
      "section": "printer",
      "option": "kinematics",
      "values": [
+      "limited_cartesian"
+     ]
+    }
+   ],
+   "options": {
+    "dir_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "stepper:336"
+     ]
+    },
+    "enable_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.stepper_enable:105"
+     ]
+    },
+    "endstop_pin": {
+     "type": "string",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "stepper:564",
+      "stepper:568"
+     ]
+    },
+    "full_steps_per_rotation": {
+     "type": "int",
+     "required": "never",
+     "default": 200,
+     "minval": 1,
+     "sources": [
+      "stepper:393"
+     ]
+    },
+    "gear_ratio": {
+     "type": "lists",
+     "required": "conditional",
+     "default": null,
+     "count": 2,
+     "seps": [
+      ":",
+      ","
+     ],
+     "sources": [
+      "stepper:362",
+      "stepper:382",
+      "stepper:386"
+     ]
+    },
+    "microsteps": {
+     "type": "int",
+     "required": "always",
+     "minval": 1,
+     "sources": [
+      "stepper:392"
+     ]
+    },
+    "rotation_distance": {
+     "type": "float",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "stepper:381",
+      "stepper:388"
+     ]
+    },
+    "step_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "stepper:334"
+     ]
+    },
+    "step_pulse_duration": {
+     "type": "float",
+     "required": "never",
+     "default": null,
+     "minval": 0.0,
+     "maxval": 0.001,
+     "sources": [
+      "stepper:341"
+     ]
+    }
+   }
+  },
+  {
+   "label": "stepper_z{n}",
+   "regex": "^stepper_z\\d+$",
+   "when": [
+    {
+     "section": "printer",
+     "option": "kinematics",
+     "values": [
+      "limited_corexy"
+     ]
+    }
+   ],
+   "options": {
+    "dir_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "stepper:336"
+     ]
+    },
+    "enable_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.stepper_enable:105"
+     ]
+    },
+    "endstop_pin": {
+     "type": "string",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "stepper:564",
+      "stepper:568"
+     ]
+    },
+    "full_steps_per_rotation": {
+     "type": "int",
+     "required": "never",
+     "default": 200,
+     "minval": 1,
+     "sources": [
+      "stepper:393"
+     ]
+    },
+    "gear_ratio": {
+     "type": "lists",
+     "required": "conditional",
+     "default": null,
+     "count": 2,
+     "seps": [
+      ":",
+      ","
+     ],
+     "sources": [
+      "stepper:362",
+      "stepper:382",
+      "stepper:386"
+     ]
+    },
+    "microsteps": {
+     "type": "int",
+     "required": "always",
+     "minval": 1,
+     "sources": [
+      "stepper:392"
+     ]
+    },
+    "rotation_distance": {
+     "type": "float",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "stepper:381",
+      "stepper:388"
+     ]
+    },
+    "step_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "stepper:334"
+     ]
+    },
+    "step_pulse_duration": {
+     "type": "float",
+     "required": "never",
+     "default": null,
+     "minval": 0.0,
+     "maxval": 0.001,
+     "sources": [
+      "stepper:341"
+     ]
+    }
+   }
+  },
+  {
+   "label": "stepper_z{n}",
+   "regex": "^stepper_z\\d+$",
+   "when": [
+    {
+     "section": "printer",
+     "option": "kinematics",
+     "values": [
+      "limited_corexz"
+     ]
+    }
+   ],
+   "options": {
+    "dir_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "stepper:336"
+     ]
+    },
+    "enable_pin": {
+     "type": "string",
+     "required": "never",
+     "default": null,
+     "sources": [
+      "extras.stepper_enable:105"
+     ]
+    },
+    "endstop_pin": {
+     "type": "string",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "stepper:564",
+      "stepper:568"
+     ]
+    },
+    "full_steps_per_rotation": {
+     "type": "int",
+     "required": "never",
+     "default": 200,
+     "minval": 1,
+     "sources": [
+      "stepper:393"
+     ]
+    },
+    "gear_ratio": {
+     "type": "lists",
+     "required": "conditional",
+     "default": null,
+     "count": 2,
+     "seps": [
+      ":",
+      ","
+     ],
+     "sources": [
+      "stepper:362",
+      "stepper:382",
+      "stepper:386"
+     ]
+    },
+    "microsteps": {
+     "type": "int",
+     "required": "always",
+     "minval": 1,
+     "sources": [
+      "stepper:392"
+     ]
+    },
+    "rotation_distance": {
+     "type": "float",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "stepper:381",
+      "stepper:388"
+     ]
+    },
+    "step_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "stepper:334"
+     ]
+    },
+    "step_pulse_duration": {
+     "type": "float",
+     "required": "never",
+     "default": null,
+     "minval": 0.0,
+     "maxval": 0.001,
+     "sources": [
+      "stepper:341"
+     ]
+    }
+   }
+  },
+  {
+   "label": "stepper_z{n}",
+   "regex": "^stepper_z\\d+$",
+   "when": [
+    {
+     "section": "printer",
+     "option": "kinematics",
+     "values": [
       "polar"
      ]
     }
@@ -25712,6 +32684,51 @@
      "default": null,
      "sources": [
       "extras.telemetry:24"
+     ]
+    }
+   }
+  },
+  {
+   "label": "temperature_fan {*}",
+   "regex": "^temperature_fan\\ .+$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
+      "AD595",
+      "AD597",
+      "AD8494",
+      "AD8495",
+      "AD8496",
+      "AD8497",
+      "PT100 INA826"
+     ]
+    }
+   ],
+   "options": {
+    "adc_voltage": {
+     "type": "float",
+     "required": "never",
+     "default": 5.0,
+     "above": 0.0,
+     "sources": [
+      "extras.adc_temperature:115"
+     ]
+    },
+    "sensor_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.adc_temperature:26"
+     ]
+    },
+    "voltage_offset": {
+     "type": "float",
+     "required": "never",
+     "default": 0.0,
+     "sources": [
+      "extras.adc_temperature:116"
      ]
     }
    }
@@ -26377,7 +33394,13 @@
      "type": "choice",
      "required": "never",
      "default": 1,
-     "choices": [],
+     "choices": [
+      "1",
+      "16",
+      "2",
+      "4",
+      "8"
+     ],
      "sources": [
       "extras.spi_temperature:222"
      ]
@@ -26414,6 +33437,46 @@
      "type": "string",
      "source": "extras.bus:179",
      "required": "conditional"
+    }
+   }
+  },
+  {
+   "label": "temperature_fan {*}",
+   "regex": "^temperature_fan\\ .+$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
+      "PT1000"
+     ]
+    }
+   ],
+   "options": {
+    "inline_resistor": {
+     "type": "float",
+     "required": "never",
+     "default": 0.0,
+     "minval": 0.0,
+     "sources": [
+      "extras.adc_temperature:165"
+     ]
+    },
+    "pullup_resistor": {
+     "type": "float",
+     "required": "never",
+     "default": 4700.0,
+     "above": 0.0,
+     "sources": [
+      "extras.adc_temperature:164"
+     ]
+    },
+    "sensor_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.adc_temperature:26"
+     ]
     }
    }
   },
@@ -27237,6 +34300,51 @@
      "section": "self",
      "option": "sensor_type",
      "values": [
+      "AD595",
+      "AD597",
+      "AD8494",
+      "AD8495",
+      "AD8496",
+      "AD8497",
+      "PT100 INA826"
+     ]
+    }
+   ],
+   "options": {
+    "adc_voltage": {
+     "type": "float",
+     "required": "never",
+     "default": 5.0,
+     "above": 0.0,
+     "sources": [
+      "extras.adc_temperature:115"
+     ]
+    },
+    "sensor_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.adc_temperature:26"
+     ]
+    },
+    "voltage_offset": {
+     "type": "float",
+     "required": "never",
+     "default": 0.0,
+     "sources": [
+      "extras.adc_temperature:116"
+     ]
+    }
+   }
+  },
+  {
+   "label": "temperature_sensor {*}",
+   "regex": "^temperature_sensor\\ .+$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
       "AHT10"
      ]
     }
@@ -27890,7 +34998,13 @@
      "type": "choice",
      "required": "never",
      "default": 1,
-     "choices": [],
+     "choices": [
+      "1",
+      "16",
+      "2",
+      "4",
+      "8"
+     ],
      "sources": [
       "extras.spi_temperature:222"
      ]
@@ -27927,6 +35041,46 @@
      "type": "string",
      "source": "extras.bus:179",
      "required": "conditional"
+    }
+   }
+  },
+  {
+   "label": "temperature_sensor {*}",
+   "regex": "^temperature_sensor\\ .+$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
+      "PT1000"
+     ]
+    }
+   ],
+   "options": {
+    "inline_resistor": {
+     "type": "float",
+     "required": "never",
+     "default": 0.0,
+     "minval": 0.0,
+     "sources": [
+      "extras.adc_temperature:165"
+     ]
+    },
+    "pullup_resistor": {
+     "type": "float",
+     "required": "never",
+     "default": 4700.0,
+     "above": 0.0,
+     "sources": [
+      "extras.adc_temperature:164"
+     ]
+    },
+    "sensor_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.adc_temperature:26"
+     ]
     }
    }
   },
@@ -32142,6 +39296,15 @@
    "label": "z_calibration",
    "regex": "^z_calibration$",
    "options": {
+    "bed_xy_position": {
+     "type": "string",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "extras.z_calibration:301",
+      "extras.z_calibration:304"
+     ]
+    },
     "before_switch_gcode": {
      "type": "string",
      "required": "conditional",
@@ -32191,6 +39354,23 @@
      "sources": [
       "extras.z_calibration:23",
       "extras.z_calibration:24"
+     ]
+    },
+    "nozzle_xy_position": {
+     "type": "string",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "extras.z_calibration:301",
+      "extras.z_calibration:304"
+     ]
+    },
+    "offset_margins": {
+     "type": "string",
+     "required": "never",
+     "default": "calculée",
+     "sources": [
+      "extras.z_calibration:317"
      ]
     },
     "position_min": {
@@ -32310,6 +39490,78 @@
      "default": 0.0,
      "sources": [
       "extras.z_calibration:21"
+     ]
+    },
+    "switch_xy_offsets": {
+     "type": "string",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "extras.z_calibration:301",
+      "extras.z_calibration:304"
+     ]
+    },
+    "switch_xy_position": {
+     "type": "string",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "extras.z_calibration:301",
+      "extras.z_calibration:304"
+     ]
+    },
+    "wiggle_xy_offsets": {
+     "type": "string",
+     "required": "conditional",
+     "default": null,
+     "sources": [
+      "extras.z_calibration:301",
+      "extras.z_calibration:304"
+     ]
+    }
+   }
+  },
+  {
+   "label": "z_thermal_adjust",
+   "regex": "^z_thermal_adjust$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
+      "AD595",
+      "AD597",
+      "AD8494",
+      "AD8495",
+      "AD8496",
+      "AD8497",
+      "PT100 INA826"
+     ]
+    }
+   ],
+   "options": {
+    "adc_voltage": {
+     "type": "float",
+     "required": "never",
+     "default": 5.0,
+     "above": 0.0,
+     "sources": [
+      "extras.adc_temperature:115"
+     ]
+    },
+    "sensor_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.adc_temperature:26"
+     ]
+    },
+    "voltage_offset": {
+     "type": "float",
+     "required": "never",
+     "default": 0.0,
+     "sources": [
+      "extras.adc_temperature:116"
      ]
     }
    }
@@ -32975,7 +40227,13 @@
      "type": "choice",
      "required": "never",
      "default": 1,
-     "choices": [],
+     "choices": [
+      "1",
+      "16",
+      "2",
+      "4",
+      "8"
+     ],
      "sources": [
       "extras.spi_temperature:222"
      ]
@@ -33012,6 +40270,46 @@
      "type": "string",
      "source": "extras.bus:179",
      "required": "conditional"
+    }
+   }
+  },
+  {
+   "label": "z_thermal_adjust",
+   "regex": "^z_thermal_adjust$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
+      "PT1000"
+     ]
+    }
+   ],
+   "options": {
+    "inline_resistor": {
+     "type": "float",
+     "required": "never",
+     "default": 0.0,
+     "minval": 0.0,
+     "sources": [
+      "extras.adc_temperature:165"
+     ]
+    },
+    "pullup_resistor": {
+     "type": "float",
+     "required": "never",
+     "default": 4700.0,
+     "above": 0.0,
+     "sources": [
+      "extras.adc_temperature:164"
+     ]
+    },
+    "sensor_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.adc_temperature:26"
+     ]
     }
    }
   },
@@ -33563,6 +40861,51 @@
      "section": "self",
      "option": "sensor_type",
      "values": [
+      "AD595",
+      "AD597",
+      "AD8494",
+      "AD8495",
+      "AD8496",
+      "AD8497",
+      "PT100 INA826"
+     ]
+    }
+   ],
+   "options": {
+    "adc_voltage": {
+     "type": "float",
+     "required": "never",
+     "default": 5.0,
+     "above": 0.0,
+     "sources": [
+      "extras.adc_temperature:115"
+     ]
+    },
+    "sensor_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.adc_temperature:26"
+     ]
+    },
+    "voltage_offset": {
+     "type": "float",
+     "required": "never",
+     "default": 0.0,
+     "sources": [
+      "extras.adc_temperature:116"
+     ]
+    }
+   }
+  },
+  {
+   "label": "z_thermal_adjust {*}",
+   "regex": "^z_thermal_adjust\\ .+$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
       "AHT10"
      ]
     }
@@ -34216,7 +41559,13 @@
      "type": "choice",
      "required": "never",
      "default": 1,
-     "choices": [],
+     "choices": [
+      "1",
+      "16",
+      "2",
+      "4",
+      "8"
+     ],
      "sources": [
       "extras.spi_temperature:222"
      ]
@@ -34253,6 +41602,46 @@
      "type": "string",
      "source": "extras.bus:179",
      "required": "conditional"
+    }
+   }
+  },
+  {
+   "label": "z_thermal_adjust {*}",
+   "regex": "^z_thermal_adjust\\ .+$",
+   "when": [
+    {
+     "section": "self",
+     "option": "sensor_type",
+     "values": [
+      "PT1000"
+     ]
+    }
+   ],
+   "options": {
+    "inline_resistor": {
+     "type": "float",
+     "required": "never",
+     "default": 0.0,
+     "minval": 0.0,
+     "sources": [
+      "extras.adc_temperature:165"
+     ]
+    },
+    "pullup_resistor": {
+     "type": "float",
+     "required": "never",
+     "default": 4700.0,
+     "above": 0.0,
+     "sources": [
+      "extras.adc_temperature:164"
+     ]
+    },
+    "sensor_pin": {
+     "type": "string",
+     "required": "always",
+     "sources": [
+      "extras.adc_temperature:26"
+     ]
     }
    }
   },
@@ -34829,6 +42218,12 @@
      "type": "choice",
      "required": "never",
      "default": "calculée",
+     "choices": [
+      "circle",
+      "fail",
+      "ignore",
+      "retry"
+     ],
      "sources": [
       "extras.probe:52"
      ]
@@ -35042,6 +42437,12 @@
      "type": "choice",
      "required": "never",
      "default": "calculée",
+     "choices": [
+      "circle",
+      "fail",
+      "ignore",
+      "retry"
+     ],
      "sources": [
       "extras.probe:52"
      ]
@@ -35663,6 +43064,21 @@
       "position_endstop_reverse",
       "homing_speed_reverse",
       "homing_positive_dir_reverse"
+     ]
+    },
+    {
+     "sectionRegex": "^(extruder\\d*|heater_bed|heater_generic .+)$",
+     "names": [
+      "target_min_temp",
+      "target_max_temp",
+      "heat_with_heater_bed",
+      "heat_with_heater_bed_tem_add"
+     ]
+    },
+    {
+     "sectionRegex": "^verify_heater .+$",
+     "names": [
+      "position_z"
      ]
     }
    ]

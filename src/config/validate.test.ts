@@ -167,6 +167,61 @@ describe("validateConfig (schéma généré depuis Klipper 214fdb2877)", () => {
     );
     expect(summary(check(unknownSensor))).toEqual([]);
   });
+
+  it("couverture complète (EP-06.15) : options inconnues dans toute section, même sans lecture", () => {
+    // Module qui ne lit aucune option : toute option y est refusée par Klipper.
+    const excluded = check([...VALID, "[exclude_object]", "enable: True"].join("\n"));
+    expect(summary(excluded)).toEqual(["warning config.unknown-option [exclude_object] enable"]);
+    // Section hors du parcours initial (EP-06.03) : faute de frappe signalée, obligatoire aussi.
+    const fan = check([...VALID, "[fan]", "pin: PC0", "max_pwer: 1"].join("\n"));
+    expect(summary(fan)).toEqual(["warning config.unknown-option [fan] max_pwer"]);
+    expect(summary(check([...VALID, "[fan]"].join("\n")))).toEqual([
+      "error config.missing-option [fan] pin",
+    ]);
+  });
+
+  it("discriminant connu sans variante propre : la section reste décidable", () => {
+    // `winch` n'ajoute aucune option à [printer] : une option inconnue y est bien signalée.
+    const winch = VALID.join("\n")
+      .replace("kinematics: cartesian", "kinematics: winch")
+      .concat("\n[printer]\nmax_z_velocity: 5");
+    expect(summary(check(winch))).toContain(
+      "warning config.unknown-option [printer] max_z_velocity",
+    );
+  });
+
+  it("sections « ouvertes » (menus) : aucune option inconnue, lectures en partie dynamiques", () => {
+    const menu = check(
+      [...VALID, "[menu __main __tool]", "type: input", "input_min: 0"].join("\n"),
+    );
+    expect(summary(menu)).toEqual([]);
+  });
+});
+
+describe("Kalico : références de valeurs et section [constants] (EP-06.15)", () => {
+  it("constantes libres, valeurs calculées non jugées", async () => {
+    const { loadSchema } = await import("./firmwares");
+    const kalico = await loadSchema("kalico");
+    const text = [
+      ...VALID,
+      "[constants]",
+      "run_current_ab: 1.0",
+      "[tmc2209 stepper_x]",
+      "uart_pin: PC1",
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: syntaxe de Kalico, pas un gabarit JS.
+      "run_current: ${constants.run_current_ab}",
+    ].join("\n");
+    const { sections } = readConfig({
+      files: new Map([["printer.cfg", text]]),
+      main: "printer.cfg",
+    });
+    expect(summary(validateConfig(sections, kalico))).toEqual([]);
+    // Klipper ne connaît ni l'un ni l'autre.
+    expect(summary(validateConfig(sections, KLIPPER_SCHEMA))).toEqual([
+      "warning config.unknown-section [constants] constants",
+      "error config.invalid-value [tmc2209 stepper_x] run_current",
+    ]);
+  });
 });
 
 describe("valeurs converties comme Python", () => {

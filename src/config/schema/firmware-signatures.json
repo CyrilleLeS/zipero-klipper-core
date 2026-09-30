@@ -792,6 +792,14 @@
     "smart"
    ],
    [
+    "^firmware_retraction$",
+    "clear_zhop_on_z_moves"
+   ],
+   [
+    "^firmware_retraction$",
+    "z_hop_height"
+   ],
+   [
     "^hall_filament_width_sensor$",
     "always_fire_events"
    ],
@@ -1332,12 +1340,24 @@
     "pid_ti"
    ],
    [
+    "^load_cell$",
+    "channels"
+   ],
+   [
+    "^load_cell\\ .+$",
+    "channels"
+   ],
+   [
     "^load_cell_probe$",
     "bad_probe_retries"
    ],
    [
     "^load_cell_probe$",
     "bad_probe_strategy"
+   ],
+   [
+    "^load_cell_probe$",
+    "channels"
    ],
    [
     "^load_cell_probe$",
@@ -1440,6 +1460,106 @@
     "stepover"
    ],
    [
+    "^pid_profile\\ .+$",
+    "ambient_temp_sensor"
+   ],
+   [
+    "^pid_profile\\ .+$",
+    "ambient_transfer"
+   ],
+   [
+    "^pid_profile\\ .+$",
+    "block_heat_capacity"
+   ],
+   [
+    "^pid_profile\\ .+$",
+    "cooling_fan"
+   ],
+   [
+    "^pid_profile\\ .+$",
+    "fan_ambient_transfer"
+   ],
+   [
+    "^pid_profile\\ .+$",
+    "filament_density"
+   ],
+   [
+    "^pid_profile\\ .+$",
+    "filament_heat_capacity"
+   ],
+   [
+    "^pid_profile\\ .+$",
+    "filament_temperature_source"
+   ],
+   [
+    "^pid_profile\\ .+$",
+    "heater_power"
+   ],
+   [
+    "^pid_profile\\ .+$",
+    "inner_control"
+   ],
+   [
+    "^pid_profile\\ .+$",
+    "inner_pid_kd"
+   ],
+   [
+    "^pid_profile\\ .+$",
+    "inner_pid_ki"
+   ],
+   [
+    "^pid_profile\\ .+$",
+    "inner_pid_kp"
+   ],
+   [
+    "^pid_profile\\ .+$",
+    "inner_pid_target"
+   ],
+   [
+    "^pid_profile\\ .+$",
+    "inner_pid_tolerance"
+   ],
+   [
+    "^pid_profile\\ .+$",
+    "inner_smooth_time"
+   ],
+   [
+    "^pid_profile\\ .+$",
+    "maximum_retract"
+   ],
+   [
+    "^pid_profile\\ .+$",
+    "min_ambient_change"
+   ],
+   [
+    "^pid_profile\\ .+$",
+    "pid_target"
+   ],
+   [
+    "^pid_profile\\ .+$",
+    "pid_tolerance"
+   ],
+   [
+    "^pid_profile\\ .+$",
+    "pid_version"
+   ],
+   [
+    "^pid_profile\\ .+$",
+    "sensor_responsiveness"
+   ],
+   [
+    "^pid_profile\\ .+$",
+    "smoothing"
+   ],
+   [
+    "^pid_profile\\ .+$",
+    "steady_state_rate"
+   ],
+   [
+    "^pid_profile\\ .+$",
+    "target_reach_time"
+   ],
+   [
     "^printer$",
     "invert_kinematics"
    ],
@@ -1449,7 +1569,15 @@
    ],
    [
     "^printer$",
+    "max_x_velocity"
+   ],
+   [
+    "^printer$",
     "max_y_accel"
+   ],
+   [
+    "^printer$",
+    "max_y_velocity"
    ],
    [
     "^printer$",

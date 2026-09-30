@@ -124,7 +124,12 @@
       "origin": "creality",
       "seenIn": "corpus/printer-cfg/Grenvals__Creality-K1C-Optimized-Klipper-Configuration.cfg, corpus/config-sets/VinoY27__K1Configs",
       "sections": ["prtouch", "prtouch_v2", "bl24c16f", "custom_macro", "fan_feedback"],
-      "options": [{ "sectionRegex": "^printer$", "names": ["square_corner_max_velocity"] }]
+      "options": [
+        {
+          "sectionRegex": "^printer$",
+          "names": ["square_corner_max_velocity"]
+        }
+      ]
     },
     {
       "origin": "qidi",
@@ -139,6 +144,19 @@
             "homing_speed_reverse",
             "homing_positive_dir_reverse"
           ]
+        },
+        {
+          "sectionRegex": "^(extruder\\d*|heater_bed|heater_generic .+)$",
+          "names": [
+            "target_min_temp",
+            "target_max_temp",
+            "heat_with_heater_bed",
+            "heat_with_heater_bed_tem_add"
+          ]
+        },
+        {
+          "sectionRegex": "^verify_heater .+$",
+          "names": ["position_z"]
         }
       ]
     },
@@ -157,7 +175,11 @@
       "seenIn": "corpus/config-sets/jakew02__voron-v2, zellneralex__klipper_config, VinoY27__K1Configs",
       "sections": ["gcode_shell_command"]
     },
-    { "origin": "z_calibration", "seenIn": "corpus/config-sets", "sections": ["z_calibration"] },
+    {
+      "origin": "z_calibration",
+      "seenIn": "corpus/config-sets",
+      "sections": ["z_calibration"]
+    },
     {
       "origin": "virtual_pins",
       "seenIn": "corpus/printer-cfg/Grenvals__Creality-K1C-Optimized-Klipper-Configuration.cfg",

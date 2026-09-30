@@ -47,6 +47,54 @@ def literal(node, module=None):
         return "calculée"
 
 
+def choice_table(node, module, local, depth=0):
+    """Valeurs acceptées par `getchoice` : clés d'un dictionnaire ou éléments d'une liste,
+    littéraux, nommés (module, fonction, `self.x`) ou concaténés (`VALID_AXES + [None]`).
+    `None` n'est jamais une valeur qu'on peut écrire. Rien si la table est calculée."""
+    if depth > 5:
+        return None
+    if isinstance(node, ast.Name):
+        target = local.get(node.id) or module.dicts.get(node.id)
+        if target is None and isinstance(module.constants.get(node.id), (list, tuple, dict)):
+            values = module.constants[node.id]
+            return sorted(str(v) for v in values if isinstance(v, (str, int)) and not isinstance(v, bool))
+        return choice_table(target, module, local, depth + 1) if target is not None else None
+    if isinstance(node, ast.Attribute) and isinstance(node.value, ast.Name) and node.value.id == "self":
+        target = local.get(f"self.{node.attr}")
+        return choice_table(target, module, local, depth + 1) if target is not None else None
+    # `list(GAIN_TO_REG.keys())`, `GAIN_TO_REG.keys()` : les clés de la table.
+    if isinstance(node, ast.Call) and isinstance(node.func, ast.Name) and node.func.id in ("list", "tuple", "sorted") and len(node.args) == 1:
+        return choice_table(node.args[0], module, local, depth + 1)
+    if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute) and node.func.attr == "keys" and not node.args:
+        return choice_table(node.func.value, module, local, depth + 1)
+    # `{s: s for s in sensors}` : les clés de `sensors`.
+    if isinstance(node, ast.DictComp) and len(node.generators) == 1:
+        iterable = node.generators[0].iter
+        # `{strat.name.lower(): strat for strat in RetryStrategy}` : membres d'une énumération.
+        if isinstance(iterable, ast.Name) and iterable.id in module.classes:
+            members = [t.id for n in module.classes[iterable.id]["node"].body if isinstance(n, ast.Assign)
+                       for t in n.targets if isinstance(t, ast.Name)]
+            key = ast.unparse(node.key)
+            variable = node.generators[0].target
+            if isinstance(variable, ast.Name) and key == f"{variable.id}.name.lower()":
+                return sorted(m.lower() for m in members)
+            if isinstance(variable, ast.Name) and key == f"{variable.id}.name":
+                return sorted(members)
+            return None
+        return choice_table(iterable, module, local, depth + 1)
+    if isinstance(node, ast.BinOp) and isinstance(node.op, ast.Add):
+        left = choice_table(node.left, module, local, depth + 1)
+        right = choice_table(node.right, module, local, depth + 1)
+        return sorted({*left, *right}) if left is not None and right is not None else None
+    if isinstance(node, (ast.Dict, ast.List, ast.Tuple)):
+        values = [literal(e, module) for e in (node.keys if isinstance(node, ast.Dict) else node.elts)]
+        if any(v == "calculée" for v in values):
+            return None
+        # Clés entières acceptées aussi (getchoice les relit avec getint).
+        return sorted(str(v) for v in values if isinstance(v, (str, int)) and not isinstance(v, bool))
+    return None
+
+
 class Module:
     def __init__(self, name, path):
         self.name = name
@@ -142,6 +190,8 @@ class Reads:
         self.rules = {}
         self.accessed = set()
         self.unresolved = []
+        # Sections passées à un appel non suivi : options pas toutes connues.
+        self.open = set()
 
     def rule(self, label, when):
         return self.rules.setdefault((label, when), {"options": {}, "patterns": {}})
@@ -177,14 +227,46 @@ def loop_bindings(function, module=None):
                 if keys:
                     values.setdefault(target.id, []).extend(keys)
                     continue
-        if isinstance(node, (ast.For, ast.comprehension)) and isinstance(node.target, ast.Name):
-            try:
-                iterable = ast.literal_eval(node.iter)
-            except (ValueError, SyntaxError, TypeError):
-                continue
-            if isinstance(iterable, (str, list, tuple)) and all(isinstance(v, str) for v in iterable):
-                values.setdefault(node.target.id, []).extend(iterable)
+        if not isinstance(node, (ast.For, ast.comprehension)):
+            continue
+        target, iterable_node = node.target, node.iter
+        # `for i, name in enumerate(("red", "green"))` : la variable est le second élément.
+        if (isinstance(iterable_node, ast.Call) and isinstance(iterable_node.func, ast.Name)
+                and iterable_node.func.id == "enumerate" and iterable_node.args
+                and isinstance(target, ast.Tuple) and len(target.elts) == 2):
+            iterable_node, target = iterable_node.args[0], target.elts[1]
+        if not isinstance(target, ast.Name):
+            continue
+        # `for opt in options` avec `options = ["aliases"] + config.get_prefix_options(…)` :
+        # les éléments littéraux (les autres sont des motifs, relevés ailleurs).
+        if isinstance(iterable_node, ast.Name):
+            literals = list_literals(function, iterable_node.id)
+            if literals:
+                values.setdefault(target.id, []).extend(literals)
+            continue
+        try:
+            iterable = ast.literal_eval(iterable_node)
+        except (ValueError, SyntaxError, TypeError):
+            continue
+        if isinstance(iterable, (str, list, tuple)) and all(isinstance(v, str) for v in iterable):
+            values.setdefault(target.id, []).extend(iterable)
     return values
+
+
+def list_literals(function, name):
+    """Chaînes littérales des listes affectées à `name` dans la fonction (concaténations comprises)."""
+    found = []
+    for node in ast.walk(function):
+        if (isinstance(node, ast.Assign) and len(node.targets) == 1 and isinstance(node.targets[0], ast.Name)
+                and node.targets[0].id == name):
+            parts = [node.value]
+            while parts:
+                part = parts.pop()
+                if isinstance(part, ast.BinOp) and isinstance(part.op, ast.Add):
+                    parts += [part.left, part.right]
+                elif isinstance(part, (ast.List, ast.Tuple)):
+                    found += [e.value for e in part.elts if isinstance(e, ast.Constant) and isinstance(e.value, str)]
+    return found
 
 
 def string_values(node, bindings, aliases):
@@ -197,6 +279,18 @@ def string_values(node, bindings, aliases):
         return list(bindings[f"{node.value.id}.{node.attr}"])
     if isinstance(node, ast.BinOp) and isinstance(node.op, ast.Add):
         return [a + b for a in string_values(node.left, bindings, aliases) for b in string_values(node.right, bindings, aliases)]
+    # f"max_{ax}_velocity" : chaque combinaison des valeurs connues.
+    if isinstance(node, ast.JoinedStr):
+        results = [""]
+        for part in node.values:
+            if isinstance(part, ast.Constant):
+                pieces = [str(part.value)]
+            elif isinstance(part, ast.FormattedValue) and part.format_spec is None and part.conversion == -1:
+                pieces = string_values(part.value, bindings, aliases)
+            else:
+                pieces = ["{*}"]
+            results = [r + p for r in results for p in pieces]
+        return results
     if isinstance(node, ast.BinOp) and isinstance(node.op, ast.Mod) and isinstance(node.left, ast.Constant):
         template = str(node.left.value)
         args = node.right.elts if isinstance(node.right, ast.Tuple) else [node.right]
@@ -289,6 +383,14 @@ class Analyzer:
             if dotted in self.project.modules:
                 target = self.project.modules[dotted]
                 return self.resolve(target, ast.Name(id=func.attr), {"class": None, "types": {}, "choices": {}})
+            # cartesian.CartKinematics.__init__(self, toolhead, config) : classe d'un module importé,
+            # self passé explicitement (Kalico, cinématiques « limited_* »).
+            if isinstance(func.value.value, ast.Name):
+                imported = self.project.resolve_import(module, func.value.value.id)
+                if imported and imported[1] is None:
+                    target = self.project.modules.get(imported[0])
+                    if target is not None and func.value.attr in target.classes:
+                        return self.method_target(target, func.value.attr, func.attr, 0)
             return None
         if isinstance(func, ast.Name):
             name = func.id
@@ -354,10 +456,13 @@ class Analyzer:
         return (found[0][0], found[0][1], 1) if len(found) == 1 and not name.startswith("__") else None
 
     # --- parcours ----------------------------------------------------------------------------
-    def walk(self, module, function, param, label, when, bindings=None, conditional=False):
-        """Suit la section `label` reçue par le paramètre `param` (nom) de `function`."""
+    def walk(self, module, function, param, label, when, bindings=None, conditional=False, self_aliases=None, lists=None):
+        """Suit la section `label` reçue par le paramètre `param` (nom) de `function`.
+        `self_aliases` : sections rangées dans des attributs (`self.config`) par la méthode appelante."""
         bindings = dict(bindings or {})
-        key = (module.name, function.name, function.lineno, param, label, when, tuple(sorted((k, tuple(v)) for k, v in bindings.items())), conditional)
+        self_aliases = dict(self_aliases or {})
+        key = (module.name, function.name, function.lineno, param, label, when, tuple(sorted((k, tuple(v)) for k, v in bindings.items())), conditional,
+               tuple(sorted((k, tuple(v)) for k, v in self_aliases.items())), tuple(sorted((k, tuple(v)) for k, v in (lists or {}).items())))
         if key in self.seen:
             return
         self.seen.add(key)
@@ -369,7 +474,7 @@ class Analyzer:
         for arg, default in zip(positional[len(positional) - len(function.args.defaults):], function.args.defaults):
             if isinstance(default, ast.Constant) and isinstance(default.value, str):
                 bindings.setdefault(arg.arg, [default.value])
-        context = {"class": cls, "function": function.name, "types": {}, "choices": {}, "lists": {}, "multi": {}}
+        context = {"class": cls, "function": function.name, "types": {}, "choices": {}, "lists": dict(lists or {}), "multi": dict(self_aliases)}
         aliases = {param: label}
         self.block(module, function.body, aliases, context, bindings, when, conditional)
 
@@ -409,10 +514,43 @@ class Analyzer:
                 continue
             if isinstance(statement, ast.Assign):
                 self.assignment(module, statement, aliases, context, bindings)
+            if isinstance(statement, ast.Expr):
+                self.dict_update(module, statement.value, context)
             for child in ast.iter_child_nodes(statement):
                 self.expression(module, child, aliases, context, bindings, when, cond)
             if isinstance(statement, ast.Return) and not conditional:
                 returned = True
+
+    def subscript_dispatch(self, node, context):
+        """`sensors[sensor_type]`, `sensor_type` venant d'un `getchoice` : (section, option, table)."""
+        if (isinstance(node, ast.Subscript) and isinstance(node.value, ast.Name) and isinstance(node.slice, ast.Name)):
+            table = context.get("local_dicts", {}).get(node.value.id)
+            choice = context.get("choice_vars", {}).get(node.slice.id)
+            if isinstance(table, ast.Dict) and choice:
+                return (*choice, table)
+        return None
+
+    def dict_update(self, module, node, context):
+        """`sensors.update(hx71x.HX71X_SENSOR_TYPES)` : table locale complétée par celle d'un autre
+        module ; ses valeurs (classes) deviennent `hx71x.Classe`, résolubles depuis ce module."""
+        if not (isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute) and node.func.attr == "update"
+                and isinstance(node.func.value, ast.Name) and len(node.args) == 1):
+            return
+        local = context.setdefault("local_dicts", {})
+        base = local.get(node.func.value.id)
+        source = node.args[0]
+        if not isinstance(base, ast.Dict) or not (isinstance(source, ast.Attribute) and isinstance(source.value, ast.Name)):
+            return
+        imported = self.project.resolve_import(module, source.value.id)
+        other = self.project.modules.get(imported[0]) if imported and imported[1] is None else None
+        table = other.dicts.get(source.attr) if other is not None else None
+        if not isinstance(table, ast.Dict):
+            return
+        values = [
+            ast.Attribute(value=ast.Name(id=source.value.id, ctx=ast.Load()), attr=v.id, ctx=ast.Load()) if isinstance(v, ast.Name) else v
+            for v in table.values
+        ]
+        local[node.func.value.id] = ast.Dict(keys=[*base.keys, *table.keys], values=[*base.values, *values])
 
     def section_label(self, node, aliases, bindings):
         """`x.getsection(expr)` → étiquette de la sous-section, sinon None."""
@@ -458,6 +596,14 @@ class Analyzer:
     def assignment(self, module, statement, aliases, context, bindings):
         target = statement.targets[0] if len(statement.targets) == 1 else None
         value = statement.value
+        # Tables de choix locales ou d'instance (`restart_methods = [...]`, `self.threads = {...}`),
+        # relues par `getchoice` (EP-06.15).
+        if isinstance(value, (ast.Dict, ast.List, ast.Tuple, ast.BinOp)):
+            key = (target.id if isinstance(target, ast.Name)
+                   else f"self.{target.attr}" if isinstance(target, ast.Attribute) and isinstance(target.value, ast.Name) and target.value.id == "self"
+                   else None)
+            if key:
+                context.setdefault("local_dicts", {})[key] = value
         # self.fields = tmc.FieldHelper(…) ; self.name = config.get_name() ; self.config = config
         if isinstance(target, ast.Attribute) and isinstance(target.value, ast.Name) and target.value.id == "self":
             if isinstance(value, ast.Name) and value.id in aliases:
@@ -492,6 +638,11 @@ class Analyzer:
             if len(labels) == 1:
                 aliases[name] = labels[0]
             return
+        # dt_main = config.get_prefix_sections('display_template ') : liste de sections.
+        prefixed = self.prefix_sections(value, aliases, bindings)
+        if prefixed:
+            context["lists"][name] = [prefixed]
+            return
         if isinstance(value, ast.ListComp):
             inner = {**bindings, **loop_bindings(value)}
             labels = self.section_label(value.elt, aliases, inner)
@@ -518,11 +669,15 @@ class Analyzer:
                     and func.value.id in aliases and len(value.args) >= 2):
                 options = string_values(value.args[0], bindings, aliases)
                 choices = value.args[1]
-                table = module.dicts.get(choices.id) if isinstance(choices, ast.Name) else choices
+                table = context.get("local_dicts", {}).get(choices.id) if isinstance(choices, ast.Name) else choices
                 if isinstance(choices, ast.Name) and table is None:
-                    table = context.get("local_dicts", {}).get(choices.id)
+                    table = module.dicts.get(choices.id)
                 if isinstance(table, ast.Dict) and len(options) == 1:
                     context["choices"][name] = (aliases[func.value.id], options[0], table)
+                # sensor_type = config.getchoice('sensor_type', {s: s for s in sensors}) : la valeur
+                # indexe ensuite `sensors` (aiguillage par table, EP-06.15).
+                if len(options) == 1:
+                    context.setdefault("choice_vars", {})[name] = (aliases[func.value.id], options[0])
                 return
             # instance = MaClasse(...) / module.MaClasse(...)
             kind = self.instance_type(module, value)
@@ -530,6 +685,21 @@ class Analyzer:
                 context["types"][name] = kind
         if isinstance(value, ast.Dict):
             context.setdefault("local_dicts", {})[name] = value
+        # sensor_class = sensors[sensor_type] : aiguillage par la table.
+        dispatch = self.subscript_dispatch(value, context)
+        if dispatch:
+            context["choices"][name] = dispatch
+
+    def prefix_sections(self, node, aliases, bindings=None):
+        """`config.get_prefix_sections('display_template ')` → « display_template {*} », sinon None."""
+        if (isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute) and node.func.attr == "get_prefix_sections"
+                and isinstance(node.func.value, ast.Name) and node.func.value.id in aliases and node.args):
+            prefixes = string_values(node.args[0], bindings or {}, aliases)
+            if len(prefixes) == 1 and UNKNOWN not in prefixes[0]:
+                label = prefixes[0] + "{*}"
+                self.reads.accessed.add(label)
+                return label
+        return None
 
     def loop_alias(self, statement, aliases, context):
         """`for s in config.get_prefix_sections('mcu ')` → s est la section « mcu {*} »."""
@@ -546,6 +716,12 @@ class Analyzer:
             labels = context["lists"][iterable.id]
             if len(labels) == 1:
                 aliases[statement.target.id] = labels[0]
+        # `for c in dt_main + dt_def` : sections de la configuration, puis sections par défaut.
+        elif isinstance(statement.target, ast.Name) and isinstance(iterable, ast.BinOp) and isinstance(iterable.op, ast.Add):
+            labels = {label for part in (iterable.left, iterable.right)
+                      if isinstance(part, ast.Name) for label in context["lists"].get(part.id, [])}
+            if len(labels) == 1:
+                aliases[statement.target.id] = labels.pop()
 
     def expression(self, module, node, aliases, context, bindings, when, conditional):
         if node is None:
@@ -568,6 +744,10 @@ class Analyzer:
                 if (isinstance(iterable, ast.Call) and isinstance(iterable.func, ast.Name) and iterable.func.id == "zip"
                         and iterable.args and isinstance(target, ast.Tuple)):
                     iterable, target = iterable.args[0], target.elts[0]
+                label = self.prefix_sections(iterable, aliases) if isinstance(target, ast.Name) else None
+                if label:
+                    context["multi"][target.id] = [label]
+                    continue
                 if not isinstance(target, ast.Name) or not isinstance(iterable, ast.Name):
                     continue
                 if iterable.id in context["lists"]:
@@ -606,12 +786,22 @@ class Analyzer:
                         self.reads.accessed.add(value + ("{*}" if method == "get_prefix_sections" else ""))
             if method in GET_TYPES or method in ("deprecate", "get_prefix_options", "has_section", "get_prefix_sections"):
                 return
-        # Aiguillage par choix (`algo(self, config)`).
-        if isinstance(func, ast.Name) and func.id in context["choices"]:
-            label_owner, option, table = context["choices"][func.id]
+        # Aiguillage sur place : `config.getchoice('lcd_type', LCD_chips)(config)`, `sensors[t](config)`.
+        inline = None
+        if (isinstance(func, ast.Call) and isinstance(func.func, ast.Attribute) and func.func.attr == "getchoice"
+                and isinstance(func.func.value, ast.Name) and func.func.value.id in aliases and len(func.args) >= 2):
+            options = string_values(func.args[0], bindings, aliases)
+            table = func.args[1]
+            if isinstance(table, ast.Name):
+                table = context.get("local_dicts", {}).get(table.id) or module.dicts.get(table.id)
+            if isinstance(table, ast.Dict) and len(options) == 1:
+                inline = (aliases[func.func.value.id], options[0], table)
+        inline = inline or self.subscript_dispatch(func, context)
+        if inline or (isinstance(func, ast.Name) and func.id in context["choices"]):
+            label_owner, option, table = inline or context["choices"][func.id]
             for key_node, value_node in zip(table.keys, table.values):
                 key = literal(key_node)
-                if not isinstance(key, str) or not isinstance(value_node, ast.Name):
+                if not isinstance(key, str) or not isinstance(value_node, (ast.Name, ast.Attribute)):
                     continue
                 target = self.resolve(module, value_node, context)
                 if target:
@@ -633,6 +823,13 @@ class Analyzer:
             loader = isinstance(func, ast.Attribute) and func.attr in ("load_object", "lookup_object")
             if not loader and any(self.alias_of(a, aliases, context) for a in node.args):
                 self.reads.unresolved.append(f"{module.name}:{node.lineno} {ast.unparse(func)}")
+                # Section confiée à un appel non suivi : ses options ne sont pas toutes connues
+                # (menus, EP-06.15) ; le validateur n'y signale pas d'option inconnue. Un simple
+                # rangement dans une liste ou un dictionnaire ne lit rien.
+                container = isinstance(func, ast.Attribute) and func.attr in ("append", "extend", "insert", "add", "update", "setdefault")
+                for arg in [] if container else node.args:
+                    for label in self.alias_of(arg, aliases, context) or []:
+                        self.reads.open.add(label)
             return
         self.follow(module, node, target, aliases, context, bindings, when, conditional)
 
@@ -651,10 +848,12 @@ class Analyzer:
                 values = string_values(keyword.value, bindings, aliases)
                 if UNKNOWN not in values[0]:
                     literal_args[keyword.arg] = values
+        passed = False
         for index, arg in enumerate(node.args):
             if index + offset >= len(params):
                 break
             labels = self.alias_of(arg, aliases, context) or self.section_label(arg, aliases, bindings)
+            passed = passed or bool(labels)
             for label in labels or []:
                 # Nouvelle section : l'obligation s'apprécie à partir de sa propre existence
                 # ([extruder] n'est lue que si elle existe, mais alors heater_pin est exigé).
@@ -665,8 +864,18 @@ class Analyzer:
             if keyword.arg is None or keyword.arg not in params:
                 continue
             for label in self.alias_of(keyword.value, aliases, context) or self.section_label(keyword.value, aliases, bindings) or []:
+                passed = True
                 same = label in aliases.values()
                 self.walk(target_module, function, keyword.arg, label, when, literal_args, conditional if same else False)
+        # `self._get_xy("nozzle_xy_position")` : aucune section en argument, mais la méthode lit
+        # `self.config`, rangée plus haut (module z_calibration, EP-06.15).
+        func = node.func
+        if (not passed and isinstance(func, ast.Attribute) and isinstance(func.value, ast.Name) and func.value.id == "self"):
+            inherited = {k: v for k, v in context["multi"].items() if k.startswith("self.")}
+            labels = sorted({label for values in inherited.values() for label in values})
+            for label in labels:
+                self.walk(target_module, function, "__self__", label, when, literal_args, conditional,
+                          {k: v for k, v in inherited.items() if label in v})
 
     def read(self, module, node, label, when, bindings, aliases, conditional, context=None):
         method = node.func.attr
@@ -685,15 +894,9 @@ class Analyzer:
             value = literal(default_node, module)
             info["default"] = value
         if method == "getchoice" and len(node.args) > 1:
-            table = node.args[1]
-            if isinstance(table, ast.Name):
-                table = module.dicts.get(table.id) or (context or {}).get("local_dicts", {}).get(table.id, table)
-            if isinstance(table, ast.Dict):
-                info["choices"] = sorted(k for k in (literal(key) for key in table.keys) if isinstance(k, str))
-            else:
-                choices = literal(node.args[1], module)
-                if isinstance(choices, (list, tuple, dict)):
-                    info["choices"] = sorted(str(c) for c in choices)
+            choices = choice_table(node.args[1], module, (context or {}).get("local_dicts", {}))
+            if choices is not None:
+                info["choices"] = choices
         for bound in BOUNDS:
             if bound in kwargs:
                 info[bound] = literal(kwargs[bound], module)
