@@ -33,6 +33,15 @@ export {
   type ValidationIssue,
   validateConfig,
 } from "./config/validate";
+export {
+  GCODE_LIMITS,
+  type GcodeParseOptions,
+  type GcodeStats,
+  type GcodeToolpath,
+  type GcodeWarningCode,
+  parseGcode,
+} from "./gcode/parse";
+export { GCODE_ROLES, type GcodeRole, roleIndex } from "./gcode/roles";
 export { ANALYSIS_LIMITS } from "./limits";
 export {
   JINJA_CODES,
