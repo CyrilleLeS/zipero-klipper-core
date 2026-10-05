@@ -7,10 +7,11 @@
  */
 import { describe, expect, it } from "vitest";
 import { parseConfig } from "../config/ini";
+import { parseGcode } from "../gcode/parse";
 import { parseBedMeshOutput } from "../mesh/console";
 import { computeMeshMetrics } from "../mesh/metrics";
 import { parseProbeAccuracy } from "../probe/accuracy";
-import { denseMeshConsole, largePrinterCfg, manyProbeSamples } from "./inputs.fixture";
+import { denseMeshConsole, largeGcode, largePrinterCfg, manyProbeSamples } from "./inputs.fixture";
 
 // Le paquet autonome n'embarque pas les types de Node ni du DOM (tsconfig `types: []`) :
 // on déclare la seule API utilisée, disponible dans Node et dans les navigateurs.
@@ -31,6 +32,7 @@ function medianMs(run: () => unknown, passes = 5): number {
 const mesh400 = denseMeshConsole(400);
 const cfg = largePrinterCfg(1000); // ≈ 22 000 lignes
 const probes = manyProbeSamples(10_000);
+const gcode20 = largeGcode(20);
 
 describe("budgets de performance", () => {
   it(`BED_MESH_OUTPUT 400×400 (${(mesh400.length / 1e6).toFixed(1)} Mo) : lecture < 400 ms`, () => {
@@ -51,5 +53,10 @@ describe("budgets de performance", () => {
 
   it("10 000 mesures de PROBE_ACCURACY < 150 ms", () => {
     expect(medianMs(() => parseProbeAccuracy(probes))).toBeLessThan(150);
+  });
+
+  // Mesuré : 124 ms sur un poste de développement (05/10/2026).
+  it(`G-code de ${(gcode20.length / 1e6).toFixed(0)} Mo : lecture < 750 ms`, () => {
+    expect(medianMs(() => parseGcode(gcode20), 3)).toBeLessThan(750);
   });
 });

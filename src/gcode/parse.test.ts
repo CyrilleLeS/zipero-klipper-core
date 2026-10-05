@@ -3,8 +3,6 @@ import { describe, expect, it } from "vitest";
 import { parseGcode } from "./parse";
 import { GCODE_ROLES, roleIndex } from "./roles";
 
-declare const performance: { now(): number };
-
 const gcode = (...lines: string[]) => new TextEncoder().encode(`${lines.join("\n")}\n`);
 const role = (name: (typeof GCODE_ROLES)[number]) => GCODE_ROLES.indexOf(name);
 /** Sommets [x, y, z] du segment n. */
@@ -182,23 +180,14 @@ describe("parseGcode : limites et entrées hostiles (EP-16.02)", () => {
     expect(huge.segments).toBe(1);
   });
 
-  it("fichier de 20 Mo : lu en temps borné", () => {
-    const layer: string[] = [];
-    for (let k = 0; k < 500; k++)
-      layer.push(`G1 X${(k % 200).toFixed(3)} Y${(k % 7).toFixed(3)} E0.01`);
-    const body = layer.join("\n");
-    const parts = ["M83"];
-    let size = 0;
-    for (let l = 1; size < 20_000_000; l++) {
-      parts.push(`G1 Z${(l * 0.2).toFixed(2)}`, body);
-      size += body.length;
+  it("fichier de plusieurs couches : une couche par hauteur, aucun segment perdu", () => {
+    const lines = ["M83"];
+    for (let l = 1; l <= 50; l++) {
+      lines.push(`G1 Z${(l * 0.2).toFixed(1)}`);
+      for (let k = 1; k <= 100; k++) lines.push(`G1 X${k} Y${l} E0.01`);
     }
-    const bytes = new TextEncoder().encode(parts.join("\n"));
-    const start = performance.now();
-    const result = parseGcode(bytes);
-    const ms = performance.now() - start;
-    expect(result.segments).toBeGreaterThan(500_000);
-    // ~0,3 s en local ; large marge pour la CI chargée.
-    expect(ms).toBeLessThan(15_000);
-  }, 30_000);
+    const result = parseGcode(gcode(...lines));
+    expect(result.layerStarts).toHaveLength(50);
+    expect(result.segments).toBe(5000);
+  });
 });

@@ -32,3 +32,18 @@ export function manyProbeSamples(count: number): string {
     respondInfo(`probe at 117.500,117.500 is z=${(1.9 + (i % 5) * 0.0025).toFixed(6)}`),
   ).join("\n");
 }
+
+/** G-code d'environ `megabytes` Mo : couches de 500 extrusions (EP-04, lecture). */
+export function largeGcode(megabytes: number): Uint8Array {
+  const layer: string[] = [];
+  for (let k = 0; k < 500; k++)
+    layer.push(`G1 X${(k % 200).toFixed(3)} Y${(k % 7).toFixed(3)} E0.01`);
+  const body = layer.join("\n");
+  const parts = ["M83"];
+  let size = 0;
+  for (let l = 1; size < megabytes * 1_000_000; l++) {
+    parts.push(`G1 Z${(l * 0.2).toFixed(2)}`, body);
+    size += body.length;
+  }
+  return new TextEncoder().encode(parts.join("\n"));
+}
