@@ -45,5 +45,6 @@ export function largeGcode(megabytes: number): Uint8Array {
     parts.push(`G1 Z${(l * 0.2).toFixed(2)}`, body);
     size += body.length;
   }
-  return new TextEncoder().encode(parts.join("\n"));
+  // ASCII seulement : le paquet autonome n'a pas TextEncoder (ni types Node ni DOM).
+  return Uint8Array.from(parts.join("\n"), (c) => c.charCodeAt(0));
 }

@@ -77,6 +77,13 @@ const upper = (c: number) => (c >= 97 ? c - 32 : c);
 const ascii = (s: string) => Array.from(s, (c) => c.charCodeAt(0));
 const TYPE_PREFIX = ascii(";TYPE:");
 const FEATURE_PREFIX = ascii("; FEATURE:");
+/** Texte ASCII d'une plage d'octets (noms de rôle des slicers). */
+function asciiText(bytes: Uint8Array, from: number, to: number): string {
+  let text = "";
+  for (let k = from; k < to; k++) text += String.fromCharCode(bytes[k] ?? 0);
+  return text;
+}
+
 /** Une couche commence quand on extrude plus haut que la précédente d'au moins ceci (mm). */
 const LAYER_EPSILON = 1e-3;
 
@@ -113,7 +120,6 @@ export function parseGcode(bytes: Uint8Array, options: GcodeParseOptions = {}): 
   const maxSegments = Math.max(1, options.maxSegments ?? GCODE_LIMITS.maxSegments);
   const arcSegmentMm = Math.max(0.01, options.arcSegmentMm ?? 1);
   const out = new Buffers();
-  const decoder = new TextDecoder();
   const warnings: Issue<GcodeWarningCode>[] = [];
   const warned = new Set<GcodeWarningCode>();
   const warn = (code: GcodeWarningCode, line: number) => {
@@ -215,7 +221,7 @@ export function parseGcode(bytes: Uint8Array, options: GcodeParseOptions = {}): 
         : startsWith(i, stop, FEATURE_PREFIX)
           ? FEATURE_PREFIX
           : undefined;
-      if (prefix) role = roleIndex(decoder.decode(bytes.subarray(i + prefix.length, stop)));
+      if (prefix) role = roleIndex(asciiText(bytes, i + prefix.length, stop));
       i = end + 1;
       continue;
     }

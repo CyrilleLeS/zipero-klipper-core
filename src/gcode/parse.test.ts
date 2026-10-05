@@ -3,7 +3,9 @@ import { describe, expect, it } from "vitest";
 import { parseGcode } from "./parse";
 import { GCODE_ROLES, roleIndex } from "./roles";
 
-const gcode = (...lines: string[]) => new TextEncoder().encode(`${lines.join("\n")}\n`);
+// Le paquet autonome n'a ni types Node ni DOM (pas de TextEncoder) ; le G-code est en ASCII.
+const ascii = (text: string) => Uint8Array.from(text, (c) => c.charCodeAt(0));
+const gcode = (...lines: string[]) => ascii(`${lines.join("\n")}\n`);
 const role = (name: (typeof GCODE_ROLES)[number]) => GCODE_ROLES.indexOf(name);
 /** Sommets [x, y, z] du segment n. */
 const segment = (positions: Float32Array, n: number) =>
