@@ -77,10 +77,12 @@ describe("entrées hostiles", () => {
 
   it("grande grille (300 × 300) avec mesh_pps : surface interpolée refusée", () => {
     const { value, ms } = timed(() => report(savedProfile(300, 300, 4, "bicubic")));
-    expect(ms).toBeLessThan(5000);
+    // ~0,5 s seul ; jusqu'à 10 fois plus en CI quand tout tourne en parallèle. Limite : le délai
+    // d'une analyse dans l'application (worker, 20 s, EP-16.02), seule garantie vue par l'utilisateur.
+    expect(ms).toBeLessThan(20_000);
     expect(value.meshes[0]?.interpolated).toBeUndefined();
     expect(value.meshes[0]?.metrics.range).toBeCloseTo(0.598, 3);
-  });
+  }, 30_000);
 
   it("mesh_pps négatif ou non entier : pas d'interpolation, pas d'exception", () => {
     const grid = { cols: 5, rows: 5, values: Array.from({ length: 5 }, () => [0, 0, 0, 0, 0]) };
