@@ -10,9 +10,9 @@ import { roleIndex } from "./roles";
  *
  * Commandes interprétées : G0, G1, G2/G3 (arcs dans le plan XY, par I/J ou R), G10/G11
  * (rétraction du firmware), G20/G21 (pouces, millimètres), G28 (origine), G90/G91, G92, M82/M83,
- * T0–T15. Commentaires `;` (dont `;TYPE:` et `; FEATURE:` pour le rôle), numéros de ligne `N…`
- * et sommes de contrôle `*…` ignorés. Les autres commandes (macros, températures…) n'affectent
- * pas la trajectoire.
+ * T0–T15. Commentaires `;` (dont `;TYPE:` et `; FEATURE:` pour le rôle, marqueurs de couche),
+ * numéros de ligne `N…` et sommes de contrôle `*…` ignorés. Les autres commandes (macros,
+ * températures…) n'affectent pas la trajectoire.
  */
 
 export interface GcodeParseOptions {
@@ -77,6 +77,12 @@ const upper = (c: number) => (c >= 97 ? c - 32 : c);
 const ascii = (s: string) => Array.from(s, (c) => c.charCodeAt(0));
 const TYPE_PREFIX = ascii(";TYPE:");
 const FEATURE_PREFIX = ascii("; FEATURE:");
+/**
+ * Changements de couche écrits par les slicers : `;LAYER_CHANGE` (PrusaSlicer, SuperSlicer,
+ * OrcaSlicer), `;LAYER:<n>` (Cura), `; CHANGE_LAYER` (Bambu Studio). Une fois l'un vu, eux seuls
+ * découpent les couches ; sans eux, une couche commence quand on extrude plus haut.
+ */
+const LAYER_MARKERS = [ascii(";LAYER_CHANGE"), ascii(";LAYER:"), ascii("; CHANGE_LAYER")];
 /** Texte ASCII d'une plage d'octets (noms de rôle des slicers). */
 function asciiText(bytes: Uint8Array, from: number, to: number): string {
   let text = "";
@@ -139,6 +145,8 @@ export function parseGcode(bytes: Uint8Array, options: GcodeParseOptions = {}): 
   let maxY = -Infinity;
   let maxZ = -Infinity;
   let currentLayerZ = -Infinity;
+  let markers = false;
+  let pendingLayer = false;
 
   // État de la machine.
   let x = 0;
@@ -168,8 +176,10 @@ export function parseGcode(bytes: Uint8Array, options: GcodeParseOptions = {}): 
       return false;
     }
     if (segments >= out.capacity) out.grow(maxSegments);
-    if (z1 > currentLayerZ + LAYER_EPSILON) {
+    // Marqueurs du slicer s'il en écrit (un vase en spirale monte en continu) ; sinon la hauteur.
+    if (markers ? pendingLayer : z1 > currentLayerZ + LAYER_EPSILON) {
       currentLayerZ = z1;
+      pendingLayer = false;
       layerStarts.push(segments);
       layerZ.push(z1);
     }
@@ -222,6 +232,10 @@ export function parseGcode(bytes: Uint8Array, options: GcodeParseOptions = {}): 
           ? FEATURE_PREFIX
           : undefined;
       if (prefix) role = roleIndex(asciiText(bytes, i + prefix.length, stop));
+      else if (LAYER_MARKERS.some((marker) => startsWith(i, stop, marker))) {
+        markers = true;
+        pendingLayer = true;
+      }
       i = end + 1;
       continue;
     }

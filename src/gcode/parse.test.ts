@@ -128,9 +128,66 @@ describe("parseGcode : arcs (G2/G3)", () => {
     expect(invalid.warnings.map((w) => w.code)).toEqual(["gcode.arcInvalid"]);
   });
 
+  it("arc sans centre ni rayon : signalé, la buse va quand même au point visé", () => {
+    const result = parseGcode(gcode("M83", "G1 X0 Y0 Z0.2", "G2 X10 Y0 E1", "G1 X20 E1"));
+    expect(result.warnings.map((w) => w.code)).toEqual(["gcode.arcInvalid"]);
+    expect(segment(result.positions, 0)).toEqual([10, 0, 0.2, 20, 0, 0.2]);
+  });
+
   it("rayon aberrant : nombre de segments borné", () => {
     const result = parseGcode(gcode("M83", "G1 X0 Y0 Z0.2", "G3 X0 Y0 I1000000 J0 E1"));
     expect(result.segments).toBe(2000);
+  });
+});
+
+describe("parseGcode : couches", () => {
+  it("vase en spirale : les marqueurs du slicer découpent les couches, pas la montée continue", () => {
+    const lines = ["M83"];
+    for (let layer = 1; layer <= 3; layer++) {
+      lines.push(";LAYER_CHANGE", `;Z:${(layer * 0.2).toFixed(1)}`);
+      // Un tour de 10 segments qui monte de 0,2 mm.
+      for (let k = 1; k <= 10; k++) {
+        lines.push(`G1 X${k} Y${layer} Z${((layer - 1) * 0.2 + k * 0.02).toFixed(3)} E0.1`);
+      }
+    }
+    const result = parseGcode(gcode(...lines));
+    expect(Array.from(result.layerStarts)).toEqual([0, 10, 20]);
+  });
+
+  it("marqueurs de Cura (`;LAYER:n`) et de Bambu (`; CHANGE_LAYER`)", () => {
+    const cura = parseGcode(
+      gcode("M83", ";LAYER:0", "G1 Z0.2", "G1 X10 E1", ";LAYER:1", "G1 Z0.4", "G1 X20 E1"),
+    );
+    expect(Array.from(cura.layerStarts)).toEqual([0, 1]);
+    const bambu = parseGcode(
+      gcode(
+        "M83",
+        "; CHANGE_LAYER",
+        "G1 Z0.2",
+        "G1 X10 E1",
+        "G1 X20 E1",
+        "; CHANGE_LAYER",
+        "G1 Z0.4",
+        "G1 X30 E1",
+      ),
+    );
+    expect(Array.from(bambu.layerStarts)).toEqual([0, 2]);
+  });
+
+  it("au-delà de la capacité initiale : tableaux agrandis, rien de perdu", () => {
+    const lines = ["M83", "G1 Z0.2"];
+    for (let k = 1; k <= 40_000; k++) lines.push(`G1 X${k % 200} Y${Math.floor(k / 200)} E0.01`);
+    const result = parseGcode(gcode(...lines));
+    expect(result.segments).toBe(40_000);
+    expect(result.roles).toHaveLength(40_000);
+    expect(segment(result.positions, 39_999).slice(3)).toEqual([0, 200, 0.2]);
+  });
+
+  it("marqueur sans extrusion ensuite : pas de couche vide", () => {
+    const result = parseGcode(
+      gcode("M83", ";LAYER_CHANGE", ";LAYER_CHANGE", "G1 Z0.2", "G1 X5 E1"),
+    );
+    expect(result.layerStarts).toHaveLength(1);
   });
 });
 

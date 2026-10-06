@@ -34,6 +34,14 @@ export {
   validateConfig,
 } from "./config/validate";
 export {
+  GCODE_SLICERS,
+  type GcodeMetadata,
+  type GcodeSlicer,
+  type GcodeThumbnail,
+  parseDuration,
+  readGcodeMetadata,
+} from "./gcode/metadata";
+export {
   GCODE_LIMITS,
   type GcodeParseOptions,
   type GcodeStats,
