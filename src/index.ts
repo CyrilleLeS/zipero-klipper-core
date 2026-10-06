@@ -52,6 +52,15 @@ export {
 export { GCODE_ROLES, type GcodeRole, roleIndex } from "./gcode/roles";
 export { ANALYSIS_LIMITS } from "./limits";
 export {
+  createLogReader,
+  type LogMcu,
+  type LogReader,
+  type LogSession,
+  type LogShutdown,
+  type LogSummary,
+  readKlippyLog,
+} from "./log/sessions";
+export {
   JINJA_CODES,
   JINJA_ENVIRONMENTS,
   type JinjaCode,
