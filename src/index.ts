@@ -55,11 +55,19 @@ export {
   createLogReader,
   type LogMcu,
   type LogReader,
+  type LogReaderOptions,
   type LogSession,
   type LogShutdown,
   type LogSummary,
   readKlippyLog,
 } from "./log/sessions";
+export {
+  compileSignatures,
+  type LogMatch,
+  type LogProblem,
+  type LogSignature,
+  type LogSignatureTexts,
+} from "./log/signatures";
 export {
   JINJA_CODES,
   JINJA_ENVIRONMENTS,

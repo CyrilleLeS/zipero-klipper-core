@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
+import { compileSignatures, type LogProblem, type LogSignature } from "./signatures";
+
 /**
  * Découpage d'un `klippy.log` en sessions (EP-07.02), ligne par ligne : un journal de 200 Mo est
  * lu en flux, sans être gardé en mémoire (seuls le résumé et la configuration de chaque session le
@@ -52,6 +54,8 @@ export interface LogSession {
   readonly shutdowns: readonly LogShutdown[];
   /** Cause d'un échec de chargement de la configuration (`Config error`). */
   readonly configError?: string | undefined;
+  /** Problèmes reconnus par les signatures (EP-07.04), dans l'ordre de leur première ligne. */
+  readonly problems: readonly LogProblem[];
   /** `restart` : RESTART ou FIRMWARE_RESTART ; `new-process` : Klipper relancé (mise à jour…). */
   readonly endedBy: "restart" | "new-process" | "end-of-file";
 }
@@ -69,9 +73,10 @@ const MAX_CONFIG = 2_000_000;
 const MAX_SHUTDOWNS = 200;
 
 type Mutable<T> = { -readonly [K in keyof T]: T[K] };
-interface Draft extends Omit<Mutable<LogSession>, "mcus" | "shutdowns" | "config"> {
+interface Draft extends Omit<Mutable<LogSession>, "mcus" | "shutdowns" | "config" | "problems"> {
   mcus: Mutable<LogMcu>[];
   shutdowns: LogShutdown[];
+  problems: Map<string, Mutable<LogProblem>>;
   configParts?: string[];
   configLength: number;
 }
@@ -85,7 +90,13 @@ export interface LogReader {
   finish(): LogSummary;
 }
 
-export function createLogReader(): LogReader {
+export interface LogReaderOptions {
+  /** Signatures d'erreurs (EP-07.04) ; sans elles, aucun problème n'est reconnu. */
+  readonly signatures?: readonly LogSignature[] | undefined;
+}
+
+export function createLogReader(options: LogReaderOptions = {}): LogReader {
+  const recognize = options.signatures?.length ? compileSignatures(options.signatures) : undefined;
   const sessions: LogSession[] = [];
   let lineNumber = 0;
   let rollovers = 0;
@@ -103,15 +114,17 @@ export function createLogReader(): LogReader {
     configLength: 0,
     mcus: [],
     shutdowns: [],
+    problems: new Map(),
     endedBy: "end-of-file",
   });
   let current: Draft | undefined;
 
   const close = (endedBy: LogSession["endedBy"]) => {
     if (!current) return;
-    const { configParts, configLength: _length, ...rest } = current;
+    const { configParts, configLength: _length, problems, ...rest } = current;
     sessions.push({
       ...rest,
+      problems: [...problems.values()],
       endedBy,
       ...(configParts ? { config: configParts.join("\n") } : {}),
     });
@@ -138,6 +151,33 @@ export function createLogReader(): LogReader {
       lineNumber++;
       const line = raw.endsWith("\r") ? raw.slice(0, -1) : raw;
       if (current) current.endLine = lineNumber;
+
+      // Signatures d'erreurs : toute ligne hors de la configuration recopiée, des statistiques
+      // périodiques, du vidage des files série (`Sent 12 …`, `Receive: 12 …`, serialhdl.py, qui
+      // recopie les messages de la carte) et des lignes indentées d'une pile Python (le code
+      // source cité contient les messages avec leurs `%s`) ; le message final de la pile compte.
+      if (recognize && !inConfig && !/^(?:\s|Stats |Sent \d|Receive: \d)/.test(line)) {
+        const found = recognize(line);
+        if (found) {
+          const draft = session();
+          // Arrêt de l'imprimante ou échec du chargement de la configuration.
+          const stopped = configTrace || line.startsWith("Transition to shutdown state:");
+          const known = draft.problems.get(found.signature.id);
+          if (known) {
+            known.count++;
+            known.stopped ||= stopped;
+          } else {
+            draft.problems.set(found.signature.id, {
+              id: found.signature.id,
+              severity: found.signature.severity,
+              line: lineNumber,
+              count: 1,
+              stopped,
+              params: found.params,
+            });
+          }
+        }
+      }
 
       // Pile d'erreur Python qui suit `Config error` : sa dernière ligne « Type: message » donne
       // la cause (« configparser.Error: Unable to open config file … »).
@@ -242,8 +282,8 @@ export function createLogReader(): LogReader {
 }
 
 /** Raccourci pour un texte déjà en mémoire (tests, petits journaux). */
-export function readKlippyLog(text: string): LogSummary {
-  const reader = createLogReader();
+export function readKlippyLog(text: string, options: LogReaderOptions = {}): LogSummary {
+  const reader = createLogReader(options);
   const lines = text.split("\n");
   if (lines.at(-1) === "") lines.pop();
   for (const line of lines) reader.push(line);

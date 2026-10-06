@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 import type { ConfigSection } from "../config/ini";
 import { pyFloat, pyStrip } from "../config/values";
+import type { LogSignature } from "../log/signatures";
 
 /**
  * Moteur de règles de diagnostic (EP-01.09, ADR 0025). Les règles sont des DONNÉES (JSON
@@ -18,7 +19,8 @@ import { pyFloat, pyStrip } from "../config/values";
  * `sectionExists` (nom de section, expression régulière).
  */
 
-export const RULES_FORMAT = 2;
+/** Format 3 (EP-07.04, ADR 0032) : signatures d'erreurs du journal (`logSignatures`). */
+export const RULES_FORMAT = 3;
 
 export type RuleValue =
   | {
@@ -83,6 +85,8 @@ export interface RuleBundle {
   readonly format: number;
   readonly version: string;
   readonly rules: readonly RuleDefinition[];
+  /** Signatures d'erreurs du `klippy.log` (format 3, EP-07.04). */
+  readonly logSignatures?: readonly LogSignature[];
 }
 
 export interface RuleHit {
