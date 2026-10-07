@@ -146,7 +146,9 @@ def main() -> None:
     known = chips(src)
     data = {"commit": COMMIT, "chips": known, "boards": boards(src, known)}
     OUT.parent.mkdir(parents=True, exist_ok=True)
-    OUT.write_text(json.dumps(data, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    OUT.write_text(
+        json.dumps(data, ensure_ascii=False, indent=1) + "\n", encoding="utf-8", newline="\n"
+    )
     with_chip = sum(1 for b in data["boards"] if b["chips"])
     print(
         f"{OUT.name} : {len(known)} microcontrôleurs, {len(data['boards'])} cartes "
