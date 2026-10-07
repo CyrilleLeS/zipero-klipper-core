@@ -38,7 +38,7 @@ export interface LogStatSeries {
   /** Valeur à chaque instant de `times` ; null si absente de cette ligne. */
   readonly values: readonly (number | null)[];
   /** Consignes (températures des chauffages seulement). */
-  readonly targets?: readonly (number | null)[];
+  readonly targets?: readonly (number | null)[] | undefined;
 }
 
 export interface LogStats {
