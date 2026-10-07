@@ -21,6 +21,17 @@ export {
   readConfig,
 } from "./config/ini";
 export { normalizePath } from "./config/paths";
+export {
+  checkPins,
+  PIN_CODES,
+  PIN_DATABASE,
+  type PinCheckOptions,
+  type PinChip,
+  type PinCode,
+  type PinDatabase,
+  type PinIssue,
+  parsePin,
+} from "./config/pins";
 export { KLIPPER_SCHEMA } from "./config/schema";
 export {
   COVERED_SECTIONS,

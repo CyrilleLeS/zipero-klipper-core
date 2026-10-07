@@ -1,0 +1,1536 @@
+{
+ "commit": "214fdb2877ff4640e9316a663c1b8b2e232c86fd",
+ "chips": {
+  "at90usb1286": {
+   "family": "avr",
+   "ports": "ABCDEF"
+  },
+  "at90usb646": {
+   "family": "avr",
+   "ports": "ABCDEF"
+  },
+  "atmega1280": {
+   "family": "avr",
+   "ports": "ABCDEFGHJKL"
+  },
+  "atmega1284p": {
+   "family": "avr",
+   "ports": "ABCD"
+  },
+  "atmega168": {
+   "family": "avr",
+   "ports": "BCD"
+  },
+  "atmega2560": {
+   "family": "avr",
+   "ports": "ABCDEFGHJKL"
+  },
+  "atmega328": {
+   "family": "avr",
+   "ports": "BCD"
+  },
+  "atmega328p": {
+   "family": "avr",
+   "ports": "BCDE"
+  },
+  "atmega32u4": {
+   "family": "avr",
+   "ports": "BCDEF"
+  },
+  "atmega644p": {
+   "family": "avr",
+   "ports": "ABCD"
+  },
+  "hc32f460": {
+   "family": "hc32f460",
+   "ports": "ABCDE"
+  },
+  "lpc1768": {
+   "family": "lpc176x"
+  },
+  "lpc1769": {
+   "family": "lpc176x"
+  },
+  "rp2040": {
+   "family": "rp2040",
+   "gpio": 30
+  },
+  "rp2350": {
+   "family": "rp2040",
+   "gpio": 48
+  },
+  "stm32f031x6": {
+   "family": "stm32",
+   "ports": "ABCF"
+  },
+  "stm32f042x6": {
+   "family": "stm32",
+   "ports": "ABCF"
+  },
+  "stm32f070xb": {
+   "family": "stm32",
+   "ports": "ABCDF"
+  },
+  "stm32f072xb": {
+   "family": "stm32",
+   "ports": "ABCDEF"
+  },
+  "stm32f103xe": {
+   "family": "stm32",
+   "ports": "ABCDEFG"
+  },
+  "stm32f207xx": {
+   "family": "stm32",
+   "ports": "ABCDEFGHI"
+  },
+  "stm32f401xc": {
+   "family": "stm32",
+   "ports": "ABCDEH"
+  },
+  "stm32f405xx": {
+   "family": "stm32",
+   "ports": "ABCDEFGHI"
+  },
+  "stm32f407xx": {
+   "family": "stm32",
+   "ports": "ABCDEFGHI"
+  },
+  "stm32f429xx": {
+   "family": "stm32",
+   "ports": "ABCDEFGHI"
+  },
+  "stm32f446xx": {
+   "family": "stm32",
+   "ports": "ABCDEFGH"
+  },
+  "stm32f765xx": {
+   "family": "stm32",
+   "ports": "ABCDEFGHI"
+  },
+  "stm32g070xx": {
+   "family": "stm32",
+   "ports": "ABCDF"
+  },
+  "stm32g071xx": {
+   "family": "stm32",
+   "ports": "ABCDF"
+  },
+  "stm32g0b0xx": {
+   "family": "stm32",
+   "ports": "ABCDEF"
+  },
+  "stm32g0b1xx": {
+   "family": "stm32",
+   "ports": "ABCDEF"
+  },
+  "stm32g431xx": {
+   "family": "stm32",
+   "ports": "ABCDEFG"
+  },
+  "stm32g474xx": {
+   "family": "stm32",
+   "ports": "ABCDEFG"
+  },
+  "stm32h723xx": {
+   "family": "stm32",
+   "ports": "ABCDEFGH"
+  },
+  "stm32h743xx": {
+   "family": "stm32",
+   "ports": "ABCDEFGHI"
+  },
+  "stm32h750xx": {
+   "family": "stm32",
+   "ports": "ABCDEFGHI"
+  },
+  "stm32l412xx": {
+   "family": "stm32",
+   "ports": "ABCDH"
+  }
+ },
+ "boards": [
+  {
+   "file": "generic-alligator-r2.cfg",
+   "line": "# This file contains common pin mappings for Alligator (Rev.2) board.",
+   "title": "Alligator (Rev.2)",
+   "chips": []
+  },
+  {
+   "file": "generic-alligator-r3.cfg",
+   "line": "# This file contains common pin mappings for Alligator (Rev.3) board.",
+   "title": "Alligator (Rev.3)",
+   "chips": []
+  },
+  {
+   "file": "generic-archim2.cfg",
+   "line": "# This file contains common pin mappings for Ultimachine Archim2",
+   "title": "Ultimachine Archim2",
+   "chips": []
+  },
+  {
+   "file": "generic-azteeg-x5-mini-v3.cfg",
+   "line": "# This file contains common pin mappings for the Azteeg X5 Mini v3. To use",
+   "title": "Azteeg X5 Mini v3",
+   "chips": [
+    "lpc1769"
+   ]
+  },
+  {
+   "file": "generic-bigtreetech-e3-rrf-v1.1.cfg",
+   "line": "# This file contains common pin mappings for the BigTreeTech E3 RRF 1.1.",
+   "title": "BigTreeTech E3 RRF 1.1",
+   "chips": [
+    "stm32f407xx"
+   ]
+  },
+  {
+   "file": "generic-bigtreetech-gtr.cfg",
+   "line": "# This file contains common pin mappings for the BigTreeTech GTR.",
+   "title": "BigTreeTech GTR",
+   "chips": [
+    "stm32f407xx"
+   ]
+  },
+  {
+   "file": "generic-bigtreetech-manta-e3ez.cfg",
+   "line": "# This file contains common pin mappings for the BIGTREETECH Manta E3EZ",
+   "title": "BIGTREETECH Manta E3EZ",
+   "chips": [
+    "stm32g0b1xx"
+   ]
+  },
+  {
+   "file": "generic-bigtreetech-manta-m4p.cfg",
+   "line": "# This file contains common pin mappings for the BIGTREETECH Manta M4P",
+   "title": "BIGTREETECH Manta M4P",
+   "chips": [
+    "stm32g0b1xx"
+   ]
+  },
+  {
+   "file": "generic-bigtreetech-manta-m5p.cfg",
+   "line": "# This file contains common pin mappings for the BIGTREETECH Manta M5P",
+   "title": "BIGTREETECH Manta M5P",
+   "chips": [
+    "stm32g0b1xx"
+   ]
+  },
+  {
+   "file": "generic-bigtreetech-manta-m8p-v1.0.cfg",
+   "line": "# This file contains common pin mappings for the BIGTREETECH Manta M8P",
+   "title": "BIGTREETECH Manta M8P",
+   "chips": [
+    "stm32g0b1xx"
+   ]
+  },
+  {
+   "file": "generic-bigtreetech-manta-m8p-v1.1.cfg",
+   "line": "# This file contains common pin mappings for the BIGTREETECH Manta M8P",
+   "title": "BIGTREETECH Manta M8P",
+   "chips": [
+    "stm32g0b1xx"
+   ]
+  },
+  {
+   "file": "generic-bigtreetech-octopus-max-ez.cfg",
+   "line": "# This file contains common pin mappings for the BIGTREETECH Octopus Max EZ.",
+   "title": "BIGTREETECH Octopus Max EZ",
+   "chips": [
+    "stm32h723xx"
+   ]
+  },
+  {
+   "file": "generic-bigtreetech-octopus-pro-v1.0.cfg",
+   "line": "# This file contains common pin mappings for the BigTreeTech Octopus",
+   "title": "BigTreeTech Octopus Pro v1.0",
+   "chips": [
+    "stm32f446xx",
+    "stm32f429xx",
+    "stm32h723xx"
+   ]
+  },
+  {
+   "file": "generic-bigtreetech-octopus-pro-v1.1.cfg",
+   "line": "# This file contains common pin mappings for the BigTreeTech Octopus",
+   "title": "BigTreeTech Octopus Pro v1.1",
+   "chips": [
+    "stm32h723xx"
+   ]
+  },
+  {
+   "file": "generic-bigtreetech-octopus-v1.1.cfg",
+   "line": "# This file contains common pin mappings for the BigTreeTech Octopus",
+   "title": "BigTreeTech Octopus (non-Pro)",
+   "chips": [
+    "stm32f446xx",
+    "stm32f429xx"
+   ]
+  },
+  {
+   "file": "generic-bigtreetech-skr-2.cfg",
+   "line": "# This file contains common pin mappings for the BigTreeTech SKR 2.",
+   "title": "BigTreeTech SKR 2",
+   "chips": [
+    "stm32f407xx",
+    "stm32f429xx"
+   ]
+  },
+  {
+   "file": "generic-bigtreetech-skr-3.cfg",
+   "line": "# This file contains common pin mappings for the BigTreeTech SKR 3.",
+   "title": "BigTreeTech SKR 3",
+   "chips": [
+    "stm32h743xx",
+    "stm32h723xx"
+   ]
+  },
+  {
+   "file": "generic-bigtreetech-skr-cr6-v1.0.cfg",
+   "line": "# This file contains common pin mappings for the BIGTREETECH SKR CR6",
+   "title": "BIGTREETECH SKR CR6 V1.0",
+   "chips": [
+    "stm32f103xe"
+   ]
+  },
+  {
+   "file": "generic-bigtreetech-skr-e3-dip.cfg",
+   "line": "# This file contains common pin mappings for the BIGTREETECH SKR E3",
+   "title": "BIGTREETECH SKR E3 DIP",
+   "chips": [
+    "stm32f103xe"
+   ]
+  },
+  {
+   "file": "generic-bigtreetech-skr-e3-turbo.cfg",
+   "line": "# This file contains common pin mappings for the BIGTREETECH SKR E3",
+   "title": "BIGTREETECH SKR E3 Turbo",
+   "chips": [
+    "lpc1769"
+   ]
+  },
+  {
+   "file": "generic-bigtreetech-skr-mini-e3-v1.0.cfg",
+   "line": "# This file contains common pin mappings for the BIGTREETECH SKR mini",
+   "title": "BIGTREETECH SKR mini E3",
+   "chips": [
+    "stm32f103xe"
+   ]
+  },
+  {
+   "file": "generic-bigtreetech-skr-mini-e3-v1.2.cfg",
+   "line": "# This file contains common pin mappings for the BIGTREETECH SKR mini",
+   "title": "BIGTREETECH SKR mini E3 v1.2",
+   "chips": [
+    "stm32f103xe"
+   ]
+  },
+  {
+   "file": "generic-bigtreetech-skr-mini-e3-v2.0.cfg",
+   "line": "# This file contains common pin mappings for the BIGTREETECH SKR mini",
+   "title": "BIGTREETECH SKR mini E3 v2.0",
+   "chips": [
+    "stm32f103xe"
+   ]
+  },
+  {
+   "file": "generic-bigtreetech-skr-mini-e3-v3.0.cfg",
+   "line": "# This file contains common pin mappings for the BIGTREETECH SKR mini",
+   "title": "BIGTREETECH SKR mini E3 v3.0",
+   "chips": [
+    "stm32g0b1xx"
+   ]
+  },
+  {
+   "file": "generic-bigtreetech-skr-mini-mz.cfg",
+   "line": "# This file contains common pin mappings for the BIGTREETECH SKR mini",
+   "title": "BIGTREETECH SKR mini MZ v1.0",
+   "chips": [
+    "stm32f103xe"
+   ]
+  },
+  {
+   "file": "generic-bigtreetech-skr-mini.cfg",
+   "line": "# This file contains common pin mappings for the BIGTREETECH SKR",
+   "title": "BIGTREETECH SKR MINI",
+   "chips": [
+    "stm32f103xe"
+   ]
+  },
+  {
+   "file": "generic-bigtreetech-skr-pico-v1.0.cfg",
+   "line": "# This file contains common pin mappings for the BIGTREETECH SKR Pico V1.0",
+   "title": "BIGTREETECH SKR Pico V1.0",
+   "chips": [
+    "rp2040"
+   ]
+  },
+  {
+   "file": "generic-bigtreetech-skr-pro.cfg",
+   "line": "# This file contains common pin mappings for the BigTreeTech SKR PRO.",
+   "title": "BigTreeTech SKR PRO",
+   "chips": [
+    "stm32f407xx"
+   ]
+  },
+  {
+   "file": "generic-bigtreetech-skr-v1.1.cfg",
+   "line": "# This file contains common pin mappings for the BIGTREETECH SKR V1.1",
+   "title": "BIGTREETECH SKR V1.1",
+   "chips": [
+    "lpc1768"
+   ]
+  },
+  {
+   "file": "generic-bigtreetech-skr-v1.3.cfg",
+   "line": "# This file contains common pin mappings for the BIGTREETECH SKR V1.3",
+   "title": "BIGTREETECH SKR V1.3",
+   "chips": [
+    "lpc1768"
+   ]
+  },
+  {
+   "file": "generic-bigtreetech-skr-v1.4.cfg",
+   "line": "# This file contains common pin mappings for the BIGTREETECH SKR V1.4",
+   "title": "BIGTREETECH SKR V1.4",
+   "chips": [
+    "lpc1768",
+    "lpc1769"
+   ]
+  },
+  {
+   "file": "generic-creality-v4.2.10.cfg",
+   "line": "# This file contains pin mappings for the Creality \"v4.2.10\" board. To",
+   "title": "Creality \"v4.2.10\"",
+   "chips": [
+    "stm32f103xe"
+   ]
+  },
+  {
+   "file": "generic-creality-v4.2.7.cfg",
+   "line": "# This file contains pin mappings for the Creality \"v4.2.7\" board. To",
+   "title": "Creality \"v4.2.7\"",
+   "chips": [
+    "stm32f103xe"
+   ]
+  },
+  {
+   "file": "generic-duet2-duex.cfg",
+   "line": "# This file contains common pin mappings for Duet2 Eth/Wifi boards",
+   "title": "Duet2 Eth/Wifi",
+   "chips": []
+  },
+  {
+   "file": "generic-duet2-maestro.cfg",
+   "line": "# This file contains common pin mappings for the Duet2 Maestro. To use",
+   "title": "Duet2 Maestro",
+   "chips": []
+  },
+  {
+   "file": "generic-duet2.cfg",
+   "line": "# This file contains common pin mappings for Duet2 Eth/Wifi boards. To",
+   "title": "Duet2 Eth/Wifi",
+   "chips": []
+  },
+  {
+   "file": "generic-duet3-6hc.cfg",
+   "line": "# This file contains common pin mappings for the Duet3 6HC. To use",
+   "title": "Duet3 6HC",
+   "chips": []
+  },
+  {
+   "file": "generic-duet3-6xd.cfg",
+   "line": "# This file contains common pin mappings for the Duet3 6XD. To use",
+   "title": "Duet3 6XD",
+   "chips": []
+  },
+  {
+   "file": "generic-duet3-mini.cfg",
+   "line": "# This file contains common pin mappings for the Duet3 Mini 5+. To use",
+   "title": "Duet3 Mini 5+",
+   "chips": []
+  },
+  {
+   "file": "generic-einsy-rambo.cfg",
+   "line": "# This file contains common pin mappings for Einsy Rambo boards. To use",
+   "title": "Einsy Rambo",
+   "chips": [
+    "atmega2560"
+   ]
+  },
+  {
+   "file": "generic-flyboard.cfg",
+   "line": "# This file contains common pin mappings for the 9 stepper motor",
+   "title": "9 stepper motor \"flymaker flyboard FLYF407ZG\"",
+   "chips": [
+    "stm32f407xx"
+   ]
+  },
+  {
+   "file": "generic-fysetc-cheetah-v1.1.cfg",
+   "line": "# This file contains common pin mappings for the Fysetc Cheetah v1.1",
+   "title": "Fysetc Cheetah v1.1",
+   "chips": [
+    "stm32f103xe"
+   ]
+  },
+  {
+   "file": "generic-fysetc-cheetah-v1.2.cfg",
+   "line": "# This file contains common pin mappings for the Fysetc Cheetah v1.2b",
+   "title": "Fysetc Cheetah v1.2b",
+   "chips": [
+    "stm32f103xe"
+   ]
+  },
+  {
+   "file": "generic-fysetc-cheetah-v2.0.cfg",
+   "line": "# This file contains common pin mappings for the Fysetc Cheetah V2.0",
+   "title": "Fysetc Cheetah V2.0",
+   "chips": [
+    "stm32f401xc"
+   ]
+  },
+  {
+   "file": "generic-fysetc-f6.cfg",
+   "line": "# This file contains common pin mappings for a Fysetc F6 board.",
+   "title": "a Fysetc F6",
+   "chips": [
+    "atmega2560"
+   ]
+  },
+  {
+   "file": "generic-fysetc-s6-v2.cfg",
+   "line": "# This file contains common pin mappings for the Fysetc S6 v2 board.  To use",
+   "title": "Fysetc S6 v2",
+   "chips": [
+    "stm32f446xx"
+   ]
+  },
+  {
+   "file": "generic-fysetc-s6.cfg",
+   "line": "# This file contains common pin mappings for the Fysetc S6 board.  To use this",
+   "title": "Fysetc S6",
+   "chips": [
+    "stm32f446xx"
+   ]
+  },
+  {
+   "file": "generic-fysetc-spider.cfg",
+   "line": "# This file contains common pin mappings for the Fysetc Spider board.",
+   "title": "Fysetc Spider",
+   "chips": [
+    "stm32f446xx"
+   ]
+  },
+  {
+   "file": "generic-gt2560.cfg",
+   "line": "# This file contains common pin mappings for the Geeetech GT2560",
+   "title": "Geeetech GT2560",
+   "chips": [
+    "atmega2560"
+   ]
+  },
+  {
+   "file": "generic-I3DBEEZ9.cfg",
+   "line": "# This file contains common pin mappings for the I3DBEEZ9 V1.0.",
+   "title": "I3DBEEZ9 V1.0",
+   "chips": [
+    "stm32f407xx"
+   ]
+  },
+  {
+   "file": "generic-ldo-leviathan-v1.2.cfg",
+   "line": "# This file contains common pin mappings for the LDO Leviathan v1.2.",
+   "title": "LDO Leviathan v1.2",
+   "chips": [
+    "stm32f446xx"
+   ]
+  },
+  {
+   "file": "generic-mellow-fly-cdy-v3.cfg",
+   "line": "# This file contains common pin mappings for the Mellow Fly-CDY-v3.",
+   "title": "Mellow Fly-CDY-v3",
+   "chips": [
+    "stm32f407xx"
+   ]
+  },
+  {
+   "file": "generic-mellow-fly-e3-v2.cfg",
+   "line": "# This file contains common pin mappings for the Mellow Fly-E3-v2.",
+   "title": "Mellow Fly-E3-v2",
+   "chips": [
+    "stm32f407xx"
+   ]
+  },
+  {
+   "file": "generic-mellow-fly-gemini-v1.cfg",
+   "line": "# This file contains common pin mappings for the Mellow Fly-Gemini-v1.",
+   "title": "Mellow Fly-Gemini-v1",
+   "chips": [
+    "stm32f405xx"
+   ]
+  },
+  {
+   "file": "generic-mellow-fly-gemini-v2.cfg",
+   "line": "# This file contains common pin mappings for the Mellow Fly-Gemini-v2.",
+   "title": "Mellow Fly-Gemini-v2",
+   "chips": [
+    "stm32f405xx"
+   ]
+  },
+  {
+   "file": "generic-mellow-super-infinty-hv.cfg",
+   "line": "# This file contains common pin mappings for the 8 stepper motor \"Mellow Super",
+   "title": "8 stepper motor \"Mellow Super 8 HV Board\"",
+   "chips": [
+    "stm32f407xx"
+   ]
+  },
+  {
+   "file": "generic-melzi.cfg",
+   "line": "# This file contains common pin mappings for Melzi v2.0 boards. To use",
+   "title": "Melzi v2.0",
+   "chips": [
+    "atmega1284p"
+   ]
+  },
+  {
+   "file": "generic-mightyboard.cfg",
+   "line": "# This file contains common pin mappings for the Makerbot",
+   "title": "Makerbot Mightyboard",
+   "chips": [
+    "atmega1280"
+   ]
+  },
+  {
+   "file": "generic-mini-rambo.cfg",
+   "line": "# This file contains common pin mappings for Mini-RAMBo boards. To use",
+   "title": "Mini-RAMBo",
+   "chips": [
+    "atmega2560"
+   ]
+  },
+  {
+   "file": "generic-minitronics1.cfg",
+   "line": "# This file contains common pin mappings for Minitronics v1.0",
+   "title": "Minitronics v1.0",
+   "chips": [
+    "atmega1280"
+   ]
+  },
+  {
+   "file": "generic-mks-monster8.cfg",
+   "line": "# This file contains common pin mappings for MKS Monster8",
+   "title": "MKS Monster8",
+   "chips": [
+    "stm32f407xx"
+   ]
+  },
+  {
+   "file": "generic-mks-robin-e3.cfg",
+   "line": "# This file contains common pin mappings for MKS Robin E3 boards. To",
+   "title": "MKS Robin E3",
+   "chips": [
+    "stm32f103xe"
+   ]
+  },
+  {
+   "file": "generic-mks-robin-nano-v1.cfg",
+   "line": "# This file contains common pin mappings for MKS Robin Nano (v1.2.004)",
+   "title": "MKS Robin Nano (v1.2.004)",
+   "chips": [
+    "stm32f103xe"
+   ]
+  },
+  {
+   "file": "generic-mks-robin-nano-v2.cfg",
+   "line": "# This file contains common pin mappings for MKS Robin Nano V2",
+   "title": "MKS Robin Nano V2",
+   "chips": [
+    "stm32f103xe"
+   ]
+  },
+  {
+   "file": "generic-mks-robin-nano-v3.cfg",
+   "line": "# This file contains common pin mappings for MKS Robin Nano V3",
+   "title": "MKS Robin Nano V3",
+   "chips": [
+    "stm32f407xx"
+   ]
+  },
+  {
+   "file": "generic-mks-rumba32-v1.0.cfg",
+   "line": "# This file contains common pin mappings for MKS RUMBA32 boards.  To use",
+   "title": "MKS RUMBA32",
+   "chips": [
+    "stm32f446xx"
+   ]
+  },
+  {
+   "file": "generic-mks-sgenl.cfg",
+   "line": "# This file contains common pin mappings for the MKS SGEN_L board. To",
+   "title": "MKS SGEN_L",
+   "chips": [
+    "lpc1768"
+   ]
+  },
+  {
+   "file": "generic-printrboard-g2.cfg",
+   "line": "# This file contains common pin mappings for Printrboard G2 boards.",
+   "title": "Printrboard G2",
+   "chips": []
+  },
+  {
+   "file": "generic-printrboard.cfg",
+   "line": "# This file contains common pin mappings for Printrboard boards (rev B",
+   "title": "Printrboard",
+   "chips": [
+    "at90usb1286"
+   ]
+  },
+  {
+   "file": "generic-prusa-buddy.cfg",
+   "line": "# This file contains common configurations and pin mappings for the Prusa Buddy",
+   "title": "Prusa Buddy",
+   "chips": [
+    "stm32f407xx"
+   ]
+  },
+  {
+   "file": "generic-radds.cfg",
+   "line": "# This file contains common pin mappings for RADDS (v1.5) boards.  To",
+   "title": "RADDS (v1.5)",
+   "chips": []
+  },
+  {
+   "file": "generic-rambo.cfg",
+   "line": "# This file contains common pin mappings for RAMBo boards. To use this",
+   "title": "RAMBo",
+   "chips": [
+    "atmega2560"
+   ]
+  },
+  {
+   "file": "generic-ramps.cfg",
+   "line": "# This file contains common pin mappings for RAMPS (v1.3 and later)",
+   "title": "RAMPS (v1.3 and later)",
+   "chips": [
+    "atmega2560",
+    "atmega1280"
+   ]
+  },
+  {
+   "file": "generic-re-arm.cfg",
+   "line": "# This file contains common pin mappings for Re-Arm. To use this",
+   "title": "Re-Arm",
+   "chips": [
+    "lpc1768"
+   ]
+  },
+  {
+   "file": "generic-remram.cfg",
+   "line": "# This file contains common pin mappings for remram boards. To use this",
+   "title": "remram",
+   "chips": [
+    "stm32f765xx"
+   ]
+  },
+  {
+   "file": "generic-rumba.cfg",
+   "line": "# This file contains common pin mappings for RUMBA boards.  To use",
+   "title": "RUMBA",
+   "chips": [
+    "atmega2560"
+   ]
+  },
+  {
+   "file": "generic-ruramps-v1.3.cfg",
+   "line": "# This file contains common pin mappings for RuRamps (v1.3) boards.  To",
+   "title": "RuRamps (v1.3)",
+   "chips": []
+  },
+  {
+   "file": "generic-simulavr.cfg",
+   "line": "# This file contains example pin mappings for testing with the",
+   "title": "testing with the \"simulavr\" program",
+   "chips": [
+    "atmega644p"
+   ]
+  },
+  {
+   "file": "generic-smoothieboard.cfg",
+   "line": "# This file contains common pin mappings for Smoothieboard. To use",
+   "title": "Smoothieboard",
+   "chips": []
+  },
+  {
+   "file": "generic-th3d-ezboard-lite-v1.2.cfg",
+   "line": "# This file contains common pin mappings for the TH3D EZBoard Lite v1.2.",
+   "title": "TH3D EZBoard Lite v1.2",
+   "chips": [
+    "lpc1769"
+   ]
+  },
+  {
+   "file": "generic-th3d-ezboard-v2.0.cfg",
+   "line": "# This file contains common pin mappings for the TH3D EZBoard v2.",
+   "title": "TH3D EZBoard v2",
+   "chips": [
+    "stm32f405xx"
+   ]
+  },
+  {
+   "file": "generic-ultimaker-ultimainboard-v2.cfg",
+   "line": "# This file contains common pin mappings for Ultimaker UltiMainboard v2",
+   "title": "Ultimaker UltiMainboard v2",
+   "chips": [
+    "atmega2560"
+   ]
+  },
+  {
+   "file": "printer-adimlab-2018.cfg",
+   "line": "# This file contains pin mappings for the ADIMLab 3d printer 2018.",
+   "title": "ADIMLab 3d printer 2018",
+   "chips": [
+    "atmega2560"
+   ]
+  },
+  {
+   "file": "printer-alfawise-u30-2018.cfg",
+   "line": "# This file contains common pin mappings for the Alfawise U30 printer.",
+   "title": "Alfawise U30 printer",
+   "chips": [
+    "stm32f103xe"
+   ]
+  },
+  {
+   "file": "printer-anet-a4-2018.cfg",
+   "line": "# This file contains common pin mappings for Anet A4 printer from",
+   "title": "Anet A4 printer from 2018",
+   "chips": [
+    "atmega1284p"
+   ]
+  },
+  {
+   "file": "printer-anet-a8-2017.cfg",
+   "line": "# This file contains common pin mappings for Anet A8 printer from 2016",
+   "title": "Anet A8 printer from 2016 and 2017",
+   "chips": [
+    "atmega1284p"
+   ]
+  },
+  {
+   "file": "printer-anet-a8-2019.cfg",
+   "line": "# This file contains common pin mappings for Anet A8 Plus printer from 2019.",
+   "title": "Anet A8 Plus printer from 2019",
+   "chips": [
+    "atmega1284p"
+   ]
+  },
+  {
+   "file": "printer-anet-e10-2018.cfg",
+   "line": "# This file contains common pin mappings for Anet E10 printer from",
+   "title": "Anet E10 printer from 2018",
+   "chips": [
+    "atmega1284p"
+   ]
+  },
+  {
+   "file": "printer-anet-e16-2019.cfg",
+   "line": "# This file contains common pin mappings for Anet E16 printer from",
+   "title": "Anet E16 printer from 2019",
+   "chips": [
+    "atmega1284p"
+   ]
+  },
+  {
+   "file": "printer-anycubic-i3-mega-2017.cfg",
+   "line": "# This file contains pin mappings for the Anycubic i3 Mega with",
+   "title": "Anycubic i3 Mega with Ultrabase from 2017",
+   "chips": [
+    "atmega2560"
+   ]
+  },
+  {
+   "file": "printer-artillery-genius-pro-2022.cfg",
+   "line": "# This file contains pin mappings for the Artillery Genius Pro (2022)",
+   "title": "Artillery Genius Pro (2022) with a Artillery_Ruby-v1.2",
+   "chips": [
+    "stm32f401xc"
+   ]
+  },
+  {
+   "file": "printer-artillery-sidewinder-x2-2022.cfg",
+   "line": "# This file contains pin mappings for the Artillery Sidewinder X2 (2022)",
+   "title": "Artillery Sidewinder X2 (2022) with a Artillery_Ruby-v1.2",
+   "chips": [
+    "stm32f401xc"
+   ]
+  },
+  {
+   "file": "printer-biqu-b1-se-plus-2022.cfg",
+   "line": "# This file contains common pin mappings for the Biqu B1 SE Plus.",
+   "title": "Biqu B1 SE Plus",
+   "chips": [
+    "stm32f407xx",
+    "stm32f429xx"
+   ]
+  },
+  {
+   "file": "printer-biqu-bx-2021.cfg",
+   "line": "# This file contains common pin mappings for the BigTreeTech SKR SE BX.",
+   "title": "BigTreeTech SKR SE BX",
+   "chips": [
+    "stm32h743xx"
+   ]
+  },
+  {
+   "file": "printer-bq-hephestos-2014.cfg",
+   "line": "# This file contains pin mappings for the BQ Prusa i3 Hephestos from 2014",
+   "title": "BQ Prusa i3 Hephestos from 2014 (https://www.reprap.org/wiki/Prusa_i3_Hephestos) It was sold in kit form, and uses a RAMPS",
+   "chips": [
+    "atmega2560"
+   ]
+  },
+  {
+   "file": "printer-creality-cr10-2017.cfg",
+   "line": "# This file contains common pin mappings for the 2017 Creality",
+   "title": "2017 Creality CR-10",
+   "chips": [
+    "atmega1284p"
+   ]
+  },
+  {
+   "file": "printer-creality-cr10-smart-pro-2022.cfg",
+   "line": "# This file contains pin mappings for the Creality CR-10 Smart Pro",
+   "title": "Creality CR-10 Smart Pro with a CR-FDM-v2.5.S1",
+   "chips": [
+    "stm32f103xe"
+   ]
+  },
+  {
+   "file": "printer-creality-cr10-v3-2020.cfg",
+   "line": "# This file contains common pin mappings for the 2020 Creality CR-10",
+   "title": "2020 Creality CR-10 V3",
+   "chips": [
+    "atmega2560"
+   ]
+  },
+  {
+   "file": "printer-creality-cr10mini-2017.cfg",
+   "line": "# This file contains common pin mappings for the 2017 Creality CR-10",
+   "title": "2017 Creality CR-10 mini",
+   "chips": [
+    "atmega1284p"
+   ]
+  },
+  {
+   "file": "printer-creality-cr10s-2017.cfg",
+   "line": "# This file contains pin mappings for the 2017 Creality CR-10S. To use",
+   "title": "2017 Creality CR-10S",
+   "chips": [
+    "atmega2560"
+   ]
+  },
+  {
+   "file": "printer-creality-cr10s-pro-v2-2020.cfg",
+   "line": "# This file contains pin mappings for the Creality CR-10S Pro V2. To use",
+   "title": "Creality CR-10S Pro V2",
+   "chips": [
+    "atmega2560"
+   ]
+  },
+  {
+   "file": "printer-creality-cr20-2018.cfg",
+   "line": "# This file contains pin mappings for the Creality CR-20. To use",
+   "title": "Creality CR-20",
+   "chips": [
+    "atmega2560"
+   ]
+  },
+  {
+   "file": "printer-creality-cr20-pro-2019.cfg",
+   "line": "# This file contains pin mappings for the Creality CR-20 Pro. To use",
+   "title": "Creality CR-20 Pro",
+   "chips": [
+    "atmega2560"
+   ]
+  },
+  {
+   "file": "printer-creality-cr30-2021.cfg",
+   "line": "# This file contains pin mappings for the Creality CR-30 PrintMill. To",
+   "title": "Creality CR-30 PrintMill",
+   "chips": [
+    "stm32f103xe"
+   ]
+  },
+  {
+   "file": "printer-creality-cr5pro-ht-2022.cfg",
+   "line": "# This file contains common pin mappings for the Creality CR5 Pro HT.",
+   "title": "Creality CR5 Pro HT",
+   "chips": [
+    "atmega2560"
+   ]
+  },
+  {
+   "file": "printer-creality-cr6se-2020.cfg",
+   "line": "# This file contains pin mappings for the stock 2020 Creality CR6-SE",
+   "title": "stock 2020 Creality CR6-SE with the early 4.5.2",
+   "chips": [
+    "stm32f103xe"
+   ]
+  },
+  {
+   "file": "printer-creality-cr6se-2021.cfg",
+   "line": "# This file contains pin mappings for the Creality CR6-SE",
+   "title": "Creality CR6-SE with Rev",
+   "chips": [
+    "stm32f103xe"
+   ]
+  },
+  {
+   "file": "printer-creality-ender2-2017.cfg",
+   "line": "# This file contains common pin mappings for the 2017 Creality",
+   "title": "2017 Creality Ender 2",
+   "chips": [
+    "atmega1284p"
+   ]
+  },
+  {
+   "file": "printer-creality-ender2pro-2021.cfg",
+   "line": "# This file contains pin mappings for the stock 2021 Creality",
+   "title": "stock 2021 Creality Ender2 Pro",
+   "chips": [
+    "stm32f103xe"
+   ]
+  },
+  {
+   "file": "printer-creality-ender2pro-hc32-2022.cfg",
+   "line": "# This file contains pin mappings for the Creality Ender2 Pro",
+   "title": "Creality Ender2 Pro with the HC32F460",
+   "chips": [
+    "hc32f460"
+   ]
+  },
+  {
+   "file": "printer-creality-ender3-2018.cfg",
+   "line": "# This file contains common pin mappings for the 2018 Creality",
+   "title": "2018 Creality Ender 3",
+   "chips": [
+    "atmega1284p"
+   ]
+  },
+  {
+   "file": "printer-creality-ender3-s1-2021.cfg",
+   "line": "# This file contains pin mappings for the stock 2021 Creality Ender 3",
+   "title": "stock 2021 Creality Ender 3 S1 & S1 Pro",
+   "chips": [
+    "stm32f103xe",
+    "stm32f401xc"
+   ]
+  },
+  {
+   "file": "printer-creality-ender3-s1plus-2022.cfg",
+   "line": "# This file contains pin mappings for the stock 2022 Creality Ender 3",
+   "title": "stock 2022 Creality Ender 3 S1 Plus",
+   "chips": [
+    "stm32f103xe",
+    "stm32f401xc"
+   ]
+  },
+  {
+   "file": "printer-creality-ender3-v2-2020.cfg",
+   "line": "# This file contains pin mappings for the stock 2020 Creality Ender 3",
+   "title": "stock 2020 Creality Ender 3 V2",
+   "chips": [
+    "stm32f103xe"
+   ]
+  },
+  {
+   "file": "printer-creality-ender3-v2-neo-2022.cfg",
+   "line": "# This file contains pin mappings for the stock 2022 Creality Ender 3",
+   "title": "stock 2022 Creality Ender 3 V2 Neo",
+   "chips": [
+    "stm32f103xe"
+   ]
+  },
+  {
+   "file": "printer-creality-ender3max-2021.cfg",
+   "line": "# This file contains pin mappings for the stock 2020 Creality Ender 3",
+   "title": "stock 2020 Creality Ender 3 MAX",
+   "chips": [
+    "stm32f103xe"
+   ]
+  },
+  {
+   "file": "printer-creality-ender3pro-2020.cfg",
+   "line": "# This file contains pin mappings for the stock 2020 Creality Ender 3",
+   "title": "stock 2020 Creality Ender 3 Pro with the 32-bit Creality 4.2.2",
+   "chips": [
+    "stm32f103xe"
+   ]
+  },
+  {
+   "file": "printer-creality-ender5-2019.cfg",
+   "line": "# This file contains common pin mappings for the 2019 Creality",
+   "title": "2019 Creality Ender 5",
+   "chips": [
+    "atmega1284p"
+   ]
+  },
+  {
+   "file": "printer-creality-ender5plus-2019.cfg",
+   "line": "# This file contains pin mappings for the Creality Ender 5 Plus.",
+   "title": "Creality Ender 5 Plus",
+   "chips": [
+    "atmega2560"
+   ]
+  },
+  {
+   "file": "printer-creality-ender5pro-2020.cfg",
+   "line": "# This file contains pin mappings for the stock 2020 Creality Ender 5",
+   "title": "stock 2020 Creality Ender 5 Pro with the 32-bit Creality 4.2.2",
+   "chips": [
+    "stm32f103xe"
+   ]
+  },
+  {
+   "file": "printer-creality-ender6-2020.cfg",
+   "line": "# This file contains pin mappings for the stock 2020 Creality Ender 6.",
+   "title": "stock 2020 Creality Ender 6",
+   "chips": [
+    "stm32f103xe"
+   ]
+  },
+  {
+   "file": "printer-creality-sermoonD1-2021.cfg",
+   "line": "# This file contains pin mappings for the Creality Sermoon D1 with",
+   "title": "Creality Sermoon D1 with Rev",
+   "chips": [
+    "stm32f103xe"
+   ]
+  },
+  {
+   "file": "printer-creality-sermoonV1-2022.cfg",
+   "line": "# This file contains pin mappings for the Creality Sermoon V1",
+   "title": "Creality Sermoon V1 with CR-FDM-v2.4.S1.200 motherboard",
+   "chips": [
+    "stm32f401xc"
+   ]
+  },
+  {
+   "file": "printer-elegoo-neptune2-2021.cfg",
+   "line": "# This file contains standard pin mappings for the stock Elegoo Neptune 2 with a",
+   "title": "stock Elegoo Neptune 2 with a ZNP Robin Nano (v 1.2 and v1.3)",
+   "chips": [
+    "stm32f103xe",
+    "stm32f407xx"
+   ]
+  },
+  {
+   "file": "printer-elegoo-neptune3-pro-2023.cfg",
+   "line": "# This file contains pin mappings for the stock Elegoo Neptune 3 Pro (ZNP Robin Nano_DW V2.2)",
+   "title": "stock Elegoo Neptune 3 Pro (ZNP Robin Nano_DW V2.2)",
+   "chips": [
+    "stm32f401xc"
+   ]
+  },
+  {
+   "file": "printer-eryone-er20-2021.cfg",
+   "line": "# This file contains common pin mappings for the Eryone ER-20 board",
+   "title": "Eryone ER-20",
+   "chips": [
+    "stm32f103xe"
+   ]
+  },
+  {
+   "file": "printer-eryone-thinker-series-v2-2020.cfg",
+   "line": "# This file contains pin mappings for the Eryone Thinker Series V2.",
+   "title": "Eryone Thinker Series V2",
+   "chips": [
+    "atmega2560"
+   ]
+  },
+  {
+   "file": "printer-flashforge-creator-pro-2018.cfg",
+   "line": "# This file contains common pin mappings for the FlashForge-Creator-Pro",
+   "title": "FlashForge-Creator-Pro",
+   "chips": [
+    "atmega2560"
+   ]
+  },
+  {
+   "file": "printer-fokoos-odin5-f3-2021.cfg",
+   "line": "# This file contains common configurations and pin mappings for the FOKOOS",
+   "title": "FOKOOS Odin-5 F3, which uses the MKS Robin Nano v1.2",
+   "chips": [
+    "stm32f103xe"
+   ]
+  },
+  {
+   "file": "printer-geeetech-301-2019.cfg",
+   "line": "# This file contains common pin mappings for the GTM32 PRO board in",
+   "title": "GTM32 PRO",
+   "chips": [
+    "stm32f103xe"
+   ]
+  },
+  {
+   "file": "printer-geeetech-A10T-A20T-2021.cfg",
+   "line": "# This file contains common pin mappings for the Geeetech GT2560 v4.0 and v4.1b",
+   "title": "Geeetech GT2560 v4.0 and v4.1b",
+   "chips": [
+    "atmega2560"
+   ]
+  },
+  {
+   "file": "printer-hiprecy-leo-2019.cfg",
+   "line": "# This file contains pin mappings for the stock Hiprecy Leo (based on Fysetc F6 board) with stock TMC2130 SPI drivers.",
+   "title": "stock Hiprecy Leo (based on Fysetc F6",
+   "chips": [
+    "atmega2560"
+   ]
+  },
+  {
+   "file": "printer-kingroon-kp3s-2020.cfg",
+   "line": "# This file contains common pin mappings for the Kingroon KP3S printer,",
+   "title": "Kingroon KP3S printer, which uses a modified MKS Robin",
+   "chips": [
+    "stm32f103xe"
+   ]
+  },
+  {
+   "file": "printer-longer-lk4-pro-2019.cfg",
+   "line": "# This file contains common pin mappings for Longer LK4 Pro.",
+   "title": "Longer LK4 Pro",
+   "chips": [
+    "atmega2560"
+   ]
+  },
+  {
+   "file": "printer-longer-lk4x-2022.cfg",
+   "line": "# This file contains pin mappings for the stock 2022 LONGER3D LK4 X",
+   "title": "stock 2022 LONGER3D LK4 X with the 32-bit LGT_KIT_V2_X",
+   "chips": [
+    "stm32f103xe"
+   ]
+  },
+  {
+   "file": "printer-lulzbot-mini1-2016.cfg",
+   "line": "#This file contains pin mappings for the Lulzbot Mini 1 using RAMBo Mini and SingleExtruder",
+   "title": "Lulzbot Mini 1 using RAMBo Mini and SingleExtruder",
+   "chips": [
+    "atmega2560"
+   ]
+  },
+  {
+   "file": "printer-lulzbot-mini2-2018.cfg",
+   "line": "#This file contains pin mappings for the stock Lulzbot Mini 2 which uses",
+   "title": "stock Lulzbot Mini 2 which uses EinsyRetro mainboard and SingleExtruder(0.5mm) hotend",
+   "chips": [
+    "atmega2560"
+   ]
+  },
+  {
+   "file": "printer-lulzbot-taz6-2017.cfg",
+   "line": "# This file contains pin mappings for the Lulzbot TAZ 6 circa 2017. To",
+   "title": "Lulzbot TAZ 6 circa 2017",
+   "chips": [
+    "atmega2560"
+   ]
+  },
+  {
+   "file": "printer-lulzbot-taz6-dual-v3-2017.cfg",
+   "line": "#This file contains pin mappings for the Lulzbot TAZ 6 circa 2017 using RAMBo and Dual v3 toolhead.",
+   "title": "Lulzbot TAZ 6 circa 2017 using RAMBo and Dual v3 toolhead",
+   "chips": [
+    "atmega2560"
+   ]
+  },
+  {
+   "file": "printer-monoprice-mini-delta-2017.cfg",
+   "line": "# This file contains common pin mappings for the 2017 Monoprice",
+   "title": "2017 Monoprice Mini Delta",
+   "chips": [
+    "stm32f070xb"
+   ]
+  },
+  {
+   "file": "printer-monoprice-select-mini-v1-2016.cfg",
+   "line": "# This file contains common pin mappings for the Monoprice",
+   "title": "Monoprice Select Mini v1",
+   "chips": [
+    "stm32f103xe"
+   ]
+  },
+  {
+   "file": "printer-monoprice-select-mini-v2-2018.cfg",
+   "line": "# This file contains common pin mappings for the 2019 Monoprice",
+   "title": "2019 Monoprice Select Mini v2",
+   "chips": [
+    "stm32f070xb"
+   ]
+  },
+  {
+   "file": "printer-mtw-create-2015.cfg",
+   "line": "# This file contains pin mappings for the MTW Create (circa 2015). To",
+   "title": "MTW Create (circa 2015)",
+   "chips": [
+    "atmega2560"
+   ]
+  },
+  {
+   "file": "printer-prusa-mini-plus-2020.cfg",
+   "line": "# This file contains common configurations and pin mappings for the Prusa",
+   "title": "Prusa Mini+, which uses the Prusa Buddy",
+   "chips": [
+    "stm32f407xx"
+   ]
+  },
+  {
+   "file": "printer-ratrig-v-minion-2021.cfg",
+   "line": "# This file contains pin mappings for a full Ratrig V-Minion kit",
+   "title": "a full Ratrig V-Minion kit with an Octopus Pro v1.1",
+   "chips": [
+    "stm32f446xx"
+   ]
+  },
+  {
+   "file": "printer-robo3d-r2-2017.cfg",
+   "line": "# This file contains pin mappings for the Robo3D R2 ROBOmainboard 2.1.5.",
+   "title": "Robo3D R2 ROBOmainboard 2.1.5",
+   "chips": [
+    "atmega2560"
+   ]
+  },
+  {
+   "file": "printer-seemecnc-rostock-max-v2-2015.cfg",
+   "line": "# This file contains the pin mappings for the SeeMeCNC Rostock Max",
+   "title": "SeeMeCNC Rostock Max (version 2) delta printer from 2015",
+   "chips": [
+    "atmega2560"
+   ]
+  },
+  {
+   "file": "printer-sovol-sv01-2020.cfg",
+   "line": "# This file contains common pin mappings for Sovol Sv01 printer. To",
+   "title": "Sovol Sv01 printer",
+   "chips": [
+    "atmega2560"
+   ]
+  },
+  {
+   "file": "printer-sovol-sv05-2022.cfg",
+   "line": "# This file contains pin mappings for the stock 2022 Sovol SV05",
+   "title": "stock 2022 Sovol SV05 with the 32-bit Creality 4.2.2",
+   "chips": [
+    "stm32f103xe"
+   ]
+  },
+  {
+   "file": "printer-sovol-sv06-2022.cfg",
+   "line": "# This file contains pin mappings for the stock Sovol SV06",
+   "title": "stock Sovol SV06",
+   "chips": [
+    "stm32f103xe"
+   ]
+  },
+  {
+   "file": "printer-sovol-sv06-plus-2023.cfg",
+   "line": "# This file contains pin mappings for the stock Sovol SV06 Plus",
+   "title": "stock Sovol SV06 Plus",
+   "chips": [
+    "stm32f103xe"
+   ]
+  },
+  {
+   "file": "printer-sunlu-s8-2020.cfg",
+   "line": "# This file contains pin mappings for the SUNLU S8 v1.01 (circa 2020), which",
+   "title": "SUNLU S8 v1.01 (circa 2020), which is a modified RAMPS v1.3",
+   "chips": [
+    "atmega2560"
+   ]
+  },
+  {
+   "file": "printer-sunlu-t3-2022.cfg",
+   "line": "# This file contains common pin mappings for the SUNLU Terminator T3 board",
+   "title": "SUNLU Terminator T3",
+   "chips": [
+    "stm32f103xe"
+   ]
+  },
+  {
+   "file": "printer-tronxy-p802e-2020.cfg",
+   "line": "# This file contains common pin mappings for Tronxy P802E printer. To",
+   "title": "Tronxy P802E printer",
+   "chips": [
+    "atmega1284p"
+   ]
+  },
+  {
+   "file": "printer-tronxy-p802m-2020.cfg",
+   "line": "# This file contains common pin mappings for Tronxy P802M printer. To",
+   "title": "Tronxy P802M printer",
+   "chips": [
+    "atmega1284p"
+   ]
+  },
+  {
+   "file": "printer-tronxy-x5s-2018.cfg",
+   "line": "# This file contains pin mappings for the Tronxy X5S (circa 2017). To",
+   "title": "Tronxy X5S (circa 2017)",
+   "chips": [
+    "atmega1284p"
+   ]
+  },
+  {
+   "file": "printer-tronxy-x8-2018.cfg",
+   "line": "# This file contains the configurations and pin mappings for the",
+   "title": "Tronxy X8 using the CXY-V2-0508",
+   "chips": [
+    "atmega1284p"
+   ]
+  },
+  {
+   "file": "printer-twotrees-sapphire-plus-sp-5-v1-2020.cfg",
+   "line": "# This file contains common pin mappings for the Two Trees Sapphire",
+   "title": "Two Trees Sapphire Plus V1 (SP-5) printer (Robin Nano 1.2, 2208 drivers for X,Y and A4988 for Zs,E)",
+   "chips": [
+    "stm32f103xe"
+   ]
+  },
+  {
+   "file": "printer-twotrees-sapphire-plus-sp-5-v1.1-2021.cfg",
+   "line": "# This file contains common pin mappings for the Two Trees Sapphire",
+   "title": "Two Trees Sapphire Plus V1.1 (SP-5) printer (Robin Nano 1.2, all 2225 drivers at 32 microsteps)",
+   "chips": [
+    "stm32f103xe"
+   ]
+  },
+  {
+   "file": "printer-twotrees-sapphire-pro-sp-3-2020.cfg",
+   "line": "# This file contains common pin mappings for the Two Trees Sapphire",
+   "title": "Two Trees Sapphire Pro (SP-3) printer (Robin Nano 1.2, 2208 drivers for X,Y and A4988 for Z,E)",
+   "chips": [
+    "stm32f103xe"
+   ]
+  },
+  {
+   "file": "printer-velleman-k8200-2013.cfg",
+   "line": "# This file contains common pin mappings for the Velleman K8200 and",
+   "title": "Velleman K8200 and 3Drag 3D printers (circa 2013)",
+   "chips": [
+    "atmega2560"
+   ]
+  },
+  {
+   "file": "printer-velleman-k8800-2017.cfg",
+   "line": "# This file contains common pin mappings for the Velleman K8800",
+   "title": "Velleman K8800 printers (circa 2017)",
+   "chips": [
+    "atmega2560"
+   ]
+  },
+  {
+   "file": "printer-voxelab-aquila-2021.cfg",
+   "line": "# This file contains pin mappings for the Voxelab Aquila",
+   "title": "Voxelab Aquila with the FFP0173 1.0.1 mainboard",
+   "chips": [
+    "stm32f103xe"
+   ]
+  },
+  {
+   "file": "printer-wanhao-duplicator-9-2018.cfg",
+   "line": "# This file contains pin mappings for the Wanhao Duplicator 9 MK1,",
+   "title": "Wanhao Duplicator 9 MK1, also sold as the Monoprice Maker Pro MK1",
+   "chips": [
+    "atmega2560"
+   ]
+  },
+  {
+   "file": "printer-wanhao-duplicator-i3-mini-2017.cfg",
+   "line": "# This file contains pin mappings for the Wanhao Duplicator i3 mini.",
+   "title": "Wanhao Duplicator i3 mini",
+   "chips": [
+    "atmega2560"
+   ]
+  },
+  {
+   "file": "printer-wanhao-duplicator-i3-plus-2017.cfg",
+   "line": "# This file contains pin mappings for the Wanhao Duplicator i3 Plus",
+   "title": "Wanhao Duplicator i3 Plus (circa 2017)",
+   "chips": [
+    "atmega2560"
+   ]
+  },
+  {
+   "file": "printer-wanhao-duplicator-i3-plus-mark2-2019.cfg",
+   "line": "# This file contains pin mappings for the Wanhao Duplicator i3 Plus",
+   "title": "Wanhao Duplicator i3 Plus Mark II",
+   "chips": [
+    "atmega2560"
+   ]
+  },
+  {
+   "file": "sample-bigtreetech-ebb-canbus-v1.0.cfg",
+   "line": "# This file contains common pin mappings for the BIGTREETECH EBBCan",
+   "title": "BIGTREETECH EBBCan Canbus",
+   "chips": [
+    "stm32f072xb"
+   ]
+  },
+  {
+   "file": "sample-bigtreetech-ebb-canbus-v1.1.cfg",
+   "line": "# This file contains common pin mappings for the BIGTREETECH EBBCan",
+   "title": "BIGTREETECH EBBCan Canbus",
+   "chips": [
+    "stm32g0b1xx"
+   ]
+  },
+  {
+   "file": "sample-bigtreetech-ebb-canbus-v1.2.cfg",
+   "line": "# This file contains common pin mappings for the BIGTREETECH EBBCan",
+   "title": "BIGTREETECH EBBCan Canbus",
+   "chips": [
+    "stm32g0b1xx"
+   ]
+  },
+  {
+   "file": "sample-bigtreetech-ebb-sb-canbus-v1.0.cfg",
+   "line": "# This file contains common pin mappings for the BIGTREETECH EBBCan",
+   "title": "BIGTREETECH EBBCan Canbus",
+   "chips": [
+    "stm32g0b1xx"
+   ]
+  },
+  {
+   "file": "sample-bigtreetech-hermit-crab-canbus.cfg",
+   "line": "# This file contains common pin mappings for the BIGTREETECH HermitCrab",
+   "title": "BIGTREETECH HermitCrab Canbus",
+   "chips": [
+    "stm32f072xb"
+   ]
+  },
+  {
+   "file": "sample-cartographer-v3.cfg",
+   "line": "# This file contains common pin mappings for the Cartographer board V3",
+   "title": "Cartographer",
+   "chips": [
+    "stm32f042x6"
+   ]
+  },
+  {
+   "file": "sample-duet3-1lc.cfg",
+   "line": "# This file contains common pin mappings for the Duet3 1LC. To use",
+   "title": "Duet3 1LC",
+   "chips": []
+  },
+  {
+   "file": "sample-huvud-v0.61.cfg",
+   "line": "# This file contains common pin mappings for the Huvud V0.61 by Bondus.",
+   "title": "Huvud V0.61 by Bondus",
+   "chips": [
+    "stm32f103xe"
+   ]
+  }
+ ]
+}
