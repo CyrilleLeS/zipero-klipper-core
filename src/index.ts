@@ -86,6 +86,12 @@ export {
   type LogSignatureTexts,
 } from "./log/signatures";
 export {
+  createStatsCollector,
+  type LogStatKind,
+  type LogStatSeries,
+  type LogStats,
+} from "./log/stats";
+export {
   JINJA_CODES,
   JINJA_ENVIRONMENTS,
   type JinjaCode,

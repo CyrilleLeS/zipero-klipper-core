@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { compileSignatures, type LogProblem, type LogSignature } from "./signatures";
+import { createStatsCollector, type LogStats } from "./stats";
 
 /**
  * Découpage d'un `klippy.log` en sessions (EP-07.02), ligne par ligne : un journal de 200 Mo est
@@ -56,6 +57,8 @@ export interface LogSession {
   readonly configError?: string | undefined;
   /** Problèmes reconnus par les signatures (EP-07.04), dans l'ordre de leur première ligne. */
   readonly problems: readonly LogProblem[];
+  /** Courbes des lignes `Stats` (EP-07.05), s'il y en a au moins deux. */
+  readonly stats?: LogStats | undefined;
   /** `restart` : RESTART ou FIRMWARE_RESTART ; `new-process` : Klipper relancé (mise à jour…). */
   readonly endedBy: "restart" | "new-process" | "end-of-file";
 }
@@ -79,6 +82,7 @@ interface Draft extends Omit<Mutable<LogSession>, "mcus" | "shutdowns" | "config
   problems: Map<string, Mutable<LogProblem>>;
   configParts?: string[];
   configLength: number;
+  collector: ReturnType<typeof createStatsCollector>;
 }
 
 /** Valeur entre apostrophes de Python (`'v0.12.0-1-g1'`) ou texte brut. */
@@ -111,6 +115,7 @@ export function createLogReader(options: LogReaderOptions = {}): LogReader {
     partial,
     ...process,
     configTruncated: false,
+    collector: createStatsCollector(),
     configLength: 0,
     mcus: [],
     shutdowns: [],
@@ -121,10 +126,12 @@ export function createLogReader(options: LogReaderOptions = {}): LogReader {
 
   const close = (endedBy: LogSession["endedBy"]) => {
     if (!current) return;
-    const { configParts, configLength: _length, problems, ...rest } = current;
+    const { configParts, configLength: _length, problems, collector, ...rest } = current;
+    const stats = collector.finish();
     sessions.push({
       ...rest,
       problems: [...problems.values()],
+      ...(stats ? { stats } : {}),
       endedBy,
       ...(configParts ? { config: configParts.join("\n") } : {}),
     });
@@ -156,6 +163,10 @@ export function createLogReader(options: LogReaderOptions = {}): LogReader {
       // périodiques, du vidage des files série (`Sent 12 …`, `Receive: 12 …`, serialhdl.py, qui
       // recopie les messages de la carte) et des lignes indentées d'une pile Python (le code
       // source cité contient les messages avec leurs `%s`) ; le message final de la pile compte.
+      if (!inConfig && line.startsWith("Stats ")) {
+        session().collector.push(line);
+        return;
+      }
       if (recognize && !inConfig && !/^(?:\s|Stats |Sent \d|Receive: \d)/.test(line)) {
         const found = recognize(line);
         if (found) {
