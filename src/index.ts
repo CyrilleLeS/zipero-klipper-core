@@ -60,6 +60,12 @@ export {
   type GcodeWarningCode,
   parseGcode,
 } from "./gcode/parse";
+export {
+  checkPhysics,
+  MATERIAL_TEMPERATURES,
+  materialOf,
+  type PhysicalContext,
+} from "./gcode/physical-checks";
 export { GCODE_ROLES, type GcodeRole, roleIndex } from "./gcode/roles";
 export { ANALYSIS_LIMITS } from "./limits";
 export {

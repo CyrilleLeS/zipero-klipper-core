@@ -176,6 +176,12 @@ export const GCODE_CHECK_CODES = [
   "gcode.macro-param-missing",
   "gcode.heat-order",
   "gcode.extrude-before-heat",
+  // Règles physiques (EP-04.11, physical-checks.ts).
+  "gcode.first-layer-fast",
+  "gcode.flow-over-capacity",
+  "gcode.out-of-volume",
+  "gcode.nozzle-temp-material",
+  "gcode.bed-temp-material",
 ] as const;
 
 export type GcodeCheckCode = (typeof GCODE_CHECK_CODES)[number];
