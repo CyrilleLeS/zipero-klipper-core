@@ -2,7 +2,7 @@
 import { describe, expect, it } from "vitest";
 import { loadSchema } from "../config/firmwares";
 import { readConfig } from "../config/ini";
-import { checkMacros, isTraditionalGcode, klipperCommand } from "./semantics";
+import { checkMacros, indexMacros, isTraditionalGcode, klipperCommand } from "./semantics";
 
 const BASE = ["[printer]", "kinematics: none", "max_velocity: 1", "max_accel: 1"];
 
@@ -238,5 +238,55 @@ describe("erreurs à l'exécution", () => {
   it("Kalico : mêmes contrôles, schéma et commandes de Kalico", async () => {
     const issues = await check(["[gcode_macro M]", "gcode: INCONNUE"], { firmware: "kalico" });
     expect(codes(issues)).toEqual(["warning macro.unknown-command 6"]);
+  });
+});
+
+describe("index des macros (EP-04.10)", () => {
+  const index = async (lines: readonly string[]) => {
+    const text = [...BASE, ...lines].join("\n");
+    const { sections } = readConfig({
+      files: new Map([["printer.cfg", text]]),
+      main: "printer.cfg",
+    });
+    return indexMacros(sections, await loadSchema("klipper"), "klipper");
+  };
+
+  it("paramètres lus, obligatoires ou gardés ; commandes du script", async () => {
+    const { macros, isCommand } = await index([
+      "[gcode_macro PRINT_START]",
+      "gcode:",
+      "  {% set bed = params.BED_TEMP|float %}",
+      "  {% set tool = params.EXTRUDER_TEMP|default(200)|float %}",
+      "  {% if params.CHAMBER %}M141 S{params.CHAMBER}{% endif %}",
+      "  {% set speed = params.get('SPEED', 100) %}",
+      "  M190 S{bed}",
+      "  BED_MESH_CALIBRATE ADAPTIVE=1",
+    ]);
+    const usage = macros.get("PRINT_START");
+    expect([...(usage?.read ?? [])].sort()).toEqual([
+      "BED_TEMP",
+      "CHAMBER",
+      "EXTRUDER_TEMP",
+      "SPEED",
+    ]);
+    expect([...(usage?.required ?? [])]).toEqual(["BED_TEMP"]);
+    expect(usage?.dynamic).toBe(false);
+    expect(usage?.commands.map((c) => c.command)).toEqual(["M141", "M190", "BED_MESH_CALIBRATE"]);
+    expect(isCommand("print_start")).toBe(true);
+    expect(isCommand("G28")).toBe(true);
+    expect(isCommand("PRINT_STRAT")).toBe(false);
+  });
+
+  it("params en entier ou rawparams : macro dynamique", async () => {
+    const { macros } = await index([
+      "[gcode_macro START]",
+      "gcode:",
+      "  {% for key in params %}RESPOND MSG={key}{% endfor %}",
+      "[gcode_macro PASSE]",
+      "gcode:",
+      "  G1 {rawparams}",
+    ]);
+    expect(macros.get("START")?.dynamic).toBe(true);
+    expect(macros.get("PASSE")?.dynamic).toBe(true);
   });
 });

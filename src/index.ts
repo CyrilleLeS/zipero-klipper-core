@@ -34,6 +34,17 @@ export {
   validateConfig,
 } from "./config/validate";
 export {
+  checkGcode,
+  GCODE_CHECK_CODES,
+  type GcodeCall,
+  type GcodeCheck,
+  type GcodeCheckCode,
+  type GcodeConfigContext,
+  type GcodeFacts,
+  type GcodeTemperature,
+  readGcodeFacts,
+} from "./gcode/klipper-checks";
+export {
   GCODE_SLICERS,
   type GcodeMetadata,
   type GcodeSlicer,
@@ -80,12 +91,16 @@ export {
 export { checkMacroLiteral, type LiteralProblem } from "./macros/pyliteral";
 export {
   checkMacros,
+  extendedParams,
+  indexMacros,
   isTraditionalGcode,
   klipperCommand,
   MACRO_CODES,
   type MacroCheckIssue,
   type MacroCheckOptions,
   type MacroCode,
+  type MacroIndex,
+  type MacroUsage,
 } from "./macros/semantics";
 export {
   lintMacros,

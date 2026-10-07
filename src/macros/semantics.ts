@@ -115,7 +115,7 @@ export function klipperCommand(
  * Paramètres d'une commande étendue (`_get_extended_params`) : `CLÉ=valeur`, guillemets comme
  * shlex, commentaire après `;` ou `#` ; undefined si un mot n'a pas de `=` (« Malformed command »).
  */
-function extendedParams(raw: string, command: string): Record<string, string> | undefined {
+export function extendedParams(raw: string, command: string): Record<string, string> | undefined {
   const upper = raw.toUpperCase();
   let rest = upper.startsWith(command) ? raw : raw.slice(Math.max(0, upper.indexOf(command)));
   rest = rest.slice(command.length).replace(/^ /, "");
@@ -176,6 +176,15 @@ interface Macro {
   readonly variables: ReadonlyMap<string, ConfigOption>;
 }
 
+interface MutableMacroUsage {
+  read: Set<string>;
+  required: Set<string>;
+  dynamic: boolean;
+  commands: { command: string; raw: string }[];
+  file: string;
+  line: number;
+}
+
 interface Call {
   readonly from: string;
   readonly to: string;
@@ -195,6 +204,8 @@ class MacroChecker {
   private readonly foreign: boolean;
   private readonly certain = new Set<string>();
   private readonly known: (command: string) => boolean;
+  /** Paramètres et commandes de chaque macro (par commande, en majuscules), pour l'index. */
+  readonly usage = new Map<string, MutableMacroUsage>();
 
   constructor(
     private readonly sections: readonly ConfigSection[],
@@ -382,8 +393,35 @@ class MacroChecker {
     for (const { text, line } of lines) {
       const parsed = klipperCommand(text);
       if (!parsed) continue;
+      if (macro) this.usageOf(macro).commands.push({ command: parsed.command, raw: parsed.raw });
       this.checkCommand(parsed, macro, template, line, at(line));
     }
+  }
+
+  private usageOf(macro: Macro): MutableMacroUsage {
+    let usage = this.usage.get(macro.alias);
+    if (!usage) {
+      usage = {
+        read: new Set(),
+        required: new Set(),
+        dynamic: false,
+        commands: [],
+        file: macro.section.file,
+        line: macro.section.line,
+      };
+      this.usage.set(macro.alias, usage);
+    }
+    return usage;
+  }
+
+  /** Commande connue : macro de la configuration, commande du firmware ou d'un module présent. */
+  isCommand(command: string): boolean {
+    return this.byAlias.has(command) || this.certain.has(command) || this.known(command);
+  }
+
+  /** Configuration avec des modules inconnus du firmware : des commandes peuvent manquer à la liste. */
+  get hasForeignModules(): boolean {
+    return this.foreign;
   }
 
   /** `params`, `printer[…]` et variables des macros, dans les expressions du modèle. */
@@ -402,6 +440,17 @@ class MacroChecker {
       }
     };
     for (const node of body) walk(node);
+    // `rawparams`, ou `params` employé en entier (boucle, transmission) : paramètres non jugeables.
+    if (macro) {
+      const whole = all.some((node) => {
+        if (node.kind !== "name") return false;
+        if (node.name === "rawparams") return true;
+        if (node.name !== "params") return false;
+        const parent = parents.get(node);
+        return !(parent && (parent.kind === "getattr" || parent.kind === "getitem"));
+      });
+      if (whole) this.usageOf(macro).dynamic = true;
+    }
 
     const text = (node: Expr | undefined) => (node?.kind === "const" ? node.text : undefined);
     const isName = (node: Node | undefined, name: string) =>
@@ -484,6 +533,15 @@ class MacroChecker {
           key !== undefined &&
           !(direct !== undefined && parent?.kind === "call" && direct === "get")
         ) {
+          const usage = this.usageOf(macro);
+          usage.read.add(key.toUpperCase());
+          if (
+            direct !== undefined &&
+            !guarded.has(`params:${key.toUpperCase()}`) &&
+            !(parent?.kind === "filter" && (parent.name === "default" || parent.name === "d"))
+          ) {
+            usage.required.add(key.toUpperCase());
+          }
           if (key !== key.toUpperCase() && !reported.has(`case:${key}`)) {
             reported.add(`case:${key}`);
             this.report({
@@ -713,4 +771,45 @@ export function checkMacros(
   const checker = new MacroChecker(sections, schema, firmware, options.partial ?? false);
   checker.run();
   return checker.issues;
+}
+
+/** Paramètres et commandes d'une macro, vus depuis son script G-code (`gcode`). */
+export interface MacroUsage {
+  /** Paramètres lus (`params.X`, `params["X"]`, `params.get("X")`), en majuscules. */
+  readonly read: ReadonlySet<string>;
+  /** Lus sans garde ni valeur par défaut : erreur à l'exécution s'ils manquent. */
+  readonly required: ReadonlySet<string>;
+  /** `params` en entier ou `rawparams` : tout paramètre peut être attendu. */
+  readonly dynamic: boolean;
+  /** Commandes du script (lignes de G-code, hors expressions). */
+  readonly commands: readonly { readonly command: string; readonly raw: string }[];
+  readonly file: string;
+  readonly line: number;
+}
+
+export interface MacroIndex {
+  /** Macros par commande (nom en majuscules). */
+  readonly macros: ReadonlyMap<string, MacroUsage>;
+  /** Commande reconnue (macro, commande du firmware ou d'un module présent dans la configuration). */
+  isCommand(command: string): boolean;
+  /** Modules inconnus du firmware présents : une commande absente de la liste reste possible. */
+  readonly foreign: boolean;
+}
+
+/**
+ * Index des macros d'une configuration (EP-04.10) : paramètres lus par chacune et commandes de
+ * son script, pour confronter un G-code à la configuration qui va l'exécuter.
+ */
+export function indexMacros(
+  sections: readonly ConfigSection[],
+  schema: ConfigSchema,
+  firmware: FirmwareId,
+): MacroIndex {
+  const checker = new MacroChecker(sections, schema, firmware, false);
+  checker.run();
+  return {
+    macros: checker.usage,
+    isCommand: (command) => checker.isCommand(command.toUpperCase()),
+    foreign: checker.hasForeignModules,
+  };
 }
