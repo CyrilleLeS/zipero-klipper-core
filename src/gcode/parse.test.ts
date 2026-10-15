@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
 import { describe, expect, it } from "vitest";
-import { parseGcode } from "./parse";
+import { PROGRESS_STEP, parseGcode } from "./parse";
 import { GCODE_ROLES, roleIndex } from "./roles";
 
 // Le paquet autonome n'a ni types Node ni DOM (pas de TextEncoder) ; le G-code est en ASCII.
@@ -248,5 +248,19 @@ describe("parseGcode : limites et entrées hostiles (EP-16.02)", () => {
     const result = parseGcode(gcode(...lines));
     expect(result.layerStarts).toHaveLength(50);
     expect(result.segments).toBe(5000);
+  });
+
+  it("progression : part du fichier lue, croissante, signalée par paliers (EP-03.07)", () => {
+    const line = "G1 X10 Y10 E0.01 ; commentaire pour allonger la ligne\n";
+    const bytes = ascii(`M83\n${line.repeat(Math.ceil((PROGRESS_STEP * 3.5) / line.length))}`);
+    const ratios: number[] = [];
+    const result = parseGcode(bytes, { onProgress: (ratio) => ratios.push(ratio) });
+    expect(ratios).toHaveLength(3);
+    expect(ratios.every((r, k) => r > 0 && r < 1 && r > (ratios[k - 1] ?? 0))).toBe(true);
+    expect(result.segments).toBeGreaterThan(0);
+    // Petit fichier : aucun signalement.
+    const small: number[] = [];
+    parseGcode(gcode("M83", "G1 X1 E1"), { onProgress: (ratio) => small.push(ratio) });
+    expect(small).toEqual([]);
   });
 });

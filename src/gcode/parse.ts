@@ -20,7 +20,12 @@ export interface GcodeParseOptions {
   readonly maxSegments?: number;
   /** Longueur d'un segment d'arc, en mm (1 mm, comme `mm_per_arc_segment` par défaut). */
   readonly arcSegmentMm?: number;
+  /** Part du fichier lue (0 à 1), signalée tous les {@link PROGRESS_STEP} octets (EP-03.07). */
+  readonly onProgress?: (ratio: number) => void;
 }
+
+/** Octets lus entre deux signalements de progression. */
+export const PROGRESS_STEP = 1 << 20;
 
 export type GcodeWarningCode = "gcode.segmentLimit" | "gcode.arcInvalid" | "gcode.nonFinite";
 
@@ -216,7 +221,13 @@ export function parseGcode(bytes: Uint8Array, options: GcodeParseOptions = {}): 
   const length = bytes.length;
   let i = 0;
   let lineNumber = 0;
+  const { onProgress } = options;
+  let nextReport = PROGRESS_STEP;
   while (i < length && !truncated) {
+    if (onProgress && i >= nextReport) {
+      onProgress(i / length);
+      nextReport = i + PROGRESS_STEP;
+    }
     lineNumber++;
     let end = i;
     while (end < length && bytes[end] !== NEWLINE) end++;
