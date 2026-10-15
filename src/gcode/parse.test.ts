@@ -251,8 +251,14 @@ describe("parseGcode : limites et entrées hostiles (EP-16.02)", () => {
   });
 
   it("progression : part du fichier lue, croissante, signalée par paliers (EP-03.07)", () => {
-    const line = "G1 X10 Y10 E0.01 ; commentaire pour allonger la ligne\n";
-    const bytes = ascii(`M83\n${line.repeat(Math.ceil((PROGRESS_STEP * 3.5) / line.length))}`);
+    // 3,5 Mo construits par copie de blocs : convertir caractère par caractère prenait plusieurs
+    // secondes sous la mesure de couverture (délai du test dépassé en CI).
+    const head = ascii("M83\n");
+    const block = ascii("G1 X10 Y10 E0.01 ; commentaire pour allonger la ligne\n".repeat(1000));
+    const copies = Math.ceil((PROGRESS_STEP * 3.5) / block.length);
+    const bytes = new Uint8Array(head.length + copies * block.length);
+    bytes.set(head);
+    for (let k = 0; k < copies; k++) bytes.set(block, head.length + k * block.length);
     const ratios: number[] = [];
     const result = parseGcode(bytes, { onProgress: (ratio) => ratios.push(ratio) });
     expect(ratios).toHaveLength(3);
