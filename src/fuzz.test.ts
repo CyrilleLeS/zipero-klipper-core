@@ -23,7 +23,9 @@ import { parseProbeAccuracy } from "./probe/accuracy";
  * le passage nocturne de la CI. Un échec affiche l'entrée réduite par fast-check, à rejouer avec
  * sa graine.
  */
-const RUNS = Number(process.env["FUZZ_RUNS"] ?? 60);
+// Paquet autonome sans types de Node (dépôt public) : l'environnement est lu sans `process`.
+const ENV = (globalThis as { process?: { env?: Record<string, string | undefined> } }).process?.env;
+const RUNS = Number(ENV?.["FUZZ_RUNS"] ?? 60);
 const TIMEOUT = Math.max(30_000, RUNS * 200);
 
 const SEEDS = {
@@ -248,7 +250,8 @@ describe("fuzzing des parseurs : aucune exception, quelle que soit l'entrée (EP
   it(
     "G-code : trajectoire et métadonnées, octets quelconques",
     never((text) => {
-      const bytes = new TextEncoder().encode(text);
+      // Octets quelconques (sans TextEncoder, absent des types du paquet autonome).
+      const bytes = Uint8Array.from(text, (char) => char.charCodeAt(0) & 0xff);
       parseGcode(bytes);
       readGcodeMetadata(bytes);
     }, SEEDS.gcode),
