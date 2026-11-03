@@ -140,6 +140,79 @@ describe("parseGcode : arcs (G2/G3)", () => {
   });
 });
 
+describe("parseGcode : déplacements et rétractions (EP-04.07)", () => {
+  it("déplacements gardés par couche : celui qui mène à une couche lui appartient", () => {
+    const result = parseGcode(
+      gcode(
+        "M83",
+        "G0 X10 Y10 Z0.2 F6000",
+        "G1 X20 Y10 E0.5 F1800",
+        "G0 X30 Y30",
+        "G0 Z0.4",
+        "G1 X40 Y30 E0.5",
+      ),
+    );
+    expect(Array.from(result.travels, (v) => Math.round(v * 1000) / 1000)).toEqual([
+      0, 0, 0, 10, 10, 0.2, 20, 10, 0.2, 30, 30, 0.2,
+    ]);
+    expect(Array.from(result.travelLayerStarts)).toEqual([0, 1]);
+    // Longueur et durée à la vitesse demandée (F reste en vigueur) : √200 mm à 100 mm/s, puis
+    // √500 mm à 30 mm/s.
+    expect(result.stats.travelMm).toBeCloseTo(Math.hypot(10, 10) + Math.hypot(10, 20), 3);
+    expect(result.stats.travelSeconds).toBeCloseTo(
+      Math.hypot(10, 10) / 100 + Math.hypot(10, 20) / 30,
+      3,
+    );
+  });
+
+  it("marqueurs de couche : les déplacements après le marqueur vont à la nouvelle couche", () => {
+    const result = parseGcode(
+      gcode(
+        "M83",
+        ";LAYER_CHANGE",
+        "G1 Z0.2",
+        "G1 X10 E1",
+        "G0 X12",
+        ";LAYER_CHANGE",
+        "G0 X15",
+        "G1 Z0.4",
+        "G1 X20 E1",
+      ),
+    );
+    expect(result.travels.length / 6).toBe(2);
+    expect(Array.from(result.travelLayerStarts)).toEqual([0, 1]);
+  });
+
+  it("rétractions par E seul et par G10 : position de la buse, rangée par couche", () => {
+    const result = parseGcode(
+      gcode(
+        "M83",
+        "G1 Z0.2",
+        "G1 X10 Y5 E1",
+        "G1 E-0.8",
+        "G0 X20",
+        "G1 E0.8",
+        "G1 Z0.4",
+        "G1 X30 E1",
+        "G10",
+      ),
+    );
+    expect(Array.from(result.retractionPoints, (v) => Math.round(v * 1000) / 1000)).toEqual([
+      10, 5, 0.2, 30, 5, 0.4,
+    ]);
+    expect(Array.from(result.retractionLayerStarts)).toEqual([0, 1]);
+    expect(result.stats.retractions).toBe(2);
+  });
+
+  it("au-delà de la limite : déplacements plus gardés, mais toujours comptés", () => {
+    const lines = ["M83", "G1 Z0.2", "G1 X1 E1"];
+    for (let k = 0; k < 30; k++) lines.push(`G0 X${k % 2 ? 1 : 5}`);
+    const result = parseGcode(gcode(...lines), { maxSegments: 10 });
+    expect(result.travels.length / 6).toBe(10);
+    expect(result.stats.travels).toBe(30);
+  });
+});
+
 describe("parseGcode : couches", () => {
   it("vase en spirale : les marqueurs du slicer découpent les couches, pas la montée continue", () => {
     const lines = ["M83"];

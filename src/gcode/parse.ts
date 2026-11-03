@@ -6,7 +6,8 @@ import { roleIndex } from "./roles";
  * Lecture d'un G-code (EP-04, ADR 0006), octet par octet, sans créer de chaîne par ligne : un
  * fichier de 80 Mo se lit en une seconde sur un téléphone. Sortie en tableaux typés, prêts à être
  * transférés du worker à l'affichage sans copie : segments d'extrusion (2 sommets chacun), rôle,
- * outil, vitesse et filament par segment, début et hauteur de chaque couche.
+ * outil, vitesse et filament par segment, début et hauteur de chaque couche ; à part, les
+ * déplacements sans extrusion et les points de rétraction, rangés par couche (EP-04.07).
  *
  * Commandes interprétées : G0, G1, G2/G3 (arcs dans le plan XY, par I/J ou R), G10/G11
  * (rétraction du firmware), G20/G21 (pouces, millimètres), G28 (origine), G90/G91, G92, M82/M83,
@@ -37,6 +38,10 @@ export interface GcodeStats {
   readonly arcs: number;
   /** Filament extrudé, en mm (somme des extrusions positives). */
   readonly filamentMm: number;
+  /** Longueur des déplacements sans extrusion (mm, dans le plan XY). */
+  readonly travelMm: number;
+  /** Durée de ces déplacements à la vitesse demandée, sans accélérations (s). */
+  readonly travelSeconds: number;
 }
 
 export interface GcodeToolpath {
@@ -53,6 +58,17 @@ export interface GcodeToolpath {
   readonly layerStarts: Uint32Array;
   /** Hauteur de chaque couche (mm). */
   readonly layerZ: Float32Array;
+  /**
+   * Déplacements sans extrusion (6 valeurs chacun, comme `positions`), au plus `maxSegments` ;
+   * au-delà, comptés dans `stats.travels` mais plus gardés.
+   */
+  readonly travels: Float32Array;
+  /** Indice du premier déplacement de chaque couche : celui qui mène à la couche en fait partie. */
+  readonly travelLayerStarts: Uint32Array;
+  /** Position x, y, z de la buse à chaque rétraction (3 valeurs chacune). */
+  readonly retractionPoints: Float32Array;
+  /** Indice de la première rétraction de chaque couche. */
+  readonly retractionLayerStarts: Uint32Array;
   readonly segments: number;
   /** [minX, minY, minZ, maxX, maxY, maxZ] des segments d'extrusion ; zéros si aucun. */
   readonly bounds: readonly [number, number, number, number, number, number];
@@ -98,6 +114,28 @@ function asciiText(bytes: Uint8Array, from: number, to: number): string {
 /** Une couche commence quand on extrude plus haut que la précédente d'au moins ceci (mm). */
 const LAYER_EPSILON = 1e-3;
 
+/** Nombres à capacité croissante (doublement), bornée. */
+class Floats {
+  data = new Float32Array(1 << 12);
+  length = 0;
+  constructor(readonly limit: number) {}
+  /** Ajoute des valeurs ; false si la limite est atteinte. */
+  push(...values: number[]): boolean {
+    if (this.length + values.length > this.limit) return false;
+    if (this.length + values.length > this.data.length) {
+      const next = new Float32Array(Math.min(this.data.length * 2, this.limit));
+      next.set(this.data);
+      this.data = next;
+    }
+    this.data.set(values, this.length);
+    this.length += values.length;
+    return true;
+  }
+  take(): Float32Array {
+    return this.data.slice(0, this.length);
+  }
+}
+
 /** Tableaux de sortie à capacité croissante (doublement). */
 class Buffers {
   capacity = 1 << 15;
@@ -141,6 +179,17 @@ export function parseGcode(bytes: Uint8Array, options: GcodeParseOptions = {}): 
 
   const layerStarts: number[] = [];
   const layerZ: number[] = [];
+  const travels = new Floats(maxSegments * 6);
+  const retractionPoints = new Floats(maxSegments * 3);
+  const travelLayerStarts: number[] = [];
+  const retractionLayerStarts: number[] = [];
+  // Déplacements et rétractions déjà rangés quand la couche suivante commencera : relevés au
+  // marqueur du slicer s'il en écrit, sinon à la dernière extrusion (déplacements) ou au début de
+  // la couche (rétractions, faites à la hauteur de la couche qui s'achève).
+  let travelMark = 0;
+  let retractionMark = 0;
+  let travelMm = 0;
+  let travelSeconds = 0;
   let segments = 0;
   let truncated = false;
   let minX = Infinity;
@@ -164,7 +213,27 @@ export function parseGcode(bytes: Uint8Array, options: GcodeParseOptions = {}): 
   let scale = 1;
   let role = 0;
   let tool = 0;
-  let stats = { lines: 0, travels: 0, retractions: 0, toolChanges: 0, arcs: 0, filamentMm: 0 };
+  let stats = {
+    lines: 0,
+    travels: 0,
+    retractions: 0,
+    toolChanges: 0,
+    arcs: 0,
+    filamentMm: 0,
+    travelMm: 0,
+    travelSeconds: 0,
+  };
+  const travel = (x0: number, y0: number, z0: number, x1: number, y1: number, z1: number) => {
+    stats.travels++;
+    const length = Math.hypot(x1 - x0, y1 - y0);
+    travelMm += length;
+    if (feed > 0) travelSeconds += length / (feed / 60);
+    travels.push(x0, y0, z0, x1, y1, z1);
+  };
+  const retraction = () => {
+    stats.retractions++;
+    retractionPoints.push(x, y, z);
+  };
 
   /** Ajoute un segment d'extrusion ; false si la limite est atteinte. */
   const push = (
@@ -185,8 +254,13 @@ export function parseGcode(bytes: Uint8Array, options: GcodeParseOptions = {}): 
     if (markers ? pendingLayer : z1 > currentLayerZ + LAYER_EPSILON) {
       currentLayerZ = z1;
       pendingLayer = false;
+      const first = layerStarts.length === 0;
       layerStarts.push(segments);
       layerZ.push(z1);
+      travelLayerStarts.push(first ? 0 : travelMark);
+      retractionLayerStarts.push(
+        first ? 0 : markers ? retractionMark : retractionPoints.length / 3,
+      );
     }
     const o = segments * 6;
     const p = out.positions;
@@ -207,6 +281,7 @@ export function parseGcode(bytes: Uint8Array, options: GcodeParseOptions = {}): 
     maxY = Math.max(maxY, y0, y1);
     maxZ = Math.max(maxZ, z0, z1);
     segments++;
+    if (!markers) travelMark = travels.length / 6;
     return true;
   };
 
@@ -246,6 +321,8 @@ export function parseGcode(bytes: Uint8Array, options: GcodeParseOptions = {}): 
       else if (LAYER_MARKERS.some((marker) => startsWith(i, stop, marker))) {
         markers = true;
         pendingLayer = true;
+        travelMark = travels.length / 6;
+        retractionMark = retractionPoints.length / 3;
       }
       i = end + 1;
       continue;
@@ -327,7 +404,7 @@ export function parseGcode(bytes: Uint8Array, options: GcodeParseOptions = {}): 
     else if (code === 91) absolute = false;
     else if (code === 20) scale = 25.4;
     else if (code === 21) scale = 1;
-    else if (code === 10) stats.retractions++;
+    else if (code === 10) retraction();
     else if (code === 92) {
       if (!Number.isNaN(word[23] ?? Number.NaN)) x = (word[23] ?? 0) * scale;
       if (!Number.isNaN(word[24] ?? Number.NaN)) y = (word[24] ?? 0) * scale;
@@ -359,7 +436,7 @@ export function parseGcode(bytes: Uint8Array, options: GcodeParseOptions = {}): 
         continue;
       }
       const moves = tx !== x || ty !== y;
-      if (!moves && delta < 0) stats.retractions++;
+      if (!moves && delta < 0) retraction();
 
       if (code === 2 || code === 3) {
         stats.arcs++;
@@ -424,13 +501,13 @@ export function parseGcode(bytes: Uint8Array, options: GcodeParseOptions = {}): 
           py = ny;
           pz = nz;
         }
-        if (delta <= 0) stats.travels++;
+        if (delta <= 0) travel(x, y, z, tx, ty, tz);
       } else if (moves || tz !== z) {
         if (delta > 0 && moves) {
           stats.filamentMm += delta;
           push(x, y, z, tx, ty, tz, delta);
         } else if (moves) {
-          stats.travels++;
+          travel(x, y, z, tx, ty, tz);
         }
       }
       x = tx;
@@ -442,7 +519,12 @@ export function parseGcode(bytes: Uint8Array, options: GcodeParseOptions = {}): 
   if (truncated) warn("gcode.segmentLimit", lineNumber);
 
   const take = <T extends Float32Array | Uint8Array>(array: T, n: number) => array.slice(0, n) as T;
-  stats = { ...stats, filamentMm: Math.round(stats.filamentMm * 1000) / 1000 };
+  stats = {
+    ...stats,
+    filamentMm: Math.round(stats.filamentMm * 1000) / 1000,
+    travelMm: Math.round(travelMm * 1000) / 1000,
+    travelSeconds: Math.round(travelSeconds * 1000) / 1000,
+  };
   return {
     positions: take(out.positions, segments * 6),
     roles: take(out.roles, segments),
@@ -451,6 +533,10 @@ export function parseGcode(bytes: Uint8Array, options: GcodeParseOptions = {}): 
     extrusions: take(out.extrusions, segments),
     layerStarts: Uint32Array.from(layerStarts),
     layerZ: Float32Array.from(layerZ),
+    travels: travels.take(),
+    travelLayerStarts: Uint32Array.from(travelLayerStarts),
+    retractionPoints: retractionPoints.take(),
+    retractionLayerStarts: Uint32Array.from(retractionLayerStarts),
     segments,
     bounds: segments === 0 ? [0, 0, 0, 0, 0, 0] : [minX, minY, minZ, maxX, maxY, maxZ],
     stats,
