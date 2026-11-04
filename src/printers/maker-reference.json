@@ -1,0 +1,218 @@
+[
+  {
+    "id": "voron-2.4-250",
+    "name": "Voron 2.4 (250 mm)",
+    "mechanics": {
+      "kinematics": "corexy",
+      "travel": {
+        "minX": 0,
+        "maxX": 250,
+        "minY": 0,
+        "maxY": 250,
+        "maxZ": 210
+      },
+      "probe": {
+        "type": "probe",
+        "xOffset": 0,
+        "yOffset": 25
+      }
+    },
+    "source": {
+      "repository": "VoronDesign/Voron-2",
+      "commit": "7b32e405f0719881cca782500c822e01e3b16bf2",
+      "path": "firmware/klipper_configurations/Octopus/Voron2_Octopus_Config.cfg",
+      "license": "GPL-3.0-only"
+    }
+  },
+  {
+    "id": "voron-2.4-300",
+    "name": "Voron 2.4 (300 mm)",
+    "mechanics": {
+      "kinematics": "corexy",
+      "travel": {
+        "minX": 0,
+        "maxX": 300,
+        "minY": 0,
+        "maxY": 300,
+        "maxZ": 260
+      },
+      "probe": {
+        "type": "probe",
+        "xOffset": 0,
+        "yOffset": 25
+      }
+    },
+    "source": {
+      "repository": "VoronDesign/Voron-2",
+      "commit": "7b32e405f0719881cca782500c822e01e3b16bf2",
+      "path": "firmware/klipper_configurations/Octopus/Voron2_Octopus_Config.cfg",
+      "license": "GPL-3.0-only"
+    }
+  },
+  {
+    "id": "voron-2.4-350",
+    "name": "Voron 2.4 (350 mm)",
+    "mechanics": {
+      "kinematics": "corexy",
+      "travel": {
+        "minX": 0,
+        "maxX": 350,
+        "minY": 0,
+        "maxY": 350,
+        "maxZ": 310
+      },
+      "probe": {
+        "type": "probe",
+        "xOffset": 0,
+        "yOffset": 25
+      }
+    },
+    "source": {
+      "repository": "VoronDesign/Voron-2",
+      "commit": "7b32e405f0719881cca782500c822e01e3b16bf2",
+      "path": "firmware/klipper_configurations/Octopus/Voron2_Octopus_Config.cfg",
+      "license": "GPL-3.0-only"
+    }
+  },
+  {
+    "id": "creality-k1",
+    "name": "Creality K1",
+    "mechanics": {
+      "kinematics": "corexy",
+      "travel": {
+        "minX": -5,
+        "maxX": 229,
+        "minY": -0.5,
+        "maxY": 226,
+        "maxZ": 255
+      },
+      "probe": {
+        "type": "prtouch_v2",
+        "xOffset": 0,
+        "yOffset": 0
+      },
+      "mesh": {
+        "min": [
+          5,
+          5
+        ],
+        "max": [
+          215,
+          215
+        ],
+        "probeCount": [
+          5,
+          5
+        ]
+      }
+    },
+    "source": {
+      "repository": "CrealityOfficial/K1_Series_Klipper",
+      "commit": "e09f36e6ada60e5467b0bef731a96263b5d8095b",
+      "path": "config/K1_CR4CU220812S12/printer.cfg",
+      "license": "GPL-3.0-only"
+    }
+  },
+  {
+    "id": "sovol-sv08",
+    "name": "Sovol SV08",
+    "mechanics": {
+      "kinematics": "corexy",
+      "travel": {
+        "minX": 0,
+        "maxX": 355,
+        "minY": 0,
+        "maxY": 364,
+        "maxZ": 347
+      },
+      "probe": {
+        "type": "probe",
+        "xOffset": -17,
+        "yOffset": 10
+      },
+      "mesh": {
+        "min": [
+          10,
+          10
+        ],
+        "max": [
+          333,
+          340
+        ],
+        "probeCount": [
+          9,
+          9
+        ]
+      }
+    },
+    "source": {
+      "repository": "Sovol3d/SV08",
+      "commit": "a60644875f8c756d20b3828c9416518b414b5491",
+      "path": "home/sovol/printer_data/config/printer.cfg",
+      "license": "GPL-3.0-only"
+    }
+  },
+  {
+    "id": "qidi-plus4",
+    "name": "Qidi Plus4",
+    "mechanics": {
+      "kinematics": "corexy",
+      "travel": {
+        "minX": -1.5,
+        "maxX": 307,
+        "minY": -2,
+        "maxY": 325,
+        "maxZ": 285
+      },
+      "probe": {
+        "type": "smart_effector",
+        "xOffset": 25,
+        "yOffset": 1.3
+      },
+      "screws": {
+        "source": "bed_screws",
+        "points": [
+          {
+            "x": 25,
+            "y": 21,
+            "name": "Front left"
+          },
+          {
+            "x": 285,
+            "y": 21,
+            "name": "Front right"
+          },
+          {
+            "x": 285,
+            "y": 281,
+            "name": "Last right"
+          },
+          {
+            "x": 25,
+            "y": 281
+          }
+        ]
+      },
+      "mesh": {
+        "min": [
+          25,
+          10
+        ],
+        "max": [
+          295,
+          295
+        ],
+        "probeCount": [
+          9,
+          9
+        ]
+      }
+    },
+    "source": {
+      "repository": "QIDITECH/QIDI_PLUS4",
+      "commit": "ec595fc903540564be757bcafa745cd5c4a52cd0",
+      "path": "config/printer.cfg",
+      "license": "AGPL-3.0-only"
+    }
+  }
+]
