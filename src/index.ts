@@ -2,6 +2,15 @@
 // API publique du cœur d'analyse. Les résultats portent des codes (traduits par l'interface).
 
 export {
+  computeRotationDistance,
+  ROTATION_DISTANCE_CODES,
+  ROTATION_REMEASURE_MM,
+  type RotationDistanceCode,
+  type RotationDistanceInput,
+  type RotationDistanceResult,
+  rotationDistanceSnippet,
+} from "./calibration/rotation-distance";
+export {
   detectFirmware,
   FIRMWARES,
   type FirmwareCandidate,
