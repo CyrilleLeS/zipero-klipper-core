@@ -105,11 +105,18 @@ describe("entrées hostiles", () => {
     ["2 millions d'espaces", `${" ".repeat(2_000_000)}x`],
     ["2 millions de crochets", "[".repeat(2_000_000)],
     ["nombre d'un million de chiffres", `probe accuracy results: maximum ${"1".repeat(1_000_000)}`],
-  ])("%s : se termine vite", (_, text) => {
-    const { ms } = timed(() => {
-      analyzeBedMesh(text);
-      parseProbeAccuracy(text);
-    });
-    expect(ms).toBeLessThan(3000);
-  });
+  ])(
+    "%s : se termine vite",
+    (_, text) => {
+      const { ms } = timed(() => {
+        analyzeBedMesh(text);
+        parseProbeAccuracy(text);
+      });
+      // 4 à 154 ms seul (05/11/2026) ; jusqu'à 5,6 s en CI chargée. Un algorithme qui exploserait
+      // (quadratique, regex) prendrait des minutes : même limite que plus haut, le délai d'une
+      // analyse dans l'application (worker, 20 s, EP-16.02).
+      expect(ms).toBeLessThan(20_000);
+    },
+    30_000,
+  );
 });
