@@ -150,6 +150,13 @@ export {
   type ReportedMeshInfo,
 } from "./mesh/console";
 export {
+  type ImportedMesh,
+  MESH_IMPORT_CODES,
+  type MeshImportCode,
+  parseBedMeshCsv,
+  parseBedMeshJson,
+} from "./mesh/import";
+export {
   DEFAULT_INTERPOLATION,
   effectiveAlgorithm,
   type Interpolation,

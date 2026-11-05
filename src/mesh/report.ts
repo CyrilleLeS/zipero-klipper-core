@@ -12,6 +12,13 @@ import {
 import { failure, type Issue, type ParseResult, success } from "../result";
 import { parseBedMeshOutput } from "./console";
 import {
+  type ImportedMesh,
+  looksLikeMeshCsv,
+  looksLikeMeshJson,
+  parseBedMeshCsv,
+  parseBedMeshJson,
+} from "./import";
+import {
   DEFAULT_INTERPOLATION,
   type InterpolationParams,
   interpolateMesh,
@@ -118,7 +125,7 @@ export interface ProbeAccuracyAnalysis extends ProbeAccuracyRun {
 }
 
 export interface BedMeshReport {
-  readonly input: "console" | "config" | "probe-accuracy";
+  readonly input: "console" | "config" | "probe-accuracy" | "json" | "csv";
   readonly meshes: readonly MeshAnalysis[];
   /** Séries PROBE_ACCURACY (entrée « probe-accuracy »). */
   readonly probeAccuracy?: readonly ProbeAccuracyAnalysis[];
@@ -419,6 +426,10 @@ export function analyzeBedMesh(
   text: string,
   options: BedMeshOptions = {},
 ): ParseResult<BedMeshReport, string> {
+  // JSON de Moonraker ou de BED_MESH_MAP, puis tableau CSV (EP-05.03) : jamais confondus avec la
+  // console (en-tête « Mesh Leveling Probed Z positions ») ni avec une configuration.
+  if (looksLikeMeshJson(text)) return analyzeImported("json", parseBedMeshJson(text), options);
+  if (looksLikeMeshCsv(text)) return analyzeImported("csv", parseBedMeshCsv(text), options);
   if (CONFIG_HEADER.test(text)) {
     const profiles = parseMeshProfiles(text);
     const mechanics = extractPrinterMechanics(parseConfig(text));
@@ -471,6 +482,32 @@ export function analyzeBedMesh(
   return success(
     {
       input: "console",
+      meshes,
+      diagnostics: sortDiagnostics(
+        meshes.flatMap((mesh, index) => diagnoseMesh(mesh, index, options)),
+      ),
+    },
+    parsed.warnings,
+  );
+}
+
+function analyzeImported(
+  input: "json" | "csv",
+  parsed: ParseResult<ImportedMesh[], string>,
+  options: BedMeshOptions,
+): ParseResult<BedMeshReport, string> {
+  if (!parsed.ok) return failure(parsed.error, parsed.warnings);
+  const meshes = parsed.value.map((mesh) =>
+    analyzeMesh(mesh.probed, mesh.line, options, {
+      ...(mesh.name !== undefined ? { name: mesh.name } : {}),
+      ...(mesh.geometry ? { geometry: mesh.geometry } : {}),
+      ...(mesh.interpolation ? { interpolation: mesh.interpolation } : {}),
+      ...(mesh.printed ? { printed: mesh.printed } : {}),
+    }),
+  );
+  return success(
+    {
+      input,
       meshes,
       diagnostics: sortDiagnostics(
         meshes.flatMap((mesh, index) => diagnoseMesh(mesh, index, options)),
