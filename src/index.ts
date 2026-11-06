@@ -172,6 +172,14 @@ export {
   type PlaneFit,
 } from "./mesh/metrics";
 export {
+  findMeshOutliers,
+  type MeshOutlier,
+  OUTLIER_MAX_COUNT,
+  OUTLIER_MAX_SHARE,
+  OUTLIER_MIN_COUNT,
+  OUTLIER_SCALE,
+} from "./mesh/outliers";
+export {
   type Bounds,
   checkProbeArea,
   PROBE_AREA_CODES,

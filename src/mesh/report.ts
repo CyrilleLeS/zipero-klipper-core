@@ -25,6 +25,7 @@ import {
   type MeshAlgorithm,
 } from "./interpolate";
 import { computeMeshMetrics, type MeshMetrics } from "./metrics";
+import { findMeshOutliers, type MeshOutlier } from "./outliers";
 import { checkProbeArea, type ProbeArea, type ProbeAreaCode } from "./probe-area";
 import { parseMeshProfiles } from "./profiles";
 import {
@@ -66,6 +67,7 @@ export const BED_MESH_DIAGNOSTIC_CODES = [
   "bedMesh.twisted",
   "bedMesh.irregular",
   "bedMesh.noisy",
+  "bedMesh.outliers",
   "bedMesh.flat",
   "bedMesh.probeGood",
   "bedMesh.probeBorderline",
@@ -118,6 +120,8 @@ export interface MeshAnalysis {
   };
   /** Assistant de vis (EP-05.10), si la configuration décrit les vis du plateau. */
   readonly screws?: MeshScrews;
+  /** Mesures isolées à refaire (EP-05.09), s'il y en a. */
+  readonly outliers?: readonly MeshOutlier[];
 }
 
 export interface ProbeAccuracyAnalysis extends ProbeAccuracyRun {
@@ -238,6 +242,7 @@ function analyzeMesh(
     : computed.ok
       ? { grid: computed.grid, algorithm: computed.algorithm, source: "computed" as const }
       : undefined;
+  const outliers = findMeshOutliers(grid, options.noise ?? DEFAULT_NOISE_THRESHOLD);
   const screws =
     extra.geometry && extra.mechanics
       ? computeMeshScrews(interpolated?.grid ?? grid, extra.geometry, extra.mechanics)
@@ -252,6 +257,7 @@ function analyzeMesh(
     grade: gradeFlatness(metrics.range, flatness),
     ...(interpolated ? { interpolated } : {}),
     ...(screws ? { screws } : {}),
+    ...(outliers.length > 0 ? { outliers } : {}),
   };
 }
 
@@ -263,6 +269,18 @@ function diagnoseMesh(
   const { metrics, shape } = analysis;
   const diagnostics: Diagnostic[] = [];
   const range = round3(metrics.range);
+  // Mesures isolées (EP-05.09) : à refaire avant de juger le plateau sur ces points.
+  if (analysis.outliers?.length) {
+    diagnostics.push({
+      code: "bedMesh.outliers",
+      severity: "warning",
+      mesh: index,
+      params: {
+        count: analysis.outliers.length,
+        deviation: round3(Math.max(...analysis.outliers.map((o) => Math.abs(o.deviation)))),
+      },
+    });
+  }
   if (analysis.grade === "poor") {
     diagnostics.push({
       code: "bedMesh.rangeLarge",
