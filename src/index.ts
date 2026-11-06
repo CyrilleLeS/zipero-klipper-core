@@ -143,6 +143,15 @@ export {
   templateSource,
 } from "./macros/templates";
 export {
+  type ComparableMesh,
+  compareMeshes,
+  type DifferencePoint,
+  GEOMETRY_TOLERANCE,
+  MESH_COMPARE_CODES,
+  type MeshCompareCode,
+  type MeshDifference,
+} from "./mesh/compare";
+export {
   type ConsoleMesh,
   MESH_CONSOLE_CODES,
   type MeshConsoleCode,
