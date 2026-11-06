@@ -11,6 +11,15 @@ export {
   rotationDistanceSnippet,
 } from "./calibration/rotation-distance";
 export {
+  type ConfigDiff,
+  type DiffStatus,
+  diffConfigs,
+  normalizeValue,
+  type OptionDiff,
+  type SectionDiff,
+  sameValue,
+} from "./config/diff";
+export {
   detectFirmware,
   FIRMWARES,
   type FirmwareCandidate,
@@ -262,6 +271,7 @@ export {
   REFERENCE_PRINTERS,
   type ReferencePrinter,
 } from "./printers/reference";
+export { COMPARABLE_PRINTERS, loadReferenceConfig } from "./printers/reference-config";
 export {
   assessRepeatability,
   computeProbeStats,
