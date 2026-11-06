@@ -309,6 +309,8 @@ export function checkPins(
   for (const { name } of sections) {
     if (name === "mcu") chips.add("mcu");
     else if (name.startsWith("mcu ")) chips.add(name.slice(4).trim());
+    // Toute section TMC : la butée d'un pilote qui n'en a pas (TMC2208, TMC2660) est signalée
+    // à part, avec la bonne explication (tmc.ts, « virtual-endstop-unsupported »).
     else if (TMC.test(name)) virtual.set(tmcChip(name), "virtual_endstop");
     else if (name.startsWith("multi_pin ")) virtual.set("multi_pin", "");
     else if (name.startsWith("sx1509 ")) virtual.set(`sx1509_${name.slice(7).trim()}`, "");

@@ -42,6 +42,7 @@ export {
   parsePin,
 } from "./config/pins";
 export { KLIPPER_SCHEMA } from "./config/schema";
+export { checkTmc, TMC_CODES, type TmcCode, type TmcIssue } from "./config/tmc";
 export {
   COVERED_SECTIONS,
   type ConfigSchema,
