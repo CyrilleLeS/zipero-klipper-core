@@ -226,6 +226,8 @@ describe("analyzeBedMesh — assistant de vis", () => {
       source: "screws_tilt_adjust",
       thread: "CW-M4",
       threadKnown: true,
+      // Décalage de la sonde : vis au point (x + x_offset, y + y_offset) du repère du maillage.
+      probeOffset: { x: -44, y: -6 },
     });
     // Sonde à −44 / −6 : lecture en (30, 30) et (190, 30), bords gauche et droit du maillage.
     const [left, right] = mesh?.screws?.readings ?? [];
@@ -249,6 +251,8 @@ describe("analyzeBedMesh — assistant de vis", () => {
       source: "bed_screws",
       thread: "CW-M3",
       threadKnown: false,
+      // [bed_screws] : la buse est au-dessus de la vis, aucun décalage.
+      probeOffset: { x: 0, y: 0 },
     });
     expect(mesh?.screws?.readings[1]?.z).toBeCloseTo(0.2, 6);
   });

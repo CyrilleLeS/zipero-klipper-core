@@ -92,6 +92,11 @@ export interface MeshScrews {
    * [screws_tilt_adjust]. false : [bed_screws] ne déclare pas de filetage (CW-M3 supposé).
    */
   readonly threadKnown: boolean;
+  /**
+   * Décalage de la sonde appliqué aux coordonnées déclarées (buse) : la vis est au point
+   * (x + probeOffset.x, y + probeOffset.y) du repère du maillage. [bed_screws] : 0, 0.
+   */
+  readonly probeOffset: { readonly x: number; readonly y: number };
   /** Hauteurs lues sur la surface interpolée, au-dessus de chaque vis. */
   readonly readings: readonly ScrewFromMesh[];
   /** Réglages calculés comme SCREWS_TILT_CALCULATE (première vis = base). */
@@ -210,6 +215,7 @@ export function computeMeshScrews(
     source: screws.source,
     thread,
     threadKnown: tilt,
+    probeOffset: offset,
     readings,
     adjustments: screwsTiltAdjust(readings, thread),
   };
